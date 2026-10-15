@@ -1,0 +1,86 @@
+# Welcome: how to use these notes {.unnumbered}
+
+::: {.callout-important}
+## Do the PREP and attend class first
+
+**These notes are a reference, not a replacement for PREP and in-class exercises.** Complete each [PREP]({{< var prep.all >}}) before class, and come to class to work through the exercises. The PREPs keep you up to date with what we're doing in class, and they have the "check your understanding" questions and runnable code.
+
+Use these notes **after** you've done the PREP and come to class, when you want to look something up, review a topic, or see it explained in a slightly different way. Seeing the same idea in a different format is part of how you learn it. Because of that, not everything here will match class exactly.
+
+If you want a refresher on a whole topic, go back to its PREP. Each chapter links to its PREP at the top.
+:::
+
+## How these notes are organized
+
+The notes are organized **by topic**, not by class meeting, so everything about arrays is in one place even if we covered it over several days. Use the sidebar to move between topics and the **On this page** list to jump within a page.
+
+**Search the notes** with the search box at the top of the sidebar, or press <kbd>/</kbd> from any page to open it. Search covers every page, including text inside collapsed boxes. Your browser's Ctrl+F (⌘F on a Mac) only finds text on the current page that's already showing.
+
+If you're looking for the thing we did on a particular date or in a particular lesson, start at the [Lesson index](lesson-index.qmd). It lists each class meeting, the sections it covered, and the files we used.
+
+## What you'll see on each page
+
+::: {.motivation}
+A short motivation at the start of a section explains why the topic matters before getting into the details.
+:::
+
+::: {.callout-note collapse="true"}
+## In class: questions that came up during lessons
+
+Boxes like this one are **asides**. They're representative versions of questions students asked in class (either your class or past classes), not exact transcripts. They're collapsed so you can skip them when you just need the main idea. Select the title to open one.
+:::
+
+::: {.callout-note appearance="simple"}
+Plain blue boxes like this one are side notes: extra details worth knowing.
+:::
+
+::: {.callout-tip collapse="true"}
+## Practice
+
+Practice problems, like finding the error in a piece of code. They're collapsed so you can work on them when you're ready.
+:::
+
+::: {.callout-tip}
+## Try it
+
+Short experiments to paste into the MATLAB Command Window and tinker with.
+:::
+
+::: {.callout-warning}
+## Common mistake
+
+Errors and misunderstandings we see often, and how to fix them.
+:::
+
+:::: {.exercise}
+**Exercise: in-class exercises look like this**
+
+Each in-class exercise lists its lesson files (starter and completed code) and its learning outcomes. Right-click the file and select "Save Link As..." to save it to your computer, or open it and copy and paste the code into MATLAB. The full exercise is collapsed underneath, in case you want extra practice. Inside it, a second collapsed box has key takeaways and common mistakes. I recommend you try the exercise before opening that box.
+::::
+
+```matlab
+x = linspace(-1, 1, 5)    % MATLAB code looks like this
+```
+
+``` {.output}
+x =
+
+   -1.0000   -0.5000         0    0.5000    1.0000
+```
+
+The gray box right after the code is what MATLAB displays when you run it.
+
+::: {.checkpoint}
+Homework, practice quiz , and exam checkpoints, like this one, mark where each
+homework and quiz's material ends.
+:::
+
+The code on these pages is meant to be read, copied, and run in MATLAB yourself. Hover over a code block to see the copy button.
+
+
+## Writing and editing credit 
+
+These notes were written by Jeremy Upsal and reviewed by Student Assistants. The
+formatting and functionality of these notes is made possible with the help of
+Claude. If you find a mistake or have a suggestion, please post it on Ed or
+reach out to me in some other way. I want to improve these notes! 

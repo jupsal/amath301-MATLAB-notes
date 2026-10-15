@@ -1,0 +1,203 @@
+# Math in MATLAB {#sec-math}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lesson 1 PREP: Getting started with Ed and MATLAB]({{< var prep.lesson1 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Run MATLAB code and correctly interpret the result, including distinguishing program output from system messages.
+- Use MATLAB as a calculator by translating mathematical expressions into code and vice versa.
+- Create and use variables to store values and structure reusable computations.
+:::
+
+## Basic arithmetic in MATLAB {#sec-arithmetic}
+
+You may have guessed that we'll be doing a lot of math on the computer in this class. MATLAB is good at math and can act just like a calculator! To calculate the expression
+$$25^2 - \frac{4 \times 6}{3 - 9}$$
+we run the code below.
+
+```matlab
+25^2 - (4 * 6) / (3 - 9)
+```
+
+``` {.output}
+ans =
+
+   629
+```
+
+What do you notice about this code and the result?
+
+- The order of operations (PEMDAS) and need for parentheses is exactly like what we would do with a calculator.
+    - To be safe, it's a good idea to use lots of parentheses as we have done here.
+- The code outputs `ans = 629`. `ans` stands for answer.
+- Only the output is shown. The output does not tell us what led to that calculation. We need to look at the code for that.
+
+::: {.callout-note appearance="simple"}
+Notice how the lines of code in the MATLAB Editor are numbered: 1, 2, 3, .... Line numbers are helpful for identifying and discussing different parts of longer code files. They allow us to talk about a calculation by referring to, for example, "the code on line 3."
+:::
+
+## Trigonometric and other functions in MATLAB {#sec-functions-builtin}
+
+We can use other mathematical functions in MATLAB by typing (almost always) exactly what you'd expect to type.
+
+```matlab
+cos(0)
+sin(pi/2)
+sqrt(4)
+log(1)
+```
+
+``` {.output}
+ans =
+     1
+ans =
+     1
+ans =
+     2
+ans =
+     0
+```
+
+You don't need to memorize all of MATLAB's functions! Instead, use the documentation. You can find a list of mathematical functions in MATLAB in the [Elementary Math documentation](https://www.mathworks.com/help/matlab/elementary-math.html).
+
+::: {.callout-tip}
+## Try it
+
+Try out some other functions in the MATLAB Command Window!
+:::
+
+:::: {.exercise}
+### Exercise: Practice using MATLAB as a calculator {#sec-ex-calculator}
+
+**Lesson files:** [Lesson_1_Intro_MATLAB.m (starter)](../files/Lesson_1_Intro_MATLAB.m) · [Lesson_1_Intro_MATLAB.m (completed)](../files/Lesson_1_Intro_MATLAB_Completed.m) (Exercise 1)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Use MATLAB as a calculator by translating mathematical expressions into code and vice versa.
+
+<!-- DRAFTED BY CLAUDE: key takeaways and common mistakes. -->
+
+**Key takeaways**
+
+- Most math functions have the name you'd expect: `sqrt`, `abs`, `tan`.
+- The exponential $e^x$ is `exp(x)`, so $e^5$ is `exp(5)`.
+- You don't need to memorize functions. Look them up in the [documentation](https://www.mathworks.com/help/matlab/elementary-math.html).
+
+**Common mistakes**
+
+- Writing `e^5`. MATLAB has no built-in variable `e`, so this gives the error `Unrecognized function or variable 'e'`.
+- Unbalanced parentheses in nested expressions like `sqrt(pi + sqrt(23 + 2^2))`. Every `(` needs a matching `)`.
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+1. Save the value of $\sqrt{23}$ to the variable `A1`.
+2. Save the value of $\sqrt{\pi + \sqrt{23 + 2^2}}$ to the variable `A2`.
+3. Save the value of $|93 - e^5|$ to the variable `A3`.
+4. Save the value of $\tan(\pi/4)$ to the variable `A4`.
+
+You don't necessarily know all of these functions! Instead, you should use the [documentation](https://www.mathworks.com/help/matlab/elementary-math.html).
+:::
+::::
+
+## Variables {#sec-variables}
+
+### A toy problem
+
+Say we're structural engineers working with a pipe of radius 3.04578 inches. We need to calculate:
+
+- Cross-sectional area: $A = \pi r^2$
+- Inner circumference (for lining material inside the pipe): $C = 2\pi r$
+- Volume of water per foot of pipe: $V = A \times 12$ ($A$ is the cross-sectional area defined above)
+
+A regular calculator can handle this, but we'll see how MATLAB can do it more efficiently and clearly. First, we need variables.
+
+### Variables
+
+A **variable** is a name that stores a value so you can use it later. Every programming language has them, and they work much like variables in math.
+
+Identify the variable in the math below:
+$$x + 7 = 3$$
+
+The variable is the letter $x$. It represents a certain value. In math we usually need to solve for that variable, $x = -4$, but we can also define a variable directly: $x = -4$.
+
+Some symbols, or variables, have values built in. For example, $\pi$ stands for $3.14159\ldots$. MATLAB has this specific variable built in:
+
+```matlab
+pi
+```
+
+``` {.output}
+ans =
+
+    3.1416
+```
+
+Let's use this variable to compute the pipe's area and circumference.
+
+```matlab
+pi*3.04578^2
+2*pi*3.04578
+```
+
+This code works, but it isn't great: it is unclear and inefficient. Before reading on, think about what makes it unclear and inefficient (**clarity** and **efficiency** are two motivating design principles that we focus on when coding).
+
+- The output is unlabeled. We can't tell what each number means.
+- The code (input) is unlabeled. Some other person (or yourself a week later) can't tell what each line computes.
+- We have repeated work. The number 3.04578 is written twice.
+
+<!-- DRAFTED BY CLAUDE: replaces the PREP's "We'll tackle the first two in class..." -->
+We fix the third problem by saving the radius to a variable, and the first two by displaying labeled output and commenting our code. We do all of this in the pipe exercise below.
+
+:::: {.exercise}
+### Exercise: Engineering a pipe {#sec-ex-pipe}
+
+**Lesson files:** [Lesson_1_Intro_MATLAB.m (starter)](../files/Lesson_1_Intro_MATLAB.m) · [Lesson_1_Intro_MATLAB.m (completed)](../files/Lesson_1_Intro_MATLAB_Completed.m) (Exercise 2)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Create and use variables to store values and structure reusable computations.
+- Use `disp` and concatenation to produce readable output.
+- Recognize and avoid hardcoding: let MATLAB do the computation rather than pre-calculating values yourself.
+- Use comments to document code intent and isolate problems during debugging.
+
+<!-- DRAFTED BY CLAUDE: key takeaways and common mistakes. -->
+
+**Key takeaways**
+
+- Save a value you use more than once to a variable (`r = 3.04578;`), and build other quantities from saved variables (`vol = 12*area;`). Typing in a number you calculated yourself is called **hardcoding**.
+- `disp` displays something in the Command Window, like `disp("We will calculate geometric quantities for a pipe.")`.
+- `+` joins text and numbers into one string. This is called **concatenation**: `"The volume of water in 1 foot of pipe is " + vol`.
+- Anything after a `%` is a **comment**. MATLAB ignores it; it's there for the person reading the code. A line starting with `%%` starts a new code section.
+
+**Common mistakes**
+
+- Hardcoding, like `vol = 12*29.14;` instead of `vol = 12*area;`. If the radius changes, a hardcoded number doesn't.
+- Using single quotes for text you join with `+`. `'radius ' + r` adds `r` to the character codes and gives an array of numbers. Use double quotes: `"radius " + r`.
+- Giving `disp` two inputs, like `disp("The volume is", vol)`. This is an error; join them into one string first.
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+Assume we are structural engineers working with a pipe of radius $r = 3.04578$ inches. We might need several mathematical quantities to work with this pipe:
+
+- Cross-sectional area: $A = \pi r^2$
+- Inner circumference: $C = 2\pi r$
+- Volume of water per foot of pipe: $V = 12A$, where $A$ is the cross-sectional area defined above.
+
+Create and save the following variables. Remember to use efficient code by using saved variables when possible. Remember to comment your code to make it readable for others.
+
+- `area`: the cross-sectional area of the pipe
+- `circ`: the circumference of the pipe
+- `vol`: the volume of water in 1 foot of the pipe
+
+We also want to practice displaying text in a helpful way to make it clear what our output is. Create and display the following variable:
+
+- `msg`: the string "The volume of water in 1 foot of pipe is ___" where "___" is the volume calculated in the variable `vol`.
+:::
+::::

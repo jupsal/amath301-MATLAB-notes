@@ -1,0 +1,17 @@
+# Functions {#sec-functions}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [PREP: Functions]({{< var prep.functions >}}).
+:::
+
+<!-- TODO: write this chapter. Pull from the PREP reading. -->
+
+## Writing your own functions {#sec-writing-functions}
+
+## Root finding, revisited {#sec-root-finding-function}
+
+This is the same algorithm from @sec-root-finding, rewritten as a function.
+
+::: {.checkpoint}
+{{< var checkpoints.functions >}} cover up through here.
+:::

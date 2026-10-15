@@ -1,0 +1,364 @@
+# Discretization and plotting {#sec-plotting}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lessons 4 & 5 PREP: Discretization and plotting]({{< var prep.lesson45 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Explain what it means to discretize a function $f(x)$ for $x \in [a, b]$ and describe how the parameters $a$, $b$, $N$, and $\Delta x$ relate to one another.
+- Discretize a continuous function using `linspace` and array arithmetic.
+- Create and customize line plots, including labels, titles, and line styles.
+- Distinguish between figure and axes in MATLAB.
+- Save and display figures appropriately using `exportgraphics`.
+:::
+
+## Motivation: pretty figures {#sec-plotting-motivation}
+
+So far, we only know how to look at our results by displaying results to screen. This obviously won't work when we have more information, for example, with arrays. Instead, we often rely on figures to understand what's happening.
+
+<!-- TODO: the PREP shows three example figures here (with image citations
+     img1, img2, img3). Add them to figures/ with their citations and alt text. -->
+
+We will work towards creating nice figures in this chapter and what we learn here will be the necessary foundation to get you there. We will start by creating simple, but sufficient graphs and plots.
+
+::: {.callout-note appearance="simple"}
+I will try to stick to the mathematical convention when it comes to the word *graph* vs. *plot*. A **graph** is a figure representing a mathematical function. **Plot** can either be a verb (let's plot these points) or may refer to specific types of figures (bar plot, scatter plot, etc.). You may use both interchangeably in this class, and I may accidentally do so too!
+:::
+
+## Graphing functions {#sec-graphing}
+
+### Our goal
+
+The figure that you are probably most familiar with is the graph of a function. We will begin with the simple goal of creating a graph of the function $y = x^2 - 3$ for $x \in [-1, 1]$.
+
+You can probably guess at this point that creating this graph will be more complicated than typing something like `graph(y = x^2-3, -1, 1)` in MATLAB, and you would be right! The problem is that $x^2 - 3$ is continuous; it is drawn by moving a pencil or pen continuously. A continuous curve means infinitely many points, but we have already learned that we can't do "infinitely many" anything on the computer.
+
+### Discretizing functions {#sec-discretizing}
+
+To create a graph of a function, $f(x)$, we use the same method as you were probably taught in your first algebra class.
+
+1. Make a list of $x$-values.
+2. Plug each $x$ value into $f(x)$ to get a list of $y$ values.
+3. Draw a point at each of these $(x, y)$ pairs as a point on your graph.
+4. Connect the dots to make the picture look like a smooth curve.
+
+Steps 1-2 are called **function discretization**. An example of a discretization is below.
+
+```matlab
+x = [-1, -0.5, 0.5, 1]                   % Choose the x values
+y = x.^2-3                               % Plug the x values in to the formula for f(x)
+```
+
+There is not one unique way to discretize a function. The $x$ values are arbitrarily chosen to create $y$ values for the plot. Generally, we choose $N$ $x$ values in increasing order, $x_1 < x_2 < \ldots < x_N$, and we generally choose them to be evenly or linearly spaced. In other words, we generally want $x_{k+1} - x_k = \Delta x$ for any choice of $k$ (i.e., $x_2 - x_1 = \Delta x$, $x_5 - x_4 = \Delta x$, etc.).
+
+::: {.callout-note appearance="simple"}
+Note that $x_k$ is the same thing as `x(k)`. When we write math, we use the subscript $x_k$. When we write code, this is indexing: `x(k)`.
+:::
+
+Let's assume that we want to plot (or find the derivative later!) of a function $f(x)$ for $x \in [a, b]$ with $N$ data points. We would define $x_1 = a$, $x_N = b$ and then define
+$$\Delta x = \frac{b - a}{N - 1}, \qquad x_k = a + (k-1)\Delta x, \qquad k = 1, 2, 3, \ldots, N.$$
+
+![A discretization of the interval $[a, b]$.](../figures/discretization_dx.png){fig-alt="A number line with evenly spaced points labeled x1 = a, x2 = a + Δx, x3 = a + 2Δx, up through xN = b. Each gap between neighboring points is labeled Δx."}
+
+MATLAB has a built-in function that does this for us.
+
+### `linspace` {#sec-linspace}
+
+To create "evenly spaced points" (or linearly spaced points) we use the [`linspace`](https://www.mathworks.com/help/matlab/ref/linspace.html) command. This creates an array of points with an equal amount of (or even) spacing between each point. The following code creates 5 equally spaced points between -1 and 1.
+
+```matlab
+x = linspace(-1, 1, 5)                     % Creates 5 equally spaced points between -1 and 1
+dx = x(2) - x(1)                           % Spacing between points
+```
+
+``` {.output}
+x =
+
+   -1.0000   -0.5000         0    0.5000    1.0000
+
+dx =
+
+    0.5000
+```
+
+Each of the 5 points is 0.5 away from its neighbors: the points are evenly spaced.
+
+::: {.callout-tip appearance="simple"}
+It's a good idea to check the math here. Do you see how the `dx` calculated above matches with the formula for $\Delta x$ given above? Can you identify the endpoints $a$ and $b$?
+:::
+
+### Back to graphing $y = x^2 - 3$
+
+Now that we know how to create the `x` array, we need to create the `y` array. This is the part we would do by hand as kids: plug each of the $x$ values ($-1$, then $-0.5$, etc.) into the function $y = x^2 - 3$. Luckily, we know how to make MATLAB do this for us using array arithmetic! Once we create `y`, we use the command [`plot`](https://www.mathworks.com/help/matlab/ref/plot.html) to create the graph.
+
+```matlab
+x = linspace(-1, 1, 5)            % Creates 5 equally spaced points between -1 and 1
+y = x.^2 - 3                      % This is the function y = x^2-3
+
+% Create the plot
+plot(x, y)                        % Creates the graph
+```
+
+Running this code should create the following figure, either in a new window or in MATLAB itself, next to the code Editor.
+
+![The graph of $y = x^2 - 3$ with 5 points.](../figures/graph_x2_N5.png){fig-alt="A MATLAB plot of y = x squared minus 3 using 5 points. It is a jagged V-like shape made of four straight line segments, with no title, axis labels, or legend."}
+
+What do you notice about the code or the result of the code? What stands out?
+
+- There is a box around the graph instead of the usual coordinate axes with the origin $(0, 0)$ at the center and axes emanating from the origin. This type of axes is actually standard for scientific figures.
+- We don't have a title, legend, or any axis labels: it's hard to understand what we are plotting.
+- The figure looks terrible! This is because we didn't use enough points: we can clearly see the lines between the points that MATLAB drew. We can make this look a lot better if we use more points. Luckily that's really easy with MATLAB, just increase the last number in `linspace`.
+
+Let's make this plot look better by using more points. Recall that $\Delta x = \frac{b - a}{N - 1}$, so more points (larger $N$) means smaller $\Delta x$. When $\Delta x$ is smaller, we say that the discretization is **finer**. When $\Delta x$ is bigger, we say that the discretization is **coarser**.
+
+```matlab
+x = linspace(-1, 1, 500)           % Creates 500 equally spaced points between -1 and 1
+y = x.^2 - 3                       % This is the function y = x^2-3
+
+% Create the plot
+plot(x, y)                         % Creates the graph
+```
+
+![The graph of $y = x^2 - 3$ with 500 points.](../figures/graph_x2_N500.png){fig-alt="A MATLAB plot of y = x squared minus 3 using 500 points. It is a smooth parabola with its lowest point at x = 0, y = -3."}
+
+Now it looks more like you might expect.
+
+::: {.callout-note appearance="simple"}
+It's not necessary that the points are equally spaced; it's just the standard method for creating graphs. Try the code above by first creating your own array `x`!
+:::
+
+### Saving your results {#sec-saving}
+
+It's usually a good idea to save your figure using a command in your code. Doing this allows you to make small changes to your code and have the figure automatically saved, instead of going through the manual steps of resaving it each time.
+
+To save a figure, we will use [`exportgraphics`](https://www.mathworks.com/help/matlab/ref/exportgraphics.html). For example, `exportgraphics(fig1, "Name.png")` saves the figure `fig1` as the image file `Name.png`. You can see it in action in @sec-ex-one-axes.
+
+## Plotting with rizz 😎 {#sec-plotting-rizz}
+
+### Motivation: our plots are ugly!
+
+Consider the following figure.
+
+![Three discretizations, plotted with no decoration.](../figures/sine_three_discretizations_plain.png){fig-alt="Three lines plotted on one set of axes with MATLAB's default thin lines and similar pale colors. Two of the lines are jagged. There is no title, no axis labels, and no legend."}
+
+What are some things you notice about this figure? Would it be appropriate to show someone and expect them to know what's happening? Do you know what's happening?
+
+<!-- DRAFTED BY CLAUDE: the PREP spoiler here was empty in the PDF export. -->
+
+There are no axis labels, no title, and no legend, so we can't tell what the lines represent. The lines are thin and the colors are similar, so it's hard to tell them apart. Our goal is to make the figure look as follows, which should be much more readable:
+
+![The same three discretizations, decorated.](../figures/sine_three_discretizations.png){fig-alt="The same three discretizations of 1 + sin(2πt) on one set of axes, now decorated. Title: '1 + sin(2πt) for three discretizations'. N = 8 is a blue dashed line with circle markers, N = 20 is a red dotted line with square markers, and N = 100 is a solid black line. A legend in the top right identifies each line, the x-axis is labeled t and the y-axis 1 + sin(2πt)."}
+
+Before doing so, we are going to learn the basics of decorating a MATLAB figure. You can find the information below and more in the [MATLAB figure style guide]({{< var links.style-guide >}}).
+
+### Anatomy of a MATLAB figure {#sec-figure-anatomy}
+
+A MATLAB figure consists of several parts, as demonstrated in the image below.
+
+![The anatomy of a MATLAB figure.](../figures/figure_anatomy.png){fig-alt="A labeled MATLAB figure titled 'Damped sine waves' with three oscillating lines. Labels point to the title, the legend, the y-axis label, the x-axis label, the grid lines, the lines (one per plot command), the axes (the box where data is drawn), and the figure (the whole gray window)."}
+
+In summary, a MATLAB figure consists of three main parts:
+
+- A **figure**: the whole window (or panel) that holds the plot.
+    - This is the part we save. Think about it like an envelope containing each of the following parts.
+- **Axes**: the box inside the figure with the $x$- and $y$-axes, where the data is drawn.
+    - This is the part with axis labels, a title, legend, etc.
+- **Lines**: plotted curves inside the axis. Each `plot` command creates one curve.
+    - This is the main thing we are looking at, the main character in the figure.
+
+A figure can also contain more things, which we will learn about later.
+
+### Creating new figures and keeping track of various figures
+
+We can create multiple new figures with the `figure` command. Each figure will have a different name, e.g., Figure 1, Figure 2, etc. You can create numbered figures using `figure(1)`, `figure(2)`, etc.
+
+::: {.callout-note collapse="true"}
+## In class: Why start with `close all`?
+
+`close all` closes every open figure window. It's especially important because it's easy to end up with several figures open and edit the wrong figure, so starting a script with `close all` gives you a clean slate.
+:::
+
+### Adding to the axes
+
+Anytime we create a figure for this class we should **properly label and title the axes**. This is a good habit to develop and is expected of every professional-looking figure. Here are the minimal requirements.
+
+- **x-axis label:** We label the $x$-axis using `xlabel`.
+    - e.g., `xlabel("x values")` labels the $x$-axis (horizontal axis) "x values"
+- **y-axis label:** We label the $y$-axis using `ylabel`.
+    - e.g., `ylabel("y values")` labels the $y$-axis (vertical axis) "y values"
+- **Title:** We create a title using `title`.
+    - e.g., `title("Plot of sin(x) for various discretizations")` creates a title.
+- **Legend:** We label each line in our plot using `DisplayName` inside the `plot( )` command, followed by `legend` to show the labels in a legend. For example,
+
+    ```matlab
+    plot( x, y, "DisplayName", "sin(x)" );
+    legend;
+    ```
+
+We can also change the font size of the labels and title as follows:
+
+```matlab
+xlabel("x values", "FontSize", 14)
+ylabel("y values", "FontSize", 14)
+title("Plot of sin(x) for various discretizations", "FontSize", 16)
+```
+
+We can also add a grid to a figure (think graphing paper) using `grid on`. For example,
+
+```matlab
+plot(x, y)
+grid on
+```
+
+### Line style
+
+We can change the color and style of our lines in our plot using arguments that go into the `plot( )` function.
+
+- **Line width**
+    - `plot(x, y, "LineWidth", 2)` changes the width of the plotted line to width 2.
+- **Style** (dashed, dotted, etc.)
+    - `plot(x, y, "LineStyle", "--")` creates a plot with a dashed line.
+    - By default, MATLAB uses `"LineStyle", "-"`, a solid line.
+- **Color**
+    - `plot(x, y, "Color", "r")` creates a red line plot.
+
+More line styles, colors, and markers can be found in the [`plot` documentation](https://www.mathworks.com/help/matlab/ref/plot.html).
+
+We can put multiple of these options together to create plots with various colors and styles.
+
+:::: {.exercise}
+### Exercise: Three line plots on one axes {#sec-ex-one-axes}
+
+**Lesson files:** [Plotting_Exercise.m (starter)](../files/Plotting_Exercise.m) · [Plotting_Exercise.m (completed)](../files/Plotting_Exercise_Completed.m) (Exercise 1)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Discretize a continuous function using `linspace` and array arithmetic.
+- Create and customize line plots, including labels, titles, and line styles.
+- Save and display figures appropriately using `exportgraphics`.
+
+<!-- DRAFTED BY CLAUDE: key takeaways and common mistakes. The CLASS page
+     lists all five learning outcomes for the whole activity; I split them
+     between the two exercises. -->
+
+**Key takeaways**
+
+- `hold on` keeps what is already drawn, so each later `plot` adds a line to the same axes.
+- Options like `"LineWidth", 2`, `"LineStyle", "--"`, `"Color", "r"`, and `"Marker", "o"` go inside `plot( )`. `"DisplayName", "N = 8"` sets the line's legend entry, and `legend` shows the legend.
+- `...` at the end of a line lets one line of code continue onto the next.
+- Save the figure from code with `exportgraphics(fig1, "one_axis_multiple_lines.png")`, where `fig1 = figure(1);` created the figure.
+
+**Common mistakes**
+
+- Forgetting `hold on`. Each `plot` replaces the last one, so only the final line shows.
+- Typing `pi` in a label or title. That shows the letters "pi"; use `\pi` to get the symbol $\pi$.
+- Hardcoding the number of points, like `linspace(0, 2, 8)` right after `N1 = 8;`. Use `linspace(0, 2, N1)` so the data and the legend label stay in sync if you change `N1`.
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+We will practice with the function
+$$f(t) = 1 + \sin(2\pi t), \qquad t \in [0, 2].$$
+This function is critical in:
+
+- electrical engineering, where $t$ represents time (e.g., seconds or milliseconds) and $f(t)$ represents the voltage of an alternating current (AC) circuit.
+- signal processing, where $t$ represents time (e.g., seconds or milliseconds) and $f(t)$ represents the amplitude of a sound wave.
+
+**Tasks**
+
+- **Task 0** (done for you): Create a figure `fig1`.
+- **Task 1:** Discretize the function $f(t) = 1 + \sin(2\pi t)$ for $t \in [0, 2]$ using 8 points. Plot this discretization on the axes in `fig1`.
+- **Task 2:** Repeat Task 1 using 20 points in the discretization.
+- **Task 3:** Repeat Task 1 using 100 points in the discretization.
+
+At this point, your figure should look like the undecorated figure in @sec-plotting-rizz. The next tasks are to make it look like the decorated one. You can try to do it on your own, or you can follow the steps below. Your plot does not need to match exactly!
+
+- Label the $x$-axis using `xlabel`. Label it "t (milliseconds)" and use font size 16.
+- Label the $y$-axis using `ylabel`. Label it "1 + sin(2\\pi t)" and use font size 16. Typing `\pi` tells MATLAB we want the symbol $\pi$, not the letters "pi".
+- Create a title using `title`. Match the title above and use font size 18.
+- Update each line plot by editing each call to `plot`:
+    - Change the `"LineWidth"` of each line to 2.
+    - Match the colors above (or just use 3 different colors).
+    - Match the line styles above (or choose 3 different line styles).
+    - Use markers for $N = 8$ and $N = 20$. You can create a circle marker with `plot(..., "Marker", "o")` and a square marker by changing the `"o"` to `"s"`.
+    - Add a legend entry for each line using, e.g., `plot(..., "DisplayName", "N = 8")`. Match the legend above!
+- Create the legend and use font size 18 for the legend.
+- Turn the grid on.
+- Change the $y$ limits of the graph using `ylim`. The goal is to add some padding to the axes so the peaks and troughs don't touch the edges.
+
+Finally, save your figure using `exportgraphics(fig1, "Name.png")` where you get to decide the Name!
+:::
+::::
+
+### Multiple axes in one figure {#sec-subplots}
+
+Sometimes we may want a grid of axes. To do so, we need to use [`subplot`](https://www.mathworks.com/help/matlab/ref/subplot.html).
+
+`subplot(num_rows, num_columns, position)` splits the current figure into a grid of `num_rows` rows and `num_columns` columns of axes. `position` tells MATLAB which of the axes in the grid we are currently drawing on (e.g., with `plot`). Positions are numbered left to right, then top to bottom.
+
+For example, the following code will create a plot in the bottom left axes of a 2x2 grid of axes:
+
+```matlab
+fig = figure(1);         % Create the figure, call it Figure 1
+subplot(2,2,3);          % Tell MATLAB we want a 2x2 grid of axes and want to work with the 3rd one
+plot(x, y);              % Draw the line on the 3rd axes (bottom left)
+```
+
+The following figure demonstrates how we can choose which axes we are working with in a 2x2 grid of axes.
+
+![Positions in a 2x2 grid of subplots.](../figures/subplot_positions.png){fig-alt="A figure titled 'Result of subplot(2, 2, k): positions are numbered left to right, then top to bottom'. It has four empty axes in a 2 by 2 grid labeled subplot(2, 2, 1) top left, subplot(2, 2, 2) top right, subplot(2, 2, 3) bottom left, and subplot(2, 2, 4) bottom right."}
+
+:::: {.exercise}
+### Exercise: Four axes in one figure {#sec-ex-subplots}
+
+**Lesson files:** [Plotting_Exercise.m (starter)](../files/Plotting_Exercise.m) · [Plotting_Exercise.m (completed)](../files/Plotting_Exercise_Completed.m) (Exercise 2)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Explain what it means to discretize a function $f(x)$ for $x \in [a, b]$ and describe how the parameters $a$, $b$, $N$, and $\Delta x$ relate to one another.
+- Distinguish between figure and axes in MATLAB.
+
+<!-- DRAFTED BY CLAUDE: key takeaways and common mistakes. -->
+
+**Key takeaways**
+
+- Create a new figure (`fig2 = figure(2);`) before plotting, so you don't draw on the old one.
+- `subplot(2, 2, k)` selects axes `k`. Every `plot`, `title`, `xlabel`, and `ylim` after it applies to that axes, until the next `subplot`.
+- `sgtitle` titles the whole figure; `title` titles one axes.
+- Compute the spacing from the array: `dt = t1(2) - t1(1)`. More points means a smaller `dt` and a smoother curve.
+
+**Common mistakes**
+
+- Calling `title` or `xlabel` before `subplot`. They go to whichever axes was selected before.
+- Forgetting to create a new figure. The subplots end up on top of Figure 1.
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+We can also represent the discretizations from the previous exercise using a grid of axes. Your goal will be to make the figure below.
+
+![Four discretizations in a 2x2 grid.](../figures/sine_four_discretizations.png){fig-alt="A figure titled '1 + sin(2πt) for four discretizations' with four axes in a 2 by 2 grid. Each shows 1 + sin(2πt) for t from 0 to 2 with a different spacing: dt = 0.28571 (top left, jagged), dt = 0.10526 (top right), dt = 0.020202 (bottom left), and dt = 0.01005 (bottom right). The curves get smoother as dt gets smaller."}
+
+- **Task 1:** Create a new figure, `fig2`.
+- **Task 2** (done for you): Use `sgtitle` to create a "subplot grid title", a title for the whole grid of subplots. Each subplot will have its own title as well.
+- **Task 3:** Tell MATLAB you want to work with one subplot at a time using `subplot(2, 2, 1)` (top left corner).
+    - Plot the discretization with $N = 8$ using line width 2.
+    - Add a font-size 14 title by calculating $\Delta t$ ("dt" in the image above) for this discretization.
+    - Adjust the $y$ limits with `ylim`.
+    - Label the $x$-axis to match the plots above; use font size 16.
+- **Task 4:** Repeat Task 3 for $N = 20$, $100$, and $200$. You can reuse the discretizations you've already made for $N = 20$ and $N = 100$, but you will need to create a new discretization for $N = 200$.
+- **Task 5:** Save the figure using `exportgraphics`.
+:::
+::::
+
+### Summary
+
+We have covered lots of plotting tools here. You can find guides online, but they may be more complex than what we need for this class. I made a [simplified guide]({{< var links.style-guide >}}). The two exercises above put all of these together to give you an example template you may use for other figures in this class or other classes.
+
+::: {.checkpoint}
+{{< var checkpoints.plotting >}} cover up through here.
+:::

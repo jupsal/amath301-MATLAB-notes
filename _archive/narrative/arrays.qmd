@@ -1,0 +1,511 @@
+# Arrays {#sec-arrays}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lesson 3 PREP: Arrays: indexing and slicing]({{< var prep.lesson3 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Recognize when an array is the appropriate data structure for a computational problem.
+- Create arrays and perform arithmetic operations on them.
+- Access and modify elements of an array using indexing, slicing, and Boolean indexing.
+:::
+
+<!-- compare: why -->
+Today we will learn about a new type of variable that you will use frequently in this and future classes!
+
+## Motivation: comparing projectile motions {#sec-projectile}
+
+Consider the problem of launching an object from ground level.
+
+![Projectile motion.](../figures/projectile_motion.png){fig-alt="Diagram of a rocket launched from the origin at angle theta with initial velocity v0. Its path is a red arc that rises to a maximum height h_max and lands at a horizontal distance x_range." width="70%"}
+
+Using the physics of projectile motion, we can predict how long the object will stay in the air, how high it will go, and how far it will go. Our goal will be to compute three quantities:
+
+- `t_flight`: the total time the object is in the air
+- `h_max`: the maximum height the object reaches
+- `x_range`: the horizontal distance the object travels before landing
+
+The formulas for these quantities are:
+
+- Time of flight: $t_{\text{flight}} = \dfrac{2 v_0 \sin(\theta)}{g}$
+- Maximum height: $h_{\max} = \dfrac{\left(v_0 \sin(\theta)\right)^2}{2g}$
+- Max range: $x_{\text{range}} = v_0 \cos(\theta) \cdot t_{\text{flight}}$
+
+These quantities depend on three launch conditions: the initial velocity ($v_0$), the launch angle ($\theta$), and the force of gravity ($g$). If we were exploring 4 different launches, 2 on earth and 2 on the moon, we may have:
+
+| Launch identifier | Initial velocity (m/s) | Launch angle (degrees) | Force of gravity (m/s²) |
+|---|---:|---:|---:|
+| Launch A: Earth | 100 | 75 | 9.81 |
+| Launch B: Earth | 200 | 85 | 9.81 |
+| Launch C: Moon | 15 | 30 | 1.63 |
+| Launch D: Moon | 25.9 | 40 | 1.63 |
+
+: Launch conditions for four launches. {#tbl-launches}
+
+We could calculate time of flight using the following code:
+
+```matlab
+% Input each of the launch conditions for each of the launches
+v0_A = 100;
+v0_B = 200;
+v0_C = 15;
+v0_D = 25.9;
+
+theta_A = 75*pi/180; % convert to radians
+theta_B = 85*pi/180;
+theta_C = 30*pi/180;
+theta_D = 40*pi/180;
+
+g_A = 9.81;
+g_B = 9.81;
+g_C = 1.63;
+g_D = 1.63;
+
+% Then calculate t_flight
+t_flight_A = 2*v0_A*sin(theta_A)/g_A;
+t_flight_B = 2*v0_B*sin(theta_B)/g_B;
+t_flight_C = 2*v0_C*sin(theta_C)/g_C;
+t_flight_D = 2*v0_D*sin(theta_D)/g_D;
+
+% Now print to compare different flight times
+disp("Flight time for launch A, in seconds:")
+disp(t_flight_A)
+disp("Flight time for launch B, in seconds:")
+disp(t_flight_B)
+disp("Flight time for launch C, in seconds:")
+disp(t_flight_C)
+disp("Flight time for launch D, in seconds:")
+disp(t_flight_D)
+```
+
+This method will work for these 4 launches, but can you see problems that we may encounter with this solution method, specifically if we want to test other launch conditions? (Think about the code, not the made-up values.)
+
+- This method is prone to typos; it's a lot of typing. It can be sped up with copying and pasting, but it would be easy to miss changing one letter, for example.
+- This is only a sample of the data. What happens when there are 50 launches? That is a lot of typing!
+- What happens if we made a small mistake in our mathematical formula for $t_{\text{flight}}$? We would need to change it in 4 places.
+
+A much better solution is to group conditions together under just a few variable names. For example, we could put all the launch velocities together into one variable, all the launch angles into another variable, etc. There are many ways to accomplish this task in MATLAB, but the tool we will use in this class is called an **array**.
+
+<!-- compare: creating -->
+## Arrays: a nifty tool for holding data {#sec-creating}
+
+The array consisting of initial launch velocities would be
+
+```matlab
+v0 = [100, 200, 15, 25.9]
+```
+
+This corresponds to the first column of the table above.
+
+::: {.callout-note appearance="simple"}
+We can also use `v0 = [100 200 15 25.9]` (using spaces instead of commas).
+:::
+
+<!-- compare: arithmetic -->
+## Operations with arrays {#sec-array-math}
+
+### Math with arrays
+
+Because arrays are made with numbers, we can do most of the operations we can do with numbers, but we need to think carefully about how these operations work.
+
+Think about each operation below and predict what happens before you look at the output.
+
+```matlab
+x = [1, 2, -3, pi, 0];                  % An array with various numbers
+
+disp("x + 10 = ")                       % What happens when we add 10 to the array?
+disp(x + 10)
+
+disp("2x = ")                           % What happens when we multiply the array by 2?
+disp(2*x)
+
+disp("x/3 = ")                          % What happens when we divide the array by 3?
+disp(x/3)
+
+disp("sin(x) = ")                       % What happens when we take the sine of the array?
+disp(sin(x))
+```
+
+``` {.output}
+x + 10 =
+   11.0000   12.0000    7.0000   13.1416   10.0000
+
+2x =
+    2.0000    4.0000   -6.0000    6.2832         0
+
+x/3 =
+    0.3333    0.6667   -1.0000    1.0472         0
+
+sin(x) =
+    0.8415    0.9093   -0.1411    0.0000         0
+```
+
+Each operation is applied to each element in the array individually. These are called **element-wise operations** because we apply the operation to each element individually.
+
+Let's try two more operations, one at a time. Again, think about what you expect to happen.
+
+```matlab
+x = [1, 2, -3, pi, 0];                  % An array with various numbers
+
+disp("x^2 = ")                          % What happens when we square the array?
+disp(x^2)
+```
+
+``` {.output}
+x^2 =
+Error using ^
+Incorrect dimensions for raising a matrix to a power. Check that the matrix is
+square and the power is a scalar. To operate on each element of the matrix
+individually, use POWER (.^) for elementwise power.
+```
+
+An error occurs. This error is telling us that `^` only works for matrices. If our intention is to square each element of the array (elementwise squaring), we need to use `.^`.
+
+::: {.callout-note appearance="simple"}
+Putting a `.` before an operation in MATLAB means "apply this operation elementwise." Since many operations are already applied elementwise (as seen above), those don't require or allow for a `.`.
+
+MATLAB means **MAT**rix **LAB**oratory: it is designed to work with matrices so the default commands are often set up to work with matrices. You may know about matrices from a Linear Algebra class or you may not yet. Don't worry if you have not; we won't be doing too much with matrices in this class.
+:::
+
+Let's see one more. Again, think about what you expect to happen based on the examples above.
+
+```matlab
+x = [1, 2, -3, pi, 0];                  % An array with various numbers
+
+disp("4./x = ")                         % What happens when we divide by an array?
+disp(4./x)
+```
+
+``` {.output}
+4./x =
+    4.0000    2.0000   -1.3333    1.2732       Inf
+```
+
+`./` does elementwise division. Notice what happens when we divide by 0! MATLAB returns `Inf` representing $\infty$.
+
+### Math with two arrays
+
+Let's see how arithmetic works with two arrays. Predict what you think will happen.
+
+```matlab
+x = [1, 2, -3];
+y = [0, -4, 3];
+
+disp("x + y = ");
+disp(x + y)
+
+disp("x - y = ");
+disp(x - y)
+
+disp("x * y =")
+disp(x*y)
+```
+
+``` {.output}
+x + y =
+     1    -2     0
+
+x - y =
+     1     6    -6
+
+x * y =
+Error using *
+Incorrect dimensions for matrix multiplication. Check that the number of columns
+in the first matrix matches the number of rows in the second matrix. To operate on
+each element of the matrix individually, use TIMES (.*) for elementwise
+multiplication.
+```
+
+The last operation, `*`, produced an error with two arrays. This is because `*` means something special when you are working with two arrays in linear algebra. Can you guess how to fix this to do elementwise multiplication using what we've learned above?
+
+Assuming we want to do elementwise multiplication, we need `.*`!
+
+::: {.callout-note collapse="true" appearance="simple"}
+## For those who know linear algebra
+
+This may seem strange to those who know Linear Algebra: this is not what multiplication usually means in linear algebra! To do regular vector-vector multiplication (dot product), you need a row and a column vector. We have only created row vectors. You can turn a row vector into a column vector using transpose (`x'` in MATLAB), or you can create a column vector using `;` instead of `,` between elements. Try it out!
+:::
+
+<!-- compare: exercise-1 -->
+:::: {.exercise}
+### Exercise: Comparing projectile motion for different launch conditions {#sec-ex-projectile}
+
+**Lesson files:** [Lesson_3_arrays.m (starter)](../files/Lesson_3_arrays.m) · [Lesson_3_arrays.m (completed)](../files/Lesson_3_arrays_Completed.m) (Exercise 1)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Recognize when an array is the appropriate data structure for a computational problem.
+- Create arrays and perform arithmetic operations on them.
+
+<!-- DRAFTED BY CLAUDE: key takeaways and common mistakes. -->
+
+**Key takeaways**
+
+- Put each launch condition in its own array (`v0`, `theta`, `g`). Then each formula is one line that computes all four launches at once: `t_flight = 2*v0.*sin(theta)./g;`
+- Convert the whole array of angles to radians in one step: `theta = [75, 85, 30, 40]*pi/180;`
+- `[m, I] = max(x_range)` returns the largest value `m` and its index `I`, which tells you which launch went the farthest.
+
+**Common mistakes**
+
+- Using `*`, `/`, or `^` between arrays instead of `.*`, `./`, `.^`. This gives an "Incorrect dimensions" error.
+- Writing `/2*g` instead of `/(2*g)`. MATLAB divides by 2 and then *multiplies* by `g`.
+- Forgetting to convert degrees to radians. `sin` expects radians.
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+Compute `t_flight`, `h_max`, and `x_range` for the four launches in the table at the start of this chapter, using the formulas given there. Start from `v0 = [100, 200, 15, 25.9]` and create arrays for the launch angle and the force of gravity.
+
+**Expected output.** Three arrays, `t_flight`, `h_max`, and `x_range`. Each array should have 4 elements corresponding to the 4 different initial launch conditions.
+
+**If you finish early:**
+
+- Which launch went the farthest? Instead of displaying the results and looking at it, think about how you can do it with code. Check the documentation for the [`max` function](https://www.mathworks.com/help/matlab/ref/max.html).
+- Can you accomplish this task using a 2D array (matrix) containing the whole data table?
+:::
+::::
+
+<!-- compare: summary -->
+### Summary of using arrays for calculations
+
+Notice how much we cleaned up our code. For just calculating `t_flight`, we went from the 21 lines of code at the start of this chapter to
+
+```matlab
+v0 = [100, 200, 15, 25.9];            % Array of initial velocities
+
+% Define array for launch angle and force of gravity
+theta = [75, 85, 30, 40]*pi/180;      % launch angles, converted to radians
+g = [9.81, 9.81, 1.63, 1.63];         % gravity constant
+
+% Compute t_flight using given formula
+% Because we can do arithmetic with arrays, we can implement the formulae with one step
+t_flight = 2*v0.*sin(theta)./g;      % Note the array arithmetic
+```
+
+We went from 21 lines of code to 9. But we can no longer easily display a final result, e.g.,
+
+```matlab
+disp(t_flight_A)
+```
+
+How can I do this with arrays? We access arrays using **indexing**.
+
+<!-- compare: indexing -->
+## Accessing arrays using indexing {#sec-indexing}
+
+We can access individual elements in an array; this is called **indexing**. To index an array, we use parentheses, `( )`, kind of like we would for a function (e.g., `sqrt( )`). For example, we can index `v0` with `v0( )`.
+
+Let's look at a simpler example to see how this works.
+
+```matlab
+x = [3, 7, 2, 1];             % A simple array
+
+disp("x(1) = ")
+disp(x(1))                    % This says "find the first element in the array x"
+
+disp("x(2) = ")
+disp(x(2))                    % Display the 2nd element in the array
+```
+
+``` {.output}
+x(1) =
+     3
+
+x(2) =
+     7
+```
+
+One important thing to note about the way this works is that the index is not saying "find the number 1" or "find the number 2" in the array `x`; instead it's giving a map from the natural numbers (1, 2, 3, ...) to the elements of the array. The diagram below represents this for an array of length 4.
+
+![Indices and values of an array.](../figures/array_indices.png){fig-alt="Diagram of the array x = [3, 7, 2, 1]. A row of indices 1, 2, 3, 4 sits above a row of values 3, 7, 2, 1, labeled x(1)=3, x(2)=7, x(3)=2, x(4)=1." width="60%"}
+
+## What are the rules for indexing? {#sec-indexing-rules}
+
+### Out-of-bounds errors: very common!
+
+```matlab
+x = [3, 7, 2, 1];         % A simple array
+
+% Determine the "length" of the array
+disp(length(x))
+```
+
+``` {.output}
+     4
+```
+
+<!-- DRAFTED BY CLAUDE: the examples below replace "Index it with various
+     numbers - in class". Check that they match what you showed. -->
+
+The array `x` has 4 elements, so the only indices that make sense are 1, 2, 3, and 4. If we index with anything else, we get an error:
+
+```matlab
+x(5)     % Error: Index exceeds the number of array elements. Index must not exceed 4.
+x(0)     % Error: Array indices must be positive integers or logical values.
+x(-1)    % Error: Array indices must be positive integers or logical values.
+```
+
+### `end`
+
+It's so common to ask for "the last element in the array" that MATLAB has a built-in way to do this: `end`.
+
+```matlab
+x = [3, 7, 2, 1];         % A simple array
+
+% Display the last element in the array, and the second to last element
+x(end)       % 1
+x(end-1)     % 2
+```
+
+<!-- DRAFTED BY CLAUDE: this replaces the spoiler text "Negative indexing goes
+     backwards!" (MATLAB doesn't have negative indexing; this is end-k). -->
+
+`end` means "the last index," so `end-1` is the second to last index, `end-2` is the third to last, and so on. Counting backward from `end` like this works the same way for an array of any length.
+
+![Indices counted from the end.](../figures/array_indices_end.png){fig-alt="Diagram of the array x = [3, 7, 2, 1] with three rows: indices 1, 2, 3, 4; values 3, 7, 2, 1; and the same positions counted from the end: end-3, end-2, end-1, end." width="60%"}
+
+Be careful, we can't keep going backward forever!
+
+```matlab
+x(end-3)     % 3, the first element
+x(end-4)     % Error: this would be index 0
+```
+
+### Indexing with integers
+
+We know what is in the 1st, 2nd, 3rd, etc. slot, but what about in between?
+
+```matlab
+x = [3, 7, 2, 1];         % A simple array
+
+% Check x(1.5)
+disp(x(1.5))              % Error: Array indices must be positive integers or logical values.
+```
+
+But this makes sense, because there is no data in between the 1st and 2nd element, right? **Data is discrete!**
+
+<!-- compare: slicing -->
+## Slicing {#sec-slicing}
+
+Imagine that we are comparing 100 different launch conditions, but we only want to look at the first 10 values of the calculated `t_flight`. **Slicing** allows us to extract just those 10 from our array of 100.
+
+We will look at a simpler example and then move to more complex syntax. The code below does two things, both examples of slicing:
+
+1. extracts and displays the first 3 elements from an array `x`
+2. extracts the elements from position 2 up through position 5 in the array `x`, and saves the output to the variable `y`
+
+```matlab
+x = [3, 7, 12, 15, 27];
+
+disp("The first slice: x(1:3) = ")
+disp(x(1:3))
+
+% The second slice
+disp("The second slice: ")
+y = x(2:5)
+```
+
+``` {.output}
+The first slice: x(1:3) =
+     3     7    12
+
+The second slice:
+
+y =
+
+     7    12    15    27
+```
+
+<!-- DRAFTED BY CLAUDE: the PREP spoiler "What are some things you notice?"
+     was empty in the PDF export. -->
+
+What are some things you notice?
+
+- `1:3` stands for the indices 1, 2, 3, so `x(1:3)` gives the elements in positions 1 through 3. Both endpoints are included.
+- A slice is itself an array, so we can save it to a new variable, like `y`.
+
+::: {.callout-note collapse="true"}
+## In class: How do I flip an array?
+
+Instead of jumping straight to the answer, we can build it from what we already know about ranges and indexing.
+
+A colon range creates an array:
+
+```matlab
+1:5        % 1  2  3  4  5
+```
+
+The middle number is the step size:
+
+```matlab
+1:2:5      % 1  3  5   (every other number)
+```
+
+Ranges also work as indices, so we can use one to pick out elements of an array:
+
+```matlab
+y = [10 20 30 40 50];
+y(1:2:5)   % 10  30  50
+```
+
+What if the step is negative? Then the range counts *down*, and indexing with it walks through the array backward:
+
+```matlab
+5:-1:1       % 5  4  3  2  1
+y(5:-1:1)    % 50  40  30  20  10
+y(end:-1:1)  % same result, and works for an array of any length
+```
+
+**Takeaway:** `start:step:stop` builds a list of indices, and a negative step walks backward. (MATLAB also has a built-in function, `flip(y)`, that does the same thing.)
+:::
+
+<!-- compare: exercise-2 -->
+:::: {.exercise}
+### Exercise: Changing launch conditions {#sec-ex-changing}
+
+**Lesson files:** [Lesson_3_arrays.m (starter)](../files/Lesson_3_arrays.m) · [Lesson_3_arrays.m (completed)](../files/Lesson_3_arrays_Completed.m) (Exercise 2)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Access and modify elements of an array using indexing and slicing.
+
+<!-- DRAFTED BY CLAUDE: key takeaways and common mistakes. -->
+
+**Key takeaways**
+
+- Display part of an array with a slice: `disp(t_flight(1:3))` shows launches A through C.
+- Change one element with indexing: `v0(2) = v0(2) - v0(2)*0.6;`
+- Change several elements at once with slicing: `theta(end-1:end) = theta(end-1:end) + 5*pi/180;`
+- After changing the inputs, rerun the formulas. `t_flight` doesn't update on its own.
+
+**Common mistakes**
+
+- Decreasing by 60% with `v0(2)*0.6`. That *keeps* 60%. A 60% decrease keeps 40%: `v0(2)*0.4`.
+- Adding `5` to an angle that is in radians. Convert first: `5*pi/180`.
+- Retyping the whole array instead of changing just the elements that change.
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+Start with the code from the previous exercise.
+
+- First, display the flight time for every launch except Launch D.
+
+We now want to modify the existing code to take into account changing conditions:
+
+- The second earth launch is going by far the farthest, perhaps because of the larger initial velocity used. Decrease the launch speed of the second earth launch (Launch B) by 60% and recheck the results.
+- The projectile did not go as far on the moon. Increase the launch angle for both tests on the moon by 5 degrees.
+
+Before completing these last two tasks, think about how you can do this without rewriting the code defining the arrays you've already defined. Can you think of a way to update (re-define) specific elements of an array using indexing and slicing?
+
+**Expected output.** Re-create the three arrays `t_flight`, `h_max`, and `x_range` with the changed conditions.
+:::
+::::
+
+::: {.checkpoint}
+{{< var checkpoints.arrays >}} cover up through here.
+:::

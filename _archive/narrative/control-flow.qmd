@@ -1,0 +1,253 @@
+# Control flow {#sec-control-flow}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lesson 6 PREP: For loops]({{< var prep.lesson6 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Write a for loop.
+- Recognize when a for loop is appropriate.
+- Trace a for loop by tracking variable values, including with an if statement.
+- Create and populate an array using `zeros()` and a for loop.
+:::
+
+## For loops {#sec-for-loops}
+
+We are going to begin with a population model of rabbits. We will then turn that into some math, pseudocode, and eventually code. You may have seen this idea in a PreCalculus class.
+
+### Motivation: rabbits in Australia {#sec-rabbits}
+
+**History & background.** Rabbits are not native to Australia and were essentially non-existent in the wild until Thomas Austin released approximately a dozen of them onto his property in 1859. Only 12 rabbits may not seem like that many, but their population rapidly exploded. Within a couple of decades, there were estimated to be roughly 10 million rabbits in Australia and this introduction is now widely regarded as an ecological disaster (despite their cuteness).
+
+![](../figures/rabbit.png){fig-alt="A small fluffy white rabbit nibbling a large strawberry." width="35%"}
+
+**Mathematical modeling.** To see why such a small number of rabbits caused such a problem, let's develop a simple mathematical model. We will let $N_t$ be the number of rabbits $t$ years after the rabbits were released in 1859. In other words, $N_0 = 12$ represents the number of rabbits released in 1859, $N_1$ represents the number of rabbits in 1860, $N_{20}$ represents the number of rabbits in 1879, etc. Rabbits breed very rapidly, and under ideal conditions they can easily produce dozens of offspring per year. The conditions in Australia were good, although perhaps not that good. As a conservative assumption, let's assume that each rabbit produces an average of 2 surviving offspring per year and does not survive until the next year. We are only counting the offspring that survive long enough to go on and breed on their own. Then
+$$\begin{aligned}
+N_1 &= 2 \cdot N_0 = 2 \cdot 12 = 24 \\
+N_2 &= 2 \cdot N_1 = 2 \cdot 24 = 48 \\
+N_3 &= 2 \cdot N_2 = 2 \cdot 48 = 96
+\end{aligned}$$
+
+Of course this is easier in MATLAB: we don't have to do the multiplication ourselves and we can repeat the process longer with ease, especially if we copy and paste!
+
+```matlab
+N_0 = 12;           % The starting population
+N_1 = 2*N_0;        % 1st generation
+N_2 = 2*N_1;        % 2nd generation
+N_3 = 2*N_2;        % 3rd generation
+N_4 = 2*N_3;        % 4th generation
+N_5 = 2*N_4;        % 5th generation
+
+disp("According to this model, the number of rabbits in the year 1864 is")
+disp(N_5)
+```
+
+``` {.output}
+According to this model, the number of rabbits in the year 1864 is
+   384
+```
+
+### Storing the population in an array
+
+Alternatively, we may want to keep track of and plot the change in the population. We can instead store the population values, $N_t$, as an array, `N`. But we need to be careful about this, because the first number we calculate, `N(1)`, is $N_0$. In other words, `N(n)` $= N_{n-1}$. For example, `N(1)` $= 12 = N_0$.
+
+```matlab
+N_0 = 12;           % The starting population
+N_1 = 2*N_0;        % 1st generation
+N_2 = 2*N_1;        % 2nd generation
+N_3 = 2*N_2;        % 3rd generation
+N_4 = 2*N_3;        % 4th generation
+N_5 = 2*N_4;        % 5th generation
+
+N = [N_0, N_1, N_2, N_3, N_4, N_5]
+```
+
+But this solution is not very efficient: we would like to calculate `N(2)` directly using `N(1)`, e.g., `N(2) = 2*N(1)`. Unfortunately, something like below does not work.
+
+```matlab
+N(1) = 12
+N(2) = 2*N(1)
+N(3) = 2*N(2)
+```
+
+::: {.callout-warning appearance="simple"}
+We need to define `N` before we try to alter it! This is called **predefining** the variable `N`.
+:::
+
+Because we don't know the values of the array `N` before calculating them, we simply create an array full of some arbitrary number. 0 is my favorite number, so I'll choose that. This is such a common technique that MATLAB has a function exactly for doing this. `zeros(1, n)` creates an array with `n` zeros (technically a row vector because there is 1 row and `n` columns).
+
+To spice things up a bit, we will calculate $N_{20}$, corresponding to 2 decades after 1859, when we know there were an estimated 10 million rabbits. Since `N(1)` corresponds to year 0 and `N(2)` corresponds to year 1, etc., we need to calculate up to `N(21)` for year 20.
+
+```matlab
+r = 2;       % Use r = 2, in case we want to change it later
+
+% We will calculate the population for 20 years,
+% This means we want to calculate N(21)
+N = zeros(1, 20+1) % 21 because N(1) = # of rabbits in year 0. Look at allll those zeros!
+
+% Now we can change N
+N(1) = 12;      % We just define this one, we know the starting value
+N(2) = r*N(1);  % Now we begin the calculations
+N(3) = r*N(2);
+N(4) = r*N(3);
+N(5) = r*N(4);
+N(6) = r*N(5);  % Copy and paste is our friend
+N(7) = r*N(6);
+N(8) = r*N(7);
+N(9) = r*N(8);
+N(10) = r*N(9);
+N(11) = r*N(10);
+N(12) = r*N(11);
+N(13) = r*N(12);
+N(14) = r*N(13);
+N(15) = r*N(14); % Copy and paste is our friend
+N(16) = r*N(15);
+N(17) = r*N(16);
+N(18) = r*N(17);
+N(19) = r*N(18);
+N(20) = r*N(19);
+N(21) = r*N(20);
+
+disp("The number of rabbits in 1879 = ")
+disp(N(21))
+```
+
+We have found that there are $1.2583 \times 10^7$, or about 12,583,000 rabbits in 1879, close to the 10 million estimated.
+
+::: {.callout-note appearance="simple"}
+The process of determining the correct $r$ to use in our mathematical model is called **parameter tuning**. We assume that we have the right model, and then change $r$. If the model is faithful to the truth, this means we can confirm that one rabbit correctly produces about 2 rabbits that will reach breeding age per year.
+:::
+
+The code above seems to be calculating what we expect. We should include a plot, but before doing that let's discuss a more efficient way to calculate the result above. The code above is long despite not having many calculations, and many of those calculations are the same, over and over: `N(year+1) = r*N(year)`.
+
+::: {.callout-tip appearance="simple"}
+An important coding paradigm is that **anytime we see similar code repeated, we should figure out a more efficient way to do it.** We shouldn't have to repeat code! Anytime you find yourself copying and pasting too much, you should think if there is a more efficient way to do your task. Copying and pasting isn't hard, but it's error prone! Think about how easy it would be to mess up changing one of the indices in `N(__)` above!
+
+We will be learning the two most common techniques for this over the next few lessons, beginning right now.
+:::
+
+### Toward a for loop
+
+Let's think about calculating just up to $N_5$ to motivate the idea. The formula `N(year+1) = r*N(year)` tells us that we could instead write our code as follows.
+
+```matlab
+r = 2;                              % Reproduction rate
+years = 5;                          % Make this a variable so it will be easier to change later
+N = zeros(1, years+1);
+
+% Now we can mess with N - let's make year a variable, for pedagogical purposes
+year = 1;
+N(year) = 12;                       % Start with the known value; no calculation
+
+N(year+1) = r*N(year);              % Use the formula, this should be N(2) = r*N(1)
+
+year = year + 1;                    % Update the year, add 1 to the year. year = 2 now
+N(year+1) = r*N(year);              % Use the formula, N(3) = r*N(2)
+
+year = year + 1;                    % Update year again. year = 3 now
+N(year+1) = r*N(year);              % Use the formula
+
+year = year + 1;                    % Update year again. year = 4 now
+N(year+1) = r*N(year);              % Use the formula
+
+year = year + 1;                    % Update year again. year = 5 now
+N(year+1) = r*N(year);              % Use the formula.
+
+% We now have N(6), corresponding to N_5. Let's display the result.
+disp(N(end))                        % Here "end" means "the last element in the array"
+```
+
+This decreases the required copying and pasting, because now I only need to change `year`, but I am still using the same formula over and over! To fix this, I will use a **for loop**. A for loop allows us to repeat the same task over and over while only one variable changes, usually increasing by 1 each time as we have here.
+
+### Simplify the calculations with a for loop
+
+For loops make things so simple. Read through the code below and then read the description below.
+
+```matlab
+r = 2;                          % Reproduction rate
+years = 5;                      % Make this a variable so it will be easier to change later
+N = zeros(1, years+1);
+
+N(1) = 12;                      % Start with the known value; no calculation
+
+for year = 1:years              % Start the for loop
+    N(year+1) = r*N(year);      % Use the formula
+    % If we did other things, they would also need to be indented here
+end                             % End the for loop
+
+disp(N(end))                    % Show last thing we calculated
+```
+
+``` {.output}
+   384
+```
+
+We got the same number here with 12 lines of code compared to our 26 lines of code above. It's that simple, but let's break it down because there are several new things here.
+
+- For loops have a **start point** and an **end point**.
+    - Start point pattern: `for VARIABLE = ARRAY`. Note: `1:5`, as in the code above, creates an array `[1, 2, 3, 4, 5]`.
+    - End point pattern: `end`.
+- Everything in between the start point and end point are the tasks we tell MATLAB to do repeatedly. These tasks should be **indented** to help the reader determine what is inside the for loop.
+    - In this case, we ask it to apply the formula `N(year + 1) = r*N(year)` repeatedly.
+- **Process:**
+    - The for loop begins with `VARIABLE = ARRAY(1)`, then completes the tasks (here, just `N(year + 1) = r*N(year)`).
+    - Once all tasks within the for loop are complete, it goes back up to the top with `VARIABLE = ARRAY(2)` and repeats this process.
+    - Repeat the two steps above over and over until `VARIABLE = ARRAY(end)`.
+
+This process may be better understood with a simple example.
+
+```matlab
+array = 1:5         % no semicolon so we can see the output
+
+for var = array
+    disp("The current value of 'var' is:")
+    disp(var)
+end
+```
+
+``` {.output}
+array =
+
+     1     2     3     4     5
+
+The current value of 'var' is:
+     1
+The current value of 'var' is:
+     2
+The current value of 'var' is:
+     3
+The current value of 'var' is:
+     4
+The current value of 'var' is:
+     5
+```
+
+::: {.callout-tip}
+## Try it
+
+Play around with the code above. Change things and display things until you feel comfortable with what is going on. In particular, change `years` and see how easy it is to compute the rabbit population for more and more years!
+:::
+
+A flow chart of this process is below, in case it helps. If you don't understand it, ignore it!
+
+![A flow chart of a for loop.](../figures/for_loop_flowchart.png){fig-alt="Flow chart: Start, then 'For loop starting', then a decision diamond 'Condition or last item in sequence?'. If False, run the code block in the for loop and return to the decision. If True, go to Stop." width="40%"}
+
+<!-- TODO: add the in-class debugger walkthrough of a for loop here. -->
+
+## If statements {#sec-if-statements}
+
+<!-- TODO: write this section. -->
+
+## Putting it together: root finding {#sec-root-finding}
+
+<!-- First version of the algorithm, written as a script using for + if. -->
+
+Later, in @sec-root-finding-function, we'll rewrite this algorithm as a function.
+
+::: {.checkpoint}
+{{< var checkpoints.control-flow >}} cover up through here.
+:::

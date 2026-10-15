@@ -1,0 +1,25 @@
+<script>
+// Make Quarto's collapsible callouts keyboard accessible.
+// Out of the box their clickable title bar can't be reached with Tab and is
+// announced only as "Toggle callout". This makes each title a real button:
+// reachable with Tab, opened with Enter or Space, and announced by its title.
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.callout-header[data-bs-toggle="collapse"]').forEach(function (header) {
+    header.setAttribute("role", "button");
+    header.setAttribute("tabindex", "0");
+    header.removeAttribute("aria-label");   // let the callout's own title name the button
+    header.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        header.click();
+      }
+    });
+  });
+});
+</script>
+<style>
+  .callout-header[role="button"]:focus-visible {
+    outline: 3px solid #4b2e83;
+    outline-offset: 2px;
+  }
+</style>

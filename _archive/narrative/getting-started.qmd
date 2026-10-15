@@ -1,0 +1,212 @@
+# Getting started {#sec-getting-started}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lesson 1 PREP: Getting started with Ed and MATLAB]({{< var prep.lesson1 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Create and maintain an organized file system for course materials.
+
+The learning objectives are listed to help you frame your learning. If you ever find yourself asking "what are the important parts in what I am reading?" this should help you answer that question.
+:::
+
+## What is scientific computing? {#sec-what-is-sci-comp}
+
+This class is called "Introduction to Scientific Computing," so what is "Scientific Computing?"
+
+**Scientific computing is using computers to solve math, science, and engineering problems.** It uses mathematics, engineering, physics, computer science, and more.
+
+You've probably used computers in math classes for years, so what's different here? Until now, the computer has likely handled part of the work, like a calculator, a plot, or WebAssign. Or, you may have used a computer to get help / answers from AI. Here we will learn how all of that works by translating math problems into a form the computer understands. Once we tell the computer what to do, we let it do all the computations like arithmetic.
+
+### Math problems you can understand but can't solve
+
+You know more math than most people on Earth. Still, it's easy to write problems you can understand but still cannot solve exactly. Here are three examples:
+
+1. Find the global minimum of $f(x) = x^2 + \sin(x)$.
+2. Calculate $$\int_0^1 \sin(x^2)\, dx.$$
+3. Calculate $$\int \tan(x)\sqrt{2 + \sqrt{4 + \cos(x)}}\, dx.$$
+
+Only one of these can be solved exactly, and even that one is very hard. Can you figure out which one it is, and why the others can't be solved?
+
+**Problem 1.** To find the minimum, solve $f'(x) = 2x + \cos(x) = 0$, but we can't. Instead, we estimate the minimum by looking at the plot.
+
+![The graph of $f(x) = x^2 + \sin(x)$.](../figures/min_x2_plus_sinx.png){fig-alt="Graph of f(x) = x squared plus sine of x for x from about -4 to 4. It is a U-shaped curve with its lowest point a little to the left of x = 0, slightly below the x-axis." width="60%"}
+
+Technically, we do one of the following:
+
+- Create an algorithm that essentially rolls a marble inside of the graph. It stops at the minimum!
+- Find roots of $f'(x) = 2x + \cos(x)$ using a root-finding algorithm.
+
+**Problem 2.** We can't solve this one: there is no antiderivative of $\sin(x^2)$! But we can find the area under the curve.
+
+![The area under $\sin(x^2)$ from 0 to 1.](../figures/area_sin_x2.png){fig-alt="Graph of sine of x squared for x from 0 to 1, with the area between the curve and the x-axis shaded. The curve starts flat at 0 and rises to about 0.84 at x = 1." width="60%"}
+
+**Problem 3.** This is the one we can actually solve, even though it looks the most complicated! The answer is in terms of symbols.
+
+There is a large gap between mathematics and computation. You have only learned analytical solution techniques, and that's not what we will do in this class!
+
+The bad news: even by the end of this class, you won't solve the other two exactly. The good news: you'll get approximations that are close enough to be as good as a solution. That is because almost every answer we compute will have some error. In Scientific Computing we study the algorithms that produce approximations and determine what "close enough" means.
+
+### What will our answers look like?
+
+In your past math classes, your answers are usually formulas or symbolic expressions like
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
+
+In scientific computing, answers are **numbers** (like $x = 2.718$) and **plots** that help us interpret those numbers. Instead of exact formulas, we'll get accurate approximations that are good enough to solve real problems.
+
+### Numerical vs. symbolic computing
+
+What about WolframAlpha? What about ChatGPT? Surely those can solve these problems!
+
+1. [Minimize f(x) = x^2+sin(x) - Wolfram|Alpha](https://www.wolframalpha.com/input?i=minimize+x%5E2%2Bsin%28x%29)
+2. [integrate sin(x^2) from 0 to 1 - Wolfram|Alpha](https://www.wolframalpha.com/input?i=integrate+sin%28x%5E2%29+from+0+to+1)
+3. [Integrate tan(x)\*sqrt(2+sqrt(4+cos(x))) - Wolfram|Alpha](https://www.wolframalpha.com/input?i=integrate+tan%28x%29*sqrt%282%2Bsqrt%284%2Bcos%28x%29%29%29)
+
+WolframAlpha and other tools mostly do **symbolic computation**. They move symbols ($x$, $y$, etc.) just as you would do on paper. That is not what we will be doing in this class. Your answers will be numbers and figures.
+
+### Another source of error: the model itself
+
+Before we can even compute anything, we have to turn a real-world problem into math, and that means making assumptions. Physicists joke about "assuming a spherical cow," but every model does something similar. This is true for any real-world phenomena that scientists and engineers work with daily, including weather prediction, bridge simulation, or power-grid design. A model for a falling object might ignore air resistance, or a population model might assume birth rate is constant year to year. Every model makes assumptions and leaves out some details.
+
+Even a perfect solution to the math (which we just discussed we can't usually get) still has error because the model is only an approximation of reality. This type of error is called **model error** and won't be covered in this class.
+
+All this error might sound discouraging, but we do pretty well: most bridges are not collapsing, most towers are staying upright, and most planes stay in the air!
+
+### What other kinds of problems can we solve with Scientific Computing?
+
+If we could only solve the 3 problems listed above, this would be a really boring class! Fear not: we will learn the basics and then put together complex tools with data to understand a variety of interesting science and engineering topics.
+
+Scientific computing applies to problems across many fields. Engineers use it to test bridge designs and simulate airflow over aircraft. Scientists model disease spread and predict weather patterns. Tech companies use it for Netflix recommendations and fraud detection. Space agencies calculate spacecraft trajectories. We'll explore specific applications throughout the quarter; you'll even learn the algorithm used in the moon landing (pretty cool if you ask me!)!
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Optional: more examples of scientific computing in action
+
+**Data science and machine learning**
+
+1. Recommendation Systems
+    - Netflix recommending shows, Spotify suggesting songs, Amazon products
+    - Using algorithms to predict what you'll like based on patterns in massive datasets
+2. Image Recognition & Computer Vision
+    - Facial recognition; Self-driving cars identifying pedestrians, traffic signs, and obstacles
+    - Medical imaging: detecting tumors in X-rays and MRIs automatically
+3. Natural Language Processing (NLP)
+    - Chatbots and virtual assistants (Siri, Alexa, ChatGPT)
+    - Language translation (Google Translate)
+4. Fraud Detection
+    - Credit card companies analyzing millions of transactions in real-time, identifying unusual patterns that indicate fraud
+
+**Health and biology**
+
+1. Drug Discovery
+    - Testing thousands of potential drug compounds virtually before lab testing, saving years of time and millions of dollars
+2. Genome Sequencing
+    - Analyzing DNA sequences to identify genes and mutations to understand genetic diseases
+3. Medical Imaging
+    - MRI and CT scans use computational algorithms to reconstruct 3D images
+    - Computer vision helps detect tumors and diagnoses
+4. Epidemiology
+    - Modeling disease spread during pandemics (like COVID-19)
+    - Predicting infection rates and evaluating intervention strategies
+
+**Earth and space science**
+
+1. Weather Forecasting
+    - Computers solve complex atmospheric equations to predict weather patterns
+    - Involves millions of data points and calculations updated every few minutes
+2. Climate Modeling
+    - Predicting long-term climate change by simulating Earth's atmosphere, oceans, and ice through massive simulations
+3. Astrophysics & Space Exploration
+    - Simulating galaxy formation and black hole behavior
+    - Calculating spacecraft trajectories (like landing rovers on Mars)
+    - Processing data from telescopes to discover exoplanets
+
+**Engineering**
+
+1. Structural Engineering
+    - Testing designs of bridges, buildings, and aircraft virtually before building physical prototypes
+    - Example: Boeing uses simulations to test aircraft wings under different conditions
+2. Aerospace Engineering
+    - Computational fluid dynamics (CFD) to design airplane wings and rocket shapes
+    - Simulating airflow to optimize fuel efficiency and reduce drag
+3. Automotive Engineering
+    - Crash test simulations instead of destroying physical prototypes
+    - Optimizing engine performance and fuel efficiency
+4. Electrical & Circuit Design
+    - Simulating complex circuits before manufacturing chips
+    - Analyzing power grid stability and load distribution
+5. Robotics & Control Systems
+    - Simulating robot behavior in virtual environments
+    - Control algorithms for drones, autonomous vehicles, and manufacturing robots
+
+**Finance & Business**
+
+1. Financial Modeling
+    - Predicting stock market trends and risk analysis to create investment strategies
+    - High-frequency trading algorithms
+2. Predictive Analytics
+    - Predicting customer behaviors and sales forecasting
+    - Predicting equipment failures in manufacturing before they happen
+3. Social Media & Content Analysis
+    - Analyzing trends across millions of social media posts
+    - Content moderation: detecting harmful content automatically
+    - Understanding public opinion during elections or crises
+
+We won't be able to study all of these, but we will learn the basic tools needed to be able to begin to understand these applications, and we will even dive deep into some of them.
+:::
+
+### Where scientific computing fits in
+
+Scientific computing is just one tool in the STEM toolbag, not a replacement for the rest. It fits into a cycle:
+
+1. **Theory builds the model.** This is where the calculus you already know and derivations from science and engineering come in.
+2. **Scientific computing solves the model** and visualizes results.
+3. **Experts interpret those results** in terms of the original science or engineering question and then change the question and repeat the cycle.
+
+Feeling nervous or overwhelmed? Don't be. We'll ease into it slowly, spending the first 3 weeks on coding alone.
+
+## File systems and course organization {#sec-file-systems}
+
+### Why it matters
+
+A **file system** is a system for storing files. Following a few organizational guidelines means you can always find what you need.
+
+You'll be working with a lot of files in this class: MATLAB code, datasets, study guides, etc. A misplaced file usually just wastes time. In this class it can also cost you points because you will be submitting these files to be automatically graded. This is an issue that comes up all the time in AMATH 301 and has led to low homework scores for some students. Practicing good organization and following a system now will help you in this class and help you build good practices that will benefit you in all your classes and in your future career.
+
+### File system structure
+
+Your computer organizes files like a filing cabinet. Main folders like Documents and Desktop are the drawers. Inside them are folders, which can hold more folders or files (data files, PDF files, .exe files, etc.).
+
+![An example file system.](../figures/file_system_tree.png){fig-alt="Tree diagram of a file system. A home folder contains a docs folder, a file doc1.txt, an image file, and a programs folder. The docs folder holds doc2.txt and a data folder with doc3.txt and doc4.txt; the programs folder holds three .exe files." width="70%"}
+
+If you save everything to Desktop or Downloads, it's like dumping all your papers in a pile. It gets especially risky when two files share a name. For example, imagine that both Homework 3 and Homework 4 use a file called "temperature_data.csv", but they are different files with different data. If you save both data files in the same Downloads folder you'll have "temperature_data.csv" and "temperature_data (1).csv" (depending on your operating system) and you won't know which is which! You may end up using the wrong data for your homework and your results won't make sense. With a good file organization system, you'll have all your Homework 3 files in a folder called "hw3" and all your Homework 4 files in a folder called "hw4". Each folder will have its own "temperature_data.csv" and you'll never mix them up.
+
+Our goal for this class will be to stay organized from Day 1!
+
+### Creating your course folder structure for this class
+
+1. **Open your file browser.**
+    - On Windows: Press the Windows Key + e OR Right Click "Start" and click "File Explorer"
+
+      ![](../figures/open_files_windows_keys.png){fig-alt="A keyboard with the Windows key and the E key outlined in red." width="45%"}
+      ![](../figures/open_files_windows_start.png){fig-alt="The Windows right-click Start menu with File Explorer pointed out by a red arrow." width="45%"}
+
+    - On Mac: Click on the smiling blue face icon in your macOS dock (bottom of screen)
+
+      ![](../figures/open_files_mac_finder.png){fig-alt="The macOS dock with a red arrow pointing to the blue smiling-face Finder icon." width="45%"}
+
+2. **Navigate to your "Documents" folder.** (This is recommended. If you have some reason to put this folder somewhere else like "Desktop" that is OK, just make sure you know where it is!) "Documents" can usually be found in any operating system on the left side of the File Explorer you just opened.
+
+3. **Create a new folder** by "right clicking" (two-finger press or bottom-right corner press on most touchpads) any open space in the open folder. Name your new folder something that makes sense for this class. I recommend "AMATH301".
+
+    **Although you can use spaces in your folder names I recommend not using spaces!** MATLAB won't run files with spaces in the filename, so it's good practice to avoid spaces now.
+
+4. **Open your new folder and create new folders inside of it.** I recommend you create: "homework", "lectures", "exams". Whatever you choose here **every single file for this class should go in one of these folders.** If you have a new file in this class that doesn't belong in any of those folders, create a new folder for it and put it there! Keep practicing this and don't save your files in "Downloads"; it will save you hours throughout this quarter!
+
+5. **It's now up to you to maintain this.** I recommend going to the "homework" folder and creating new folders: "hw0", "hw1", "hw2", etc.
+
+![Example of what my file structure looks like.](../figures/folder_structure_example.png){fig-alt="Screenshot of Windows File Explorer open to OneDrive, Teaching, AMATH 301, win2026, Homework. The Homework folder contains three folders: hw1, hw2, and hw3."}
+

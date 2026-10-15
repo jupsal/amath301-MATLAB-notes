@@ -1,0 +1,216 @@
+<!--
+  Auto-hiding sidebars (wide screens only).
+
+  On screens at least 992px wide, the navigation (left) and "On this page"
+  (right) sidebars are hidden so the page text can use the full width.
+  A tab on each edge brings a sidebar back: click the tab to open it, and
+  click it again (or anywhere outside the sidebar, or press Esc) to close it.
+  Pressing "/" opens the left sidebar so the search box is visible.
+
+  "Always show sidebars" (bottom of the left sidebar) turns this off and is
+  remembered in the browser. Narrower screens keep Quarto's normal layout.
+
+  To turn the whole feature off, remove _sidebars.html from
+  include-after-body in _quarto.yml.
+-->
+<style>
+@media (min-width: 992px) {
+  :root { --autohide-content-width: 900px; }  /* comfortable reading width */
+
+  /* Let the page text use the space the sidebars leave behind. */
+  body.sidebars-autohide #quarto-content main.content {
+    grid-column: screen-start-inset / screen-end-inset;
+    width: 100%;
+    max-width: var(--autohide-content-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Both sidebars become slide-out panels. */
+  body.sidebars-autohide #quarto-sidebar,
+  body.sidebars-autohide #quarto-margin-sidebar {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    width: 300px !important;
+    overflow-y: auto;
+    z-index: 1040;
+    background: var(--bs-body-bg, #fff);
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.18);
+    padding: 1rem 1rem 3rem 1rem;
+    transition: transform 0.2s ease, visibility 0.2s;
+    visibility: hidden;
+  }
+  body.sidebars-autohide #quarto-sidebar {
+    left: 0;
+    transform: translateX(-105%);
+  }
+  body.sidebars-autohide #quarto-margin-sidebar {
+    right: 0;
+    left: auto;
+    transform: translateX(105%);
+  }
+  body.sidebars-autohide #quarto-sidebar.autohide-open,
+  body.sidebars-autohide #quarto-margin-sidebar.autohide-open {
+    transform: none;
+    visibility: visible;
+  }
+
+  /* Edge tabs: solid UW purple with white text for high contrast. */
+  .autohide-tab {
+    display: none;
+    position: fixed;
+    top: 50%;
+    z-index: 1030;
+    border: 2px solid #4b2e83;
+    background: #4b2e83;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 0.85rem 0.5rem;
+    writing-mode: vertical-rl;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  }
+  .autohide-tab:hover { background: #32006e; border-color: #32006e; }
+  .autohide-tab { display: none; align-items: center; gap: 0.45rem; }
+  .autohide-arrow { display: inline-flex; }
+  .autohide-arrow svg { transition: transform 0.2s ease; }
+  /* Arrows point toward the page when closed ("click to open") and flip
+     when the sidebar is open ("click to close"). */
+  /* (The left tab itself is rotated 180deg, so its arrow angles are flipped.) */
+  #autohide-tab-left  .autohide-arrow svg { transform: rotate(180deg); }   /* points right */
+  #autohide-tab-right .autohide-arrow svg { transform: rotate(180deg); }   /* points left  */
+  #autohide-tab-left[aria-expanded="true"]  .autohide-arrow svg { transform: rotate(0deg); }  /* points left  */
+  #autohide-tab-right[aria-expanded="true"] .autohide-arrow svg { transform: rotate(0deg); }  /* points right */
+  .autohide-tab:focus-visible { outline: 3px solid #b7a57a; outline-offset: 2px; }
+  #autohide-tab-left  { left: 0;  border-left: none;  border-radius: 0 6px 6px 0; transform: translateY(-50%) rotate(180deg); }
+  #autohide-tab-right { right: 0; border-right: none; border-radius: 6px 0 0 6px; transform: translateY(-50%); }
+  body.sidebars-autohide .autohide-tab { display: inline-flex; }
+  /* When a panel is open, its tab rides along on the panel's edge. */
+  body.sidebars-autohide .autohide-tab { transition: left 0.2s ease, right 0.2s ease; z-index: 1045; }
+  body.sidebars-autohide #autohide-tab-left[aria-expanded="true"]  { left: 300px; }
+  body.sidebars-autohide #autohide-tab-right[aria-expanded="true"] { right: 300px; }
+
+  /* The on/off switch */
+  .autohide-switch {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    color: inherit;
+    cursor: pointer;
+  }
+}
+@media (max-width: 991.98px) {
+  .autohide-tab, .autohide-switch { display: none !important; }
+}
+</style>
+
+<button type="button" id="autohide-tab-left" class="autohide-tab"
+        aria-controls="quarto-sidebar" aria-expanded="false"><span>Contents</span><span class="autohide-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M5.5 2.5 11 8l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+<button type="button" id="autohide-tab-right" class="autohide-tab"
+        aria-controls="quarto-margin-sidebar" aria-expanded="false"><span class="autohide-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M5.5 2.5 11 8l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>On this page</span></button>
+
+<script>
+(function () {
+  var KEY = "amath301-sidebars-autohide";
+  var wide = window.matchMedia("(min-width: 992px)");
+  var body = document.body;
+  var left = document.getElementById("quarto-sidebar");
+  var right = document.getElementById("quarto-margin-sidebar");
+  var tabL = document.getElementById("autohide-tab-left");
+  var tabR = document.getElementById("autohide-tab-right");
+  if (!left) return;
+  if (!right || !right.querySelector("nav, #TOC")) { tabR.remove(); tabR = null; right = null; }
+
+  function readPref() {
+    try { return localStorage.getItem(KEY) !== "off"; } catch (e) { return true; }
+  }
+  function writePref(on) {
+    try { localStorage.setItem(KEY, on ? "on" : "off"); } catch (e) {}
+  }
+
+  // On/off switch at the bottom of the left sidebar.
+  var sw = document.createElement("button");
+  sw.type = "button";
+  sw.className = "autohide-switch";
+  left.appendChild(sw);
+
+  function apply() {
+    var on = readPref() && wide.matches;
+    body.classList.toggle("sidebars-autohide", on);
+    sw.textContent = readPref() ? "Always show sidebars" : "Auto-hide sidebars";
+    if (!on) { close(left); if (right) close(right); }
+  }
+
+  var pinned = new WeakMap();
+  function tabFor(panel) { return panel === left ? tabL : tabR; }
+  function open(panel, pin) {
+    if (!panel) return;
+    panel.classList.add("autohide-open");
+    var t = tabFor(panel); if (t) t.setAttribute("aria-expanded", "true");
+    if (pin) pinned.set(panel, true);
+  }
+  function close(panel) {
+    if (!panel) return;
+    panel.classList.remove("autohide-open");
+    pinned.set(panel, false);
+    var t = tabFor(panel); if (t) t.setAttribute("aria-expanded", "false");
+  }
+
+  function wire(tab, panel) {
+    if (!tab || !panel) return;
+    tab.addEventListener("click", function () {
+      if (panel.classList.contains("autohide-open")) { close(panel); }
+      else {
+        open(panel, true);
+        var first = panel.querySelector("a, input, button");
+        if (first) first.focus({ preventScroll: true });
+      }
+    });
+  }
+  wire(tabL, left);
+  wire(tabR, right);
+
+  sw.addEventListener("click", function () {
+    writePref(!readPref());
+    apply();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (!body.classList.contains("sidebars-autohide")) return;
+    if (e.key === "Escape") {
+      [left, right].forEach(function (p) {
+        if (p && p.classList.contains("autohide-open")) {
+          close(p);
+          var t = tabFor(p); if (t) t.focus();
+        }
+      });
+    }
+    // "/" opens Quarto's search; show the left sidebar so the box is visible.
+    var tag = (e.target && e.target.tagName) || "";
+    if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(tag)) open(left, true);
+  }, true);
+
+  // Click outside a pinned panel closes it.
+  document.addEventListener("click", function (e) {
+    [left, right].forEach(function (p) {
+      if (p && p.classList.contains("autohide-open") &&
+          !p.contains(e.target) && !(tabFor(p) && tabFor(p).contains(e.target)) &&
+          !(e.target.closest && e.target.closest(".aa-Panel, .aa-DetachedOverlay"))) {
+        close(p);
+      }
+    });
+  });
+
+  if (wide.addEventListener) wide.addEventListener("change", apply);
+  apply();
+})();
+</script>

@@ -1,0 +1,512 @@
+# Control flow {#sec-control-flow}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREPs for this topic: [Lesson 6 PREP: For
+loops]({{< var prep.lesson6 >}}), [Lesson 7 PREP: If statements and root-finding
+problems]({{< var prep.lesson7 >}}), and [Lesson 8 PREP: Newton's Method]({{< var prep.lesson8 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Write a for loop.
+- Recognize when a for loop is appropriate.
+- Trace a for loop by tracking variable values, including with an if statement.
+- Create and populate an array using `zeros()` and a for loop.
+- Read and interpret pseudocode for a simple algorithm.
+- Use Boolean variables and comparison operators to evaluate conditions.
+- Implement if/elseif/else statements to control the flow of a program.
+- Translate a pseudocode algorithm into working code.
+- Solve equations by converting them to root-finding problems and using a root-finding algorithm.
+- Implement the bisection method with appropriate tolerance checks.
+:::
+
+## For loops {#sec-for-loops}
+
+::: {.motivation}
+In 1859, Thomas Austin released about a dozen rabbits in Australia. Within a couple of decades there were roughly 10 million. A simple model, where each rabbit produces 2 surviving offspring per year and doesn't survive to the next year, gives
+$$N_{t+1} = 2 N_t, \qquad N_0 = 12,$$
+where $N_t$ is the number of rabbits $t$ years after 1859. Computing 20 years of this by hand, or by copying and pasting `N(21) = 2*N(20);` twenty times, is slow and error-prone. A for loop does the repetition for us.
+
+![](../figures/rabbit.png){fig-alt="A small fluffy white rabbit nibbling a large strawberry." width="30%"}
+:::
+
+A **for loop** repeats the same tasks while one variable changes, usually increasing by 1 each time.
+
+```matlab
+for VARIABLE = ARRAY
+    % tasks to repeat (indented)
+end
+```
+
+How it runs:
+
+1. `VARIABLE` is set to `ARRAY(1)`, and the tasks inside the loop run.
+2. `VARIABLE` is set to `ARRAY(2)`, and the tasks run again.
+3. This repeats until `VARIABLE = ARRAY(end)`.
+
+Indent the tasks inside the loop so readers can see what repeats. `1:5` creates the array `[1, 2, 3, 4, 5]` (@sec-colon).
+
+```matlab
+for var = 1:5
+    disp("The current value of 'var' is:")
+    disp(var)
+end
+```
+
+``` {.output}
+The current value of 'var' is:
+     1
+The current value of 'var' is:
+     2
+The current value of 'var' is:
+     3
+The current value of 'var' is:
+     4
+The current value of 'var' is:
+     5
+```
+
+![A flow chart of a for loop.](../figures/for_loop_flowchart.png){fig-alt="Flow chart: Start, then 'For loop starting', then a decision diamond 'Condition or last item in sequence?'. If False, run the code block in the for loop and return to the decision. If True, go to Stop." width="35%"}
+
+::: {.callout-tip appearance="simple"}
+If you find yourself copying and pasting similar lines of code, there's probably a more efficient way to do it, often a for loop. Copying and pasting isn't hard, but it's error-prone: it's easy to forget to change one index.
+:::
+
+### Filling an array with a loop
+
+To store every year of the rabbit population, keep the values in an array `N`. Because MATLAB indices start at 1, `N(1)` holds $N_0$: in general, `N(n)` $= N_{n-1}$.
+
+**Predefine** the array before filling it, using `zeros(1, n)` to create a row of `n` zeros (@sec-zeros):
+
+```matlab
+r = 2;                          % reproduction rate
+years = 20;                     % number of years to compute
+N = zeros(1, years+1);          % N(1) is year 0, so we need years+1 entries
+
+N(1) = 12;                      % starting population (no calculation)
+
+for year = 1:years
+    N(year+1) = r*N(year);      % population next year
+end
+
+disp(N(end))                    % population after 20 years
+```
+
+``` {.output}
+    12582912
+```
+
+The model predicts about $1.26 \times 10^7$ rabbits in 1879, close to the estimated 10 million. Changing `years` or `r` takes one edit.
+
+::: {.callout-note collapse="true"}
+## Why predefine with `zeros`?
+
+MATLAB is really friendly and does not require you to do so. If you assign
+`N(5)` and `N` only has 4 elements, MATLAB makes the array longer for you. It's
+still a good habit:
+
+- **It's faster.** When an array grows inside a loop, MATLAB copies the whole array every time it gets longer. The MATLAB Editor warns about this with an orange underline: "The variable appears to change size on every loop iteration."
+- **It avoids leftover values.** If `N` already exists from an earlier run and is longer, the old values past the new end stay in the array.
+- **It shows the size up front.** Readers can see how many values the loop will fill.
+- **Almost every other coding language in the world requires it.** Predefining is good practice!
+:::
+
+
+::: {.callout-note appearance="simple"}
+Choosing the value of $r$ so that the model matches data is called **parameter tuning**.
+:::
+
+::: {.callout-tip}
+## Try it
+
+Change `years` and `r` in the code above and watch how the result changes.
+:::
+
+
+## If statements {#sec-if-statements}
+
+::: {.motivation}
+We often need to do different things depending on the value of some variable.
+For example, the rabbit loop in @sec-for-loops computes the population every
+year. In what year did the population first pass 10 million? To answer it, the
+loop has to check each year's value and do something only when the answer is
+yes.
+:::
+
+### Comparisons and logicals {#sec-comparisons}
+
+A comparison asks a yes-or-no question. The answer is a **logical** (also called a **Boolean**): `1` for true, `0` for false.
+
+| Code | Asks |
+|---|---|
+| `a > b` | Is `a` greater than `b`? |
+| `a >= b` | Is `a` greater than or equal to `b`? |
+| `a < b` | Is `a` less than `b`? |
+| `a <= b` | Is `a` less than or equal to `b`? |
+| `a == b` | Is `a` equal to `b`? (two equals signs) |
+| `a ~= b` | Is `a` not equal to `b`? |
+
+: Comparison operators.
+
+
+```matlab
+3 > 2       % 1 (true)
+-4 > 0      % 0 (false)
+2 == 2      % 1 (true)
+```
+
+You can save a comparison in a variable (a **Boolean variable**) and use it later: `is_positive = x > 0;`
+
+### `if` {#sec-if}
+
+An **if statement** runs a block of code only when a condition is true. Like a for loop, it is a **control structure**: it controls which lines of code run.
+
+```matlab
+x = 2;
+
+if x > 0
+    disp("Success! x is positive.")
+end
+```
+
+- The condition after `if` must give a logical: `1` (true) or `0` (false).
+- Every line between `if` and `end` belongs to the if statement. Indent them so readers can see that.
+- If the condition is false, MATLAB skips everything up to `end`.
+
+Back to the rabbits. Put an if statement inside the loop to check each year's population:
+
+```matlab
+r = 2;
+years = 30;
+N = zeros(1, years+1);
+N(1) = 12;
+
+for year = 1:years
+    N(year+1) = r*N(year);
+    if N(year+1) > 1e7
+        disp("The population passed 10 million in " + (1859 + year))
+        break           % stop the loop
+    end
+end
+```
+
+``` {.output}
+The population passed 10 million in 1879
+```
+
+**`break`** stops a for loop immediately, skipping any remaining iterations. Without it, the message would print again for every year after 1879, since the population stays above 10 million.
+
+### `if`, `elseif`, `else` {#sec-elseif}
+
+An `if` on its own answers a yes-or-no question. Some problems have more than two outcomes. The quadratic formula has three possible outcomes, depending on the discriminant (2 real roots, 1 real root, or no real roots). Code that implements it has to do different things in different situations.
+
+The real roots of $ax^2 + bx + c = 0$ are
+$$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}.$$
+The discriminant $d = b^2 - 4ac$ decides how many real roots there are: two if $d > 0$, one (repeated) if $d = 0$, and none if $d < 0$. In pseudocode (@sec-algorithms):
+
+```text
+Algorithm: Find the real roots of ax^2 + bx + c = 0 using the quadratic formula.
+
+Inputs:  Coefficients a, b, and c.
+Outputs: An array of the real roots, and a message saying how many there are.
+
+Steps:
+1. Calculate the discriminant, d = b^2 - 4ac.
+2. Check the discriminant:
+    a) IF d > 0:
+        Display "There are two real roots"
+        Calculate x1 = (-b - √d) / (2a) and x2 = (-b + √d) / (2a)
+        Store x1 and x2 in an array.
+    b) IF d = 0:
+        Display "There is one real root"
+        Calculate x = -b / (2a)
+        Store x in an array.
+    c) IF d < 0:
+        Display "There are no real roots"
+        Create an empty array.
+3. Display the array containing the roots.
+```
+
+The pseudocode is organized around checking the discriminant, not around the steps you'd take by hand. To choose between several outcomes, add `elseif` and `else` to the if statement:
+
+```matlab
+if condition1
+    % runs if condition1 is true
+elseif condition2
+    % runs if condition1 is false and condition2 is true
+else
+    % runs if every condition above is false
+end
+```
+
+- MATLAB checks the conditions from top to bottom and runs **only the first** block whose condition is true. The rest are skipped.
+- You can have as many `elseif` blocks as you need, or none.
+- `else` is optional. It catches everything the conditions above didn't.
+- The whole structure ends with a single `end`.
+
+The quadratic-formula pseudocode becomes:
+
+```matlab
+d = b^2 - 4*a*c;
+
+if d > 0
+    disp("There are two real roots")
+    x1 = (-b - sqrt(d)) / (2*a);
+    x2 = (-b + sqrt(d)) / (2*a);
+    roots = [x1, x2];       % an array of the roots
+elseif d == 0
+    disp("There is one real root")
+    roots = [-b/(2*a)];
+else
+    disp("There are no real roots")
+    roots = [];             % an empty array
+end
+```
+
+This code has a subtle problem. Can you find it? The exercise below explores it.
+
+::: {.callout-warning}
+## Common mistakes with if statements
+
+- **`=` instead of `==`.** `if x = 0` is an error. One `=` assigns a value; two `==` compare.
+- **`else if` instead of `elseif`.** Written as two words, `else if` starts a *new* if statement inside the `else`, which needs its own `end`.
+- **Forgetting `end`.** Every `if` needs one.
+- **Using `==` on computed decimals.** Round-off error (@sec-round-off) means a computed value is rarely *exactly* equal to what you expect. Use a tolerance check (@sec-tolerance) instead:
+
+  ```matlab
+  x = 0.1 + 0.2;
+  x == 0.3                  % 0 (false), because of round-off error
+  abs(x - 0.3) < 1e-12      % 1 (true)
+  ```
+:::
+
+::::: {.exercise}
+### Exercise: The quadratic formula {#sec-ex-quadratic}
+
+**Lesson files:** [Lesson_7_Quadratic.m (starter)](../files/Lesson_7_Quadratic.m) · [Lesson_7_Quadratic.m (completed)](../files/Lesson_7_Quadratic_Completed.m)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Read and interpret pseudocode for a simple algorithm.
+- Use Boolean variables and comparison operators to evaluate conditions.
+- Implement if/elseif/else statements to control the flow of a program.
+- Translate a pseudocode algorithm into working code.
+
+:::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+The starter file implements the quadratic-formula pseudocode above. Try the following combinations of values. Does the implementation always give what you expect? If not, what can you change in the code to make it work in the case where it fails?
+
+- $a = 2$, $b = 3$, $c = 1$
+- $a = 1$, $b = 2$, $c = 1$
+- $a = 1$, $b = \sqrt{2}$, $c = 1/2$
+
+**If you finish early:**
+
+- Will this always work? Will it ever tell us the incorrect number of roots? Is it possible to write code that will always work?
+- What if $a = 0$? What happens to your code, and what should the root be? Can you make sure your code can handle this correctly?
+- Can you put this into a MATLAB function with inputs `a`, `b`, `c`, and `tol`?
+
+::: {.callout-tip collapse="true" appearance="simple"}
+## Takeaways and common mistakes
+
+**Key takeaways**
+
+- With $a = 1$, $b = \sqrt{2}$, $c = 1/2$, the discriminant should be exactly 0, but round-off error makes it `4.4409e-16`. The check `d == 0` fails, and the code reports two real roots.
+- Replace `d == 0` with a tolerance check, and do that check **first**: `if abs(d) < tol` (one root), then `elseif d >= tol` (two roots), then `else` (no real roots).
+
+**Common mistakes**
+
+- Keeping `d > 0` as the first check. A tiny positive `d` caused by round-off error is caught there before the tolerance check ever runs.
+- Testing only "nice" inputs. The first two cases work either way; only the third reveals the problem.
+:::
+::::
+:::::
+
+## Putting it together: root finding {#sec-root-finding}
+
+::: {.motivation}
+Algebra gives exact solutions for equations like $ax + b = 0$ and $ax^2 + bx + c = 0$, but even the cubic is really hard, and equations like $2x + \cos(x) = 0$ (@sec-what-is-sci-comp) have no algebraic solution at all. Equations like these appear throughout STEM, such as Kepler's equation for planetary orbits or the yield of a bond in finance, and must be solved numerically with a **root-finding algorithm**.
+:::
+
+A **root-finding problem** is to find the values of $x$ for which $f(x) = 0$. Any equation can be written this way by moving everything to one side:
+$$f(x) = g(x) \quad \Longrightarrow \quad f(x) - g(x) = 0.$$
+For example, solving $\cos(x) = x$ is the same as finding a root of $f(x) = \cos(x) - x$.
+
+### The bisection method {#sec-bisection}
+
+The bisection method is based on the Intermediate Value Theorem from calculus.
+
+::: {.callout-note appearance="simple"}
+**Intermediate Value Theorem (IVT).** Suppose $f$ is continuous on $[a, b]$. If $f(a)$ and $f(b)$ have opposite signs, then there is an $x^* \in (a, b)$ with $f(x^*) = 0$.
+:::
+
+![The root of $f(x) = 2x + \cos(x)$.](../figures/OG_f.png){fig-alt="Graph of
+f(x) = 2x + cos(x) for x from -3 to 4. The curve increases from about -7 to 6
+and crosses zero once, just left of x = 0, at a point marked with a star labeled
+x*, zero of f(x)." width="55%"}
+
+**The idea.** Start with an interval $[a, b]$ where $f(a)$ and $f(b)$ have opposite signs, so the IVT guarantees a root inside. Guess the midpoint, $x^* = (a + b)/2$. Exactly one of three things is true:
+
+1. $f(x^*) = 0$: we found the root.
+2. $f(x^*)$ has the **same sign as $f(a)$**: the root is in $(x^*, b)$. Move the left endpoint: $a = x^*$.
+3. $f(x^*)$ has the **same sign as $f(b)$**: the root is in $(a, x^*)$. Move the right endpoint: $b = x^*$.
+
+Each repetition, called an **iteration**, cuts the search interval in half. Repeat until $x^*$ is close enough to the root.
+
+::: {.callout-note collapse="true"}
+## Animation: 8 iterations of the bisection method
+
+![The bisection method on $f(x) = 2x + \cos(x)$, starting from $[-2, 3]$.](../figures/bisection_animation.gif){fig-alt="Animation of the bisection method on f(x) = 2x + cos(x), starting from the interval [-2, 3]. In each iteration, the midpoint of the current interval is marked, the half of the interval that can't contain the root is shaded red, and the search interval, shaded blue, shrinks by half. After 8 iterations the blue interval is a narrow band around the root near x = -0.45."}
+
+Close this box to stop the animation.
+:::
+
+Each iteration has three steps. The tabs below show them for the first iteration, on $[-2, 3]$.
+
+::: {.panel-tabset}
+#### Step 1: Interval
+
+![Start with an interval where $f$ changes
+sign.](../figures/bisection_step1.png){fig-alt="Step 1 of the first iteration of
+the bisection method for f(x) = 2x + cos(x). The search interval [a, b] = [-2,
+3] is shaded blue and the regions outside it are shaded red. Blue dots mark
+f(a), which is below zero, and f(b), which is above zero."}
+
+The interval is $[a, b] = [-2, 3]$. $f(-2) < 0$ and $f(3) > 0$, so there is a root between them.
+
+
+#### Step 2: Midpoint
+
+![Compute the midpoint and evaluate $f$ there.](../figures/bisection_step2.png){fig-alt="Step 2 of the first iteration. The interval [-2, 3] is still shaded blue. A red dot marks the midpoint x* = 0.5, where f is above zero."}
+
+The midpoint is $x^* = (-2 + 3)/2 = 0.5$, and $f(0.5) \approx 1.88 > 0$.
+
+#### Step 3: New interval
+
+![Replace one endpoint with the midpoint.](../figures/bisection_step3.png){fig-alt="Step 3 of the first iteration. The midpoint 0.5 becomes the new right endpoint b. The new search interval [-2, 0.5] is shaded blue, and the right half, from 0.5 to 3, is now shaded red because it cannot contain the root."}
+
+$f(0.5)$ has the same sign as $f(b)$, so the root is to the left of $x^*$. Move the right endpoint: $b = 0.5$. The new interval is $[-2, 0.5]$, half as long as before.
+:::
+
+The next iteration repeats the three steps on $[-2, 0.5]$. The first four iterations:
+
+| Interval $[a, b]$ | Midpoint $x^*$ | $f(x^*)$ | Root is | New interval |
+|:---|:---|:---|:---|:---|
+| $[-2, 3]$ | $0.5$ | $1.88$ (positive) | left of $x^*$ | $[-2, 0.5]$ |
+| $[-2, 0.5]$ | $-0.75$ | $-0.77$ (negative) | right of $x^*$ | $[-0.75, 0.5]$ |
+| $[-0.75, 0.5]$ | $-0.125$ | $0.74$ (positive) | left of $x^*$ | $[-0.75, -0.125]$ |
+| $[-0.75, -0.125]$ | $-0.4375$ | $0.03$ (positive) | left of $x^*$ | $[-0.75, -0.4375]$ |
+
+: The first four iterations of the bisection method for $f(x) = 2x + \cos(x)$. {#tbl-bisection}
+
+After 42 iterations, $x^* \approx -0.45018$ and $|f(x^*)| < 10^{-12}$.
+
+The bisection method is an **iterative algorithm**: it repeats a process, and each iteration gets a closer approximation than the last.
+
+### Stopping the iterations
+
+An iterative algorithm needs a **stopping condition**: a check for when the answer is good enough. Getting close enough to the answer is called **convergence**.
+
+- **Close enough.** Because of round-off error, $f(x^*)$ will almost never be exactly 0. Instead, stop when $|f(x^*)| < \text{tol}$ for a small tolerance like $10^{-12}$ (@sec-tolerance).
+- **Maximum number of iterations.** Set a limit, `max_iter`. If the algorithm reaches it without converging, display a warning.
+
+### Pseudocode
+
+```text
+Algorithm: The Bisection Method
+
+Inputs:
+    - A function, f(x)
+    - The endpoints a and b of the interval [a, b] in which to find a root
+    - A tolerance, tol, for deciding if we are "close enough" to a root
+    - A maximum number of iterations, max_iter
+Outputs:
+    - A root of f(x) in [a, b]
+    - A message displaying the result
+
+Steps:
+ITERATE, doing the following for each iteration:
+    1. Calculate xstar, the midpoint of the interval [a, b].
+    2. Check: is xstar close enough to a root? IF it is, save the root
+       and stop the iterations. If it is not:
+        a. IF f(xstar) has the same sign as f(a), change the left
+           boundary a to xstar.
+        b. IF f(xstar) has the same sign as f(b), change the right
+           boundary b to xstar.
+    3. Check: have we reached the maximum number of iterations?
+       IF so, display a warning: the algorithm did not converge.
+```
+
+ITERATE points to a **for loop** (@sec-for-loops), and each IF points to an **if statement**. Two more tools help translate it:
+
+- **Same sign.** Two numbers have the same sign exactly when their product is positive, so "`f(xstar)` has the same sign as `f(a)`" is the condition `f(xstar)*f(a) > 0`.
+- **Stop the iterations** with `break` (@sec-if), as in the rabbit example.
+
+::::: {.exercise}
+### Exercise: Implementing the bisection method {#sec-ex-bisection}
+
+**Lesson files:** [Lesson_7_Bisection.m (starter)](../files/Lesson_7_Bisection.m) · [Lesson_7_Bisection.m (completed)](../files/Lesson_7_Bisection_Completed.m) · [as a function (extension)](../files/Lesson_7_Bisection_Completed_Function.m)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Write a for loop.
+- Implement if/elseif/else statements to control the flow of a program.
+- Translate a pseudocode algorithm into working code.
+- Solve equations by converting them to root-finding problems and using a root-finding algorithm.
+- Implement the bisection method with appropriate tolerance checks.
+
+:::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+Implement the bisection-method pseudocode above for $f(x) = 2x + \cos(x)$ on the interval $[-2, 3]$, with a tolerance of $10^{-12}$ and at most 1000 iterations.
+
+- **Task 0** (done for you): Set up the parameters and calculate $x^* = (a + b)/2$.
+- **Task 1:** Set up the check in step 2 of the pseudocode.
+- **Task 2:** Change the boundary, matching steps 2a and 2b of the pseudocode.
+- **Task 3:** Check whether the iteration count has reached `max_iter`. If it has, display a warning message because the iteration did not converge.
+- **Task 4:** Edit the code to break out of the iterations if the root was found.
+
+With these parameters, the code should display:
+
+``` {.output}
+The root was found at xstar = -0.45018
+```
+
+**If you finish early:**
+
+- How can you make this algorithm more robust? What if $f(a)$ and $f(b)$ have the same sign? Does the current implementation take that into account? What happens?
+- Are we doing enough iterations? Maybe not. Look into `while`.
+- Put this into a function. There will be a section in MATLAB Grader testing a function `bisection` that you create.
+
+::: {.callout-tip collapse="true" appearance="simple"}
+## Takeaways and common mistakes
+
+**Key takeaways**
+
+- `for j = 1:max_iter` does the iterating; an if/elseif/else inside it makes the decisions.
+- The stopping check is `abs(f(xstar)) < tol`, followed by `break`.
+- The boundary check is `f(xstar)*f(a) > 0` (same sign as $f(a)$, so move `a`); otherwise move `b`.
+- `if j == max_iter` inside the loop catches the case where the loop finishes without finding the root.
+
+**Common mistakes**
+
+- Checking `f(xstar) == 0`. Because of round-off error this almost never happens, so the loop runs all `max_iter` times.
+- Forgetting `break`. Once the root is found, `a` and `b` stop changing, so every remaining iteration finds the same `xstar` and prints the message again, hundreds of times.
+- Moving the wrong endpoint. If `f(xstar)` has the same sign as `f(a)`, the root is between `xstar` and `b`, so `xstar` replaces `a`.
+- Calculating `xstar` once, before the loop. It must be recalculated every iteration, from the new `a` and `b`.
+:::
+::::
+:::::
+
+
+Later, in @sec-root-finding-function, we'll rewrite this algorithm as a function.
+
+### Newton's Method {#sec-newton}
+
+::: {.checkpoint}
+{{< var checkpoints.HW3 >}} cover up through here.
+:::

@@ -1,0 +1,32 @@
+# Lesson index {#sec-lesson-index .unnumbered}
+
+Find what we covered in each class meeting ({{< var quarter >}}). Each row links to the matching sections of the notes and to the files we used. Shaded headings group the lessons that each homework and quiz cover.
+
+<!-- Link to a section with its #id,
+     e.g. [Slicing](basics/arrays.qmd#sec-slicing).
+
+     Group headings: a row with text in the FIRST cell only becomes a
+     full-width heading for the lessons under it:
+       | Homework 1 and Quiz 1: Lessons 1–2 | | | | |
+
+     Exam rows: wrap the text in [...]{.exam}. It does not start a new group.
+     Put it where the exam falls in the schedule, e.g.
+       | [Midterm (Fri Oct 31): Quizzes 1–3, Lessons 1–7]{.exam} | | | | |
+        -->
+
+
+| Lesson(s) | Date(s) | Topic | Sections in the notes | Lesson files |
+|--------|------|-------|-----------------------|--------------|
+| Topics covered for Coding Homework 1, Practice Quiz 1 | | | | |
+| 1 | Oct 2 | AMATH 301 basics; MATLAB as a calculator (arithmetic, variables, and comments)| [What is scientific computing?](basics/getting-started.qmd#sec-what-is-sci-comp), [File systems](basics/getting-started.qmd#sec-file-systems), [Math in MATLAB](basics/math.qmd) | [Lesson_1_Intro_MATLAB.m](files/Lesson_1_Intro_MATLAB.m) ([completed](files/Lesson_1_Intro_MATLAB_Completed.m)) |
+| Topics covered for Coding Homework 2, Practice Quiz 2 | | | | |
+| 2 | Oct 5 | MATLAB errors and round-off error | [Error messages](basics/errors.qmd#sec-error-messages), [`clc` and `;`](basics/errors.qmd#sec-clc-semicolon), [Round-off error](basics/errors.qmd#sec-round-off) | [Lesson_2_Rounding_Error.m](files/Lesson_2_Rounding_Error.m) ([completed](files/Lesson_2_Rounding_Error_Completed.m)) |
+| 3 & 4 | Oct 6, Oct 7 | Arrays: indexing and slicing | [Tolerance checks](basics/errors.qmd#sec-tolerance), [Arrays](basics/arrays.qmd) (We finished tolerance checks from Lesson 2.) | [Lesson_3_arrays.m](files/Lesson_3_arrays.m) ([completed](files/Lesson_3_arrays_Completed.m)) |
+| 5 | Oct 9 | Discretization and plotting | [Discretization and plotting](basics/plotting.qmd) | [Plotting_Exercise.m](files/Plotting_Exercise.m) ([completed](files/Plotting_Exercise_Completed.m)) |
+| Topics covered for Coding Homework 3 (no practice quiz)| | | | |
+| 6 | Oct 13 | For loops | [For loops](basics/control-flow.qmd#sec-for-loops) | [Lesson_6_for_loops.m](files/Lesson_6_for_loops.m) |
+| 7 & 8 | Oct 14, Oct 15 | If statements & Root-finding algorithms|  | |
+| 8, 9, & 10 | Oct 15, Oct 16, Oct 20 | MATLAB functions|  | |
+| [Exam 1 (Mon Oct 26): Lessons 1–10]{.exam} | | | | |
+
+: Class meetings, the topics covered, and links to the notes and files. {tbl-colwidths="[7,10,20,40,23]"}

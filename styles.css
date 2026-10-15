@@ -1,0 +1,117 @@
+/* ---------- Reminder box at the top of each chapter ---------- */
+.prep-reminder {
+  border-left: 5px solid #6c757d;
+  background: rgba(108, 117, 125, 0.08);
+  padding: 0.6rem 1rem;
+  margin: 0 0 1.5rem 0;
+  border-radius: 4px;
+}
+.prep-reminder p { margin: 0; }
+
+/* ---------- Homework / quiz checkpoint ---------- */
+.checkpoint {
+  border: 2px solid #4b2e83;          /* UW purple */
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  margin: 2.5rem 0;
+  background: rgba(75, 46, 131, 0.07);
+  font-weight: 600;
+}
+.checkpoint p { margin: 0; }
+.checkpoint p::before { content: "✓ "; }
+
+/* ---------- Lesson file links ---------- */
+.lesson-files {
+  border-left: 5px solid #b7a57a;      /* UW gold */
+  background: rgba(183, 165, 122, 0.12);
+  padding: 0.6rem 1rem;
+  margin: 1.25rem 0;
+  border-radius: 4px;
+}
+.lesson-files p { margin: 0; }
+
+/* Dark-mode adjustments so text keeps enough contrast */
+body.quarto-dark .checkpoint {
+  border-color: #b9a6e0;
+  background: rgba(185, 166, 224, 0.10);
+}
+body.quarto-dark .lesson-files { border-left-color: #d9c89e; }
+
+/* ---------- MATLAB output blocks (``` {.output}) ---------- */
+pre.output {
+  border-left: 4px solid #6c757d;
+  background: rgba(108, 117, 125, 0.06);
+  padding: 0.5rem 0.9rem;
+  margin-top: -0.5rem;
+  border-radius: 0 4px 4px 0;
+}
+pre.output::before {
+  content: "Output";
+  display: block;
+  font-size: 0.75em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #495057;
+  margin-bottom: 0.25rem;
+}
+body.quarto-dark pre.output::before { color: #ced4da; }
+
+/* ---------- Exercise blocks ---------- */
+.exercise {
+  border: 1px solid rgba(183, 165, 122, 0.7);
+  border-left: 6px solid #b7a57a;       /* UW gold */
+  border-radius: 6px;
+  background: rgba(183, 165, 122, 0.08);
+  padding: 0.25rem 1.1rem 0.4rem 1.1rem;
+  margin: 2rem 0;
+}
+.exercise h3 { margin-top: 0.75rem; }
+.exercise .callout { margin-bottom: 0.6rem; }
+body.quarto-dark .exercise { border-left-color: #d9c89e; }
+
+/* ---------- Motivation blocks ---------- */
+.motivation {
+  border-left: 4px solid #8a9bb0;
+  padding: 0.1rem 0 0.1rem 0.9rem;
+  margin: 0.5rem 0 1.25rem 0;
+  color: #343a40;
+}
+.motivation::before {
+  content: "Motivation";
+  display: block;
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #495057;
+  margin-bottom: 0.2rem;
+}
+.motivation p:last-child { margin-bottom: 0.25rem; }
+body.quarto-dark .motivation { color: #dee2e6; border-left-color: #9fb0c4; }
+body.quarto-dark .motivation::before { color: #ced4da; }
+
+/* ---------- Grouped rows in the Lesson index table ---------- */
+tr.group-heading td {
+  background: rgba(75, 46, 131, 0.12);
+  border-top: 2px solid #4b2e83;
+  font-weight: 600;
+}
+tr.group-a td { background: rgba(75, 46, 131, 0.04); }
+tr.group-b td { background: transparent; }
+body.quarto-dark tr.group-heading td {
+  background: rgba(185, 166, 224, 0.16);
+  border-top-color: #b9a6e0;
+}
+body.quarto-dark tr.group-a td { background: rgba(185, 166, 224, 0.06); }
+tr.exam-row td {
+  background: rgba(183, 165, 122, 0.22);   /* UW gold */
+  border-top: 2px solid #85754d;
+  border-bottom: 2px solid #85754d;
+  font-weight: 700;
+  text-align: center;
+}
+body.quarto-dark tr.exam-row td {
+  background: rgba(217, 200, 158, 0.18);
+  border-color: #d9c89e;
+}

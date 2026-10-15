@@ -1,0 +1,77 @@
+project:
+  type: book
+  output-dir: _book
+  # Copy lesson files and figures into the built site so links to them work.
+  resources:
+    - "files/*.m"
+    - "figures/*"
+
+book:
+  title: "AMATH 301 Course Notes"
+  subtitle: "Beginning Scientific Computing with MATLAB"
+  author: "Jeremy Upsal, past AMATH 301 instructors"
+  search: true
+  page-navigation: true
+  page-footer:
+    center: "AMATH 301 · University of Washington"
+
+  # The sidebar table of contents. Each `part` is a top-level heading in the
+  # sidebar; each file listed under it is one chapter page. Sections inside a
+  # page (## and ###) show up in the "On this page" contents on the right.
+  chapters:
+    - index.qmd
+    - lesson-index.qmd
+
+    - part: "MATLAB coding basics (Exam 1)"
+      chapters:
+        - basics/getting-started.qmd
+        - basics/math.qmd
+        - basics/errors.qmd
+        - basics/arrays.qmd
+        - basics/plotting.qmd
+        - basics/control-flow.qmd
+        - basics/functions.qmd
+
+    - part: "Numerical calculus (Exam 2)"
+      chapters:
+        - calculus/index.qmd
+
+    - part: "Data science (Exam 3)"
+      chapters:
+        - data-science/index.qmd
+
+  # Reference pages, listed as appendices (Appendix A, B, ...).
+  appendices:
+    - reference/style-guide.qmd
+
+format:
+  html:
+    theme: cosmo # Formerly also had a dark: darkly optional theme
+    link-external-newwindow: true
+    css: styles.css 
+    # Keyboard support for collapsible callouts (see _a11y.html).
+    include-after-body: 
+      - _a11y.html
+      - _sidebars.html
+    # Short "Motivation" blocks at the start of sections. Set to false to
+    # hide all of them at once (see _motivation.lua).
+    show-motivations: true
+    filters:
+      - _motivation.lua
+      - _output-blocks.lua
+      - path: _checkpoint-rows.lua
+        at: post-quarto
+    # High-contrast syntax highlighting designed for accessibility.
+    highlight-style: a11y
+    code-copy: true
+    # Number the lines of every code block, so the text can refer to them.
+    code-line-numbers: true
+    toc: true
+    toc-depth: 3
+    toc-title: "On this page"
+    number-sections: true
+    number-depth: 2
+    # Accessibility checks (Quarto 1.8+). With `true`, problems are logged to
+    # the browser's developer console. While you are checking pages, change
+    # this to `output: document` to see a visible report on each page.
+    axe: true

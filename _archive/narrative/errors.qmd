@@ -1,0 +1,362 @@
+# Errors and round-off error {#sec-errors}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lesson 2 PREP: MATLAB errors, round-off error, and MATLAB debugger]({{< var prep.lesson2 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Read and interpret error messages to identify what went wrong in a program.
+- Use the MATLAB debugger to identify errors in your code.
+- Recognize that floating-point arithmetic introduces small errors and apply that understanding to compare numerical values using a tolerance check.
+:::
+
+## MATLAB error messages {#sec-error-messages}
+
+Though you have mostly seen code that works so far, that won't always be the case. When we provide MATLAB code that does not work, we get an **Error**. An Error tells us that we have provided incorrect instructions to MATLAB. An example is given below.
+
+![A MATLAB error message.](../figures/error_message.png){fig-alt="MATLAB Editor and Command Window. Line 5 of the script reads 'Matlab: do the rest for me.' with a red squiggly line under 'the'. The Command Window shows: Error: File: Lesson_1_Intro_MATLAB.m Line: 5 Column: 12. Unexpected 'the'. Check for missing multiplication operator, missing or unbalanced delimiters, or other syntax error. To construct matrices, use brackets instead of parentheses."}
+
+::: {.callout-note appearance="simple"}
+Notice that MATLAB doesn't act like AI! We need to give explicit instructions in its language, not in ours. We will be learning the language of MATLAB in this class. That's what it means to write code!
+:::
+
+It's important that we not be afraid of error messages. Errors don't break anything. Your script has it all and it can always be changed and rerun.
+
+Instead of being afraid, we should learn to read, interpret, and fix them. Let's see what this error message says.
+
+- First, it tells us that there is an **Error**.
+- Next, it tells us which file had the error (`File: Lesson_1_Intro_MATLAB.m`). For most of this class we will be working with one file, but when you write more complicated code you may be using multiple files together.
+- Next, it tells us on which line it occurred. This is usually the most helpful piece of information. This tells us where we need to look in the file. In this case, it's `Line: 5`.
+    - The next piece of information, `Column: 12`, usually isn't as helpful. It can be hard to find the column and it's often something deeper than just 1 column (letter) having an error.
+- Next, it tells us what went wrong: "`Unexpected 'the'`".
+    - We don't really know what that means yet, but it tells us that there's something wrong there.
+- After this it gives us some suggestions for what went wrong. This may be hard to read unless you know what's going on, so we are going to ignore it for now.
+
+You may also notice that the MATLAB editor is telling us something isn't right by putting a red squiggly line underneath "the". This can help you identify errors before running your code, which could save you lots of time!
+
+::: {.callout-warning}
+## Errors when using MATLAB Grader
+
+Code that produces an error does not run and cannot be graded by the MATLAB Grader. Before submitting any work to MATLAB Grader (clicking **Submit**), make sure your code runs by clicking "Run script". If it produces an error, you will not earn any points in the MATLAB Grader.
+:::
+
+### Practice: identify the error {#sec-identify-error}
+
+Consider the motion of an object (like a rocket) that is launched from ground height at a specific angle, $\theta$.
+
+![Projectile motion.](../figures/projectile_motion.png){fig-alt="Diagram of a rocket launched from the origin at angle theta with initial velocity v0. Its path is a red arc that rises to a maximum height h_max and lands at a horizontal distance x_range." width="70%"}
+
+Using the physics of projectile motion, we can predict how long the object will stay in the air, how high it will go, and how far it will go. Your goal will be to compute three quantities:
+
+- `t_flight`: the total time the object is in the air
+- `h_max`: the maximum height the object reaches
+- `x_range`: the horizontal distance the object travels before landing
+
+The formulas for these quantities are
+$$t_{\text{flight}} = \frac{2 v_0 \sin(\theta)}{g}, \qquad h_{\max} = \frac{\left(v_0 \sin(\theta)\right)^2}{2g}, \qquad x_{\text{range}} = v_0 \cos(\theta) \cdot t_{\text{flight}}.$$
+
+We will use the following values for the parameters:
+
+- Initial launch speed: $v_0 = 20$ meters per second.
+- Launch angle: $\theta = 0.785$ radians.
+- Force of gravity on earth: $g = 9.81$ meters per second squared.
+
+A student is trying to compute these quantities and writes the following code. It produces an error.
+
+- Identify which line the error occurs on.
+- Explain the error: what is going wrong here?
+- Fix the error.
+
+```matlab
+v0 = 20;
+g = 9.81;
+angle_rad = 0.785;
+
+x_range = v0 * cos(angle_rad) * t_flight
+t_flight = 2 * v0 * sin(angle_rad) / g
+h_max = (v0 * sin(angle_rad))^2 / (2 * g)
+```
+
+<!-- DRAFTED BY CLAUDE: the answer below was not in the CLASS notes. -->
+
+::: {.callout-caution collapse="true"}
+## Answer
+
+The error is on line 5. MATLAB runs code from top to bottom, so when it reaches line 5, `t_flight` hasn't been defined yet; it isn't defined until line 6. MATLAB tells us something like `Unrecognized function or variable 't_flight'`. To fix it, compute `t_flight` before `x_range` by swapping lines 5 and 6.
+:::
+
+## The MATLAB desktop: `clc` and `;` {#sec-clc-semicolon}
+
+I recommend using MATLAB in the "Three Column" mode, as shown in class. To turn this on:
+
+1. Click "Home" on the top banner.
+2. Click "Layout" on the second-to-top banner.
+3. Click "Three Column" on the "Layout" dropdown.
+
+![The Home tab and Layout button.](../figures/layout_menu.png){fig-alt="The MATLAB toolstrip with the Home tab and the Layout button circled in red."}
+
+Doing this should give you something that looks like the following.
+
+![MATLAB in the Three Column layout.](../figures/three_column_layout.png){fig-alt="MATLAB in Three Column layout: the Current Folder file list on the left, the script editor at top middle, the Command Window at bottom middle, and the Workspace on the right."}
+
+- On the left we have a list of files in the current folder.
+- In the top middle we have the active script. This is where we write code.
+- In the bottom middle we have the **Command Window**. This is where we see output.
+- On the right we have the **Workspace**. This tells us which values we currently have defined. These are the variables we can use in our work.
+
+![The Command Window still shows an old error.](../figures/command_window_before_clc.png){fig-alt="MATLAB with the Command Window circled in red. It still shows the error message from an earlier run above the new output."}
+
+Notice that when I run this code the error message from the last section still shows in the Command Window. This is because the Command Window shows a history of everything we have done since we opened MATLAB. That can be unnerving and confusing.
+
+### The `clc` command
+
+We can clear the Command Window with the command `clc`. This can be typed directly into the Command Window or it can be written into the top of the script. Most of my scripts will have the `clc` command at the top.
+
+![The Command Window after clc.](../figures/command_window_after_clc.png){fig-alt="MATLAB after adding clc to the top of the script. The Command Window now only shows the new output: 'We will calculate geometric quantities for a pipe.'"}
+
+Notice how clean the output is when I have `clc` written: the previous work is now gone.
+
+### The semicolon
+
+You will have noticed that I am usually writing a semicolon at the end of my lines of code. Compare the two lines of code below. Can you tell what semicolon does?
+
+```matlab
+x = 3
+y = 4;
+disp(y+2)
+```
+
+``` {.output}
+x =
+
+     3
+
+     6
+```
+
+The semicolon prevents the result of assigning a variable or a calculation from displaying (e.g., in the Command Window).
+
+We can see that line 2 is still executed (run) because we can still use `y` as a variable in the calculation `y+2`.
+
+::: {.callout-note appearance="simple"}
+`;` will not prevent the output of a function like `disp` because the point of `disp` is to display something. `;` is like writing something down for yourself without saying it out loud. If you want to say it out loud, use `disp`.
+:::
+
+Can you see why we might use a semicolon? We don't want to display the result of every line of code. Most of our code will be setting something up. We want to write code for which the output means something.
+
+**Most of your code should have a semicolon at the end of it.** The only code that should not is the final calculation, or a step you want to see the result of.
+
+::: {.callout-note appearance="simple"}
+This may not seem like a big deal now, but it will be when we have lots of code! It can even be detrimental to your code running correctly because displaying output is slow.
+:::
+
+## Round-off / floating-point error and machine precision {#sec-round-off}
+
+You might see `Variable __ has incorrect value` when submitting to the MATLAB Grader. Sometimes this can happen because your code is wrong, but other times it will seem right, but still be a little bit wrong. Let's explore this a bit more.
+
+### A numerical experiment: do we get what we expect?
+
+Try to predict the output of the code before running it. You may need to recall some math!
+
+```matlab
+disp(sin(pi)); % Calculate sin(pi)
+```
+
+``` {.output}
+   1.2246e-16
+```
+
+The result is given in scientific notation: `1.2246e-16` is the same thing as $1.2246 \times 10^{-16}$.
+
+::: {.callout-warning appearance="simple"}
+Note that `e-16` means $10^{-16}$. It is how MATLAB (and all languages) prints scientific notation. Don't mistake this `e` with the mathematical constant $e$! It is not the same!
+:::
+
+What's happening here is a **round-off/rounding error**. It may always be present when we are working with numerical variables.
+
+::: {.callout-note appearance="simple"}
+Round-off error is not the same as a MATLAB error. Round-off error is one kind of numerical error.
+
+We use the word "error" a lot in scientific computing; it's important to recognize what kind of error we are talking about based on the context.
+:::
+
+### What's happening? Continuous vs. discrete representation of numbers and machine epsilon
+
+Most of the math you have dealt with up to now has worked with a continuous set of numbers called the Real Numbers. There are infinitely many real numbers: you can always find a real number between any two real numbers (for instance, by adding more decimals). Recall that the number $\pi$ has infinitely many digits in its decimal expansion. But computers cannot store infinitely many things: they are finite objects we can hold in our hands! So how does a computer work with the value of $\pi$? It rounds $\pi$ to a number that it can represent with finitely many digits. This means there is almost always some small error when we work with numbers on a computer.
+
+But how small is small? We just saw an error of about $10^{-16}$. Is that a coincidence, or is $10^{-16}$-ish the natural size of round-off error in general? Let's investigate this with another experiment. Try to predict the output of the code below before running it! Then think about what is happening after running it.
+
+```matlab
+disp(1.0 + 1e-16);
+```
+
+``` {.output}
+     1
+```
+
+Adding $10^{-16}$ to 1 seems to do nothing: MATLAB treats $10^{-16}$ as 0 here. This is because by default, numbers only carry about 15-16 significant digits, so a change that small can't be represented; it gets rounded away to obscurity.
+
+::: {.callout-note appearance="simple"}
+Technically, this $10^{-16}$ number is true only for **double-precision** arithmetic. Double-precision is the standard and is what we will be working with in this class. MATLAB can do arithmetic with more round-off error (e.g., single-precision arithmetic) or with less round-off error (e.g., quadruple-precision arithmetic). Generally, the lower precision, the faster the calculations.
+:::
+
+This "rounding threshold" has a name: **machine epsilon** or **machine precision** is the largest number $\epsilon$ such that
+$$1 + \epsilon = 1$$
+in floating-point arithmetic (the type of arithmetic computers do with numbers).
+
+::: {.callout-note appearance="simple"}
+Machine epsilon can also be defined as the smallest positive number $\epsilon$ such that $1 + \epsilon \neq 1$.
+:::
+
+Machine epsilon is not random or a mystery; MATLAB can tell us the value of $\epsilon$ exactly:
+
+```matlab
+disp(eps); % "eps" is the value of machine epsilon
+```
+
+``` {.output}
+   2.2204e-16
+```
+
+Notice that this value is close to, but not exactly the round-off error we saw from `sin(pi)`; `pi` holds some rounding error, then when we apply `sin` to it the error is transformed by the sine function. For our purposes, **whenever we see a number times $10^{-16}$ (and sometimes $10^{-15}$ or even larger!), we'll treat it as effectively 0**: it's below the resolution the computer can represent. We will explore this more throughout the course.
+
+::: {.callout-note appearance="simple"}
+This representation of numbers is called **discrete** because we can count them out. Starting at a number $x$, the next biggest number is $x + \epsilon$, then $x + 2\epsilon$, then $x + 3\epsilon$, etc.
+:::
+
+### When can we get rounding error? When are two things equal?
+
+We've already seen what can happen for $\sin(\pi)$, but you might be surprised to see that we can have this issue for even simpler calculations. Let's consider adding two simple decimals: 0.1 and 0.2. We know mathematically that the answer should be 0.3. To test this, we are going to use MATLAB's `==` operator. You should think about `==` as asking "are these two things equal?" Before we check $0.1 + 0.2 \stackrel{?}{=} 0.3$, let's see how `==` works.
+
+```matlab
+1 == 2
+2 == 2
+```
+
+``` {.output}
+ans =
+
+  logical
+
+   0
+
+ans =
+
+  logical
+
+   1
+```
+
+`1==2` returns 0 and `2==2` returns 1. This means `==` returns 0 when the two things are not equal and 1 when they are equal.
+
+Now let's check `0.1 + 0.2 == 0.3`.
+
+```matlab
+disp(0.1 + 0.2 == 0.3)
+```
+
+``` {.output}
+   0
+```
+
+::: {.callout-note appearance="simple"}
+Yes, this looks weird, but remember, it's not really an equation: it is checking to see if the two things are equal.
+:::
+
+According to MATLAB, $0.1 + 0.2 \neq 0.3$!
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Why is there rounding here?
+
+It feels strange (to me) that there would be rounding here: 0.1 and 0.2 don't need infinitely many decimal places like $\pi$. Why is there rounding error? The answer is that computers store numbers in binary (base 2), and 0.1 cannot be represented exactly in binary, just like 1/3 cannot be written exactly as a decimal (0.333...). This tiny representation error accumulates in calculations.
+
+Don't worry about remembering this exact reason. If you want to learn about it more, take some CS classes. For us, it will be enough to know "things aren't always exactly what we might expect them to be!"
+:::
+
+When you submit homework to the autograder, your code is run and compared to the answers I provided. If your answer matches mine, you get the points. If it doesn't, you don't get points and are told "`Variable ___ has incorrect value.`" That means (kind of) that your answer is not `==` my answer.
+
+Obviously this would be a big problem: if my answer said 0.3 and your answer said 0.1 + 0.2 we would want these two to be counted as the same. To make sure this is the same, we use a **tolerance check**. By using a tolerance check, we can make sure that 0.3 and 0.1 + 0.2 are considered the same, so you can get your points!
+
+## Tolerance checks {#sec-tolerance}
+
+### How different are these two numbers?
+
+What does MATLAB say about the following code?
+
+```matlab
+(sqrt(3))^2 == sqrt(3^2)
+```
+
+``` {.output}
+ans =
+
+  logical
+
+   0
+```
+
+This means that the output is a **logical**, otherwise known as a **Boolean**. A Boolean is either True or False. 0 represents False, so the result is False. If we subtract the two we can see that they differ by `4.4409e-16`. This error is due to round-off error alone. Let's explore how we can test whether two numbers are the same using a tolerance check.
+
+### Writing tolerance checks
+
+We just learned that checking to see whether two numbers are equal using `==` isn't a good idea due to round-off error. Instead, we check to see if two numerical values are **within tolerance** of one another. Mathematically, we will say that two numbers $a$ and $b$ are within tolerance if
+$$|a - b| < \text{tolerance}.$$
+This is only true if
+$$-\text{tolerance} < a - b < \text{tolerance} \quad \Longleftrightarrow \quad b - \text{tolerance} < a < b + \text{tolerance}.$$
+$\text{tolerance}$ is a value we need to define.
+
+:::: {.exercise}
+### Exercise: Writing code for and exploring tolerance checks {#sec-ex-tolerance}
+
+**Lesson files:** [Lesson_2_Rounding_Error.m (starter)](../files/Lesson_2_Rounding_Error.m) · [Lesson_2_Rounding_Error.m (completed)](../files/Lesson_2_Rounding_Error_Completed.m)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Explain why floating-point arithmetic introduces small errors and apply that understanding to compare numerical values using a tolerance check.
+
+<!-- DRAFTED BY CLAUDE: key takeaways and common mistakes. -->
+
+**Key takeaways**
+
+- Compare decimals with `abs(a - b) < tolerance`, not `a == b`.
+- Comparisons like `<` and `==` return a logical: 1 (true) or 0 (false). Concatenated into a string, a logical displays as `true` or `false`.
+- The right tolerance depends on the application. Here the two values differ by about `4.4e-16`, so `tolerance = 1e-12` counts them as "close enough" and `tolerance = 1e-17` does not. In this class you will almost always be told what tolerance to use.
+
+**Common mistakes**
+
+- Forgetting `abs`. Without it, any reading below the accepted value passes: `99.4 - 100 < 0.5` is true, so Sensor B would wrongly be "within tolerance."
+- Writing `tolerance = e-12`. Scientific notation needs a number before the `e`: `1e-12`.
+
+::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+**Part 1: Simple tolerance check.** We will use the values `variable_1 = sqrt(3^2)` and `variable_2 = (sqrt(3))^2` as examples in the computation. You will choose a value for `tolerance` based on the two goals below and then write code that determines if the two variables `variable_1` and `variable_2` are within tolerance of one another.
+
+- **Task 1:** Display the value of $|a - b|$ where $a$ and $b$ are the values of `variable_1` and `variable_2`. This will help you choose a reasonable tolerance for the tolerance check.
+- **Task 2:** Choose a value of `tolerance` so that the variables are recorded as "close enough" with a tolerance check. Notice that `<` is similar to `==`. It is asking a question: "is this value less than the other value?"
+- **Task 3:** Choose a value of `tolerance` so that the variables are recorded as not "close enough" with a tolerance check.
+
+There is no correct answer here for `tolerance`: it depends on the application. You should be using this exercise to experiment with and understand tolerance checks and round-off error.
+
+**Part 2: Connecting to experiment (optional).** The idea of two values being "close enough" or within tolerance is not just a computer thing. It's the same idea as experimental error. Assume you are calibrating three temperature sensors against the accepted boiling point of water at sea level, `T_accepted = 100` (degrees Celsius). A sensor is acceptable if its reading is within `tolerance = 0.5` (degrees Celsius) of the accepted value. The sensors read `sensor_A = 100.3`, `sensor_B = 99.4`, and `sensor_C = 100.8`. Write code to check whether each sensor is within tolerance. You should print your output in a readable format. Your full answer should be:
+
+``` {.output}
+Sensor A within tolerance? true
+Sensor B within tolerance? false
+Sensor C within tolerance? false
+```
+
+Hint: try concatenating a logical and see what you get!
+:::
+::::
+
+<!-- TODO: the Lesson 2 PREP title mentions the MATLAB debugger, but there
+     was no debugger reading in the PREP. Add a section here if you'd like. -->
+
+::: {.checkpoint}
+{{< var checkpoints.errors >}} cover up through here.
+:::

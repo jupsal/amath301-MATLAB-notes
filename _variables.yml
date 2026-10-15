@@ -1,0 +1,33 @@
+# ---------------------------------------------------------------------------
+# Quarter-specific settings. Update this ONE file each quarter.
+# Use a value anywhere in the notes with {{< var name >}}, for example
+#   {{< var checkpoints.arrays >}}  or  [PREP]({{< var prep.lesson3 >}})
+# ---------------------------------------------------------------------------
+
+quarter: "Autumn 2026"
+
+# Short reminder shown at the top of every chapter.
+notes-reminder: "These notes are a reference to use **after** you complete the PREP and come to class. They are not a replacement for PREP and in-class exercises. They cover the same ideas in a slightly different format, so they won't match class exactly."
+
+# Links to the PREPs (TODO: replace each "#" with the real Ed link).
+prep:
+  all: "https://edstem.org/us/courses/100233/lessons/"
+  lesson1: "https://edstem.org/us/courses/100233/lessons/182412"     # Getting started with Ed and MATLAB
+  lesson2: "https://edstem.org/us/courses/100233/lessons/183968"     # MATLAB errors, round-off error, and MATLAB debugger
+  lesson34: "https://edstem.org/us/courses/100233/lessons/174498"     # Arrays: indexing and slicing
+  lesson5: "https://edstem.org/us/courses/100233/lessons/184653"    # Discretization and plotting
+  lesson6: "https://edstem.org/us/courses/100233/lessons/184662"     # For loops
+  lesson7: "https://edstem.org/us/courses/100233/lessons/174502"    # If statements and bisection
+  lesson8: "https://edstem.org/us/courses/100233/lessons/174508"    # Newton's method and functions
+  functions: "#"
+
+# Homework and quiz checkpoints: what is covered "up through here".
+# TODO: confirm numbers each quarter.
+# NOT CURRENTLY USED, could be used later. See AUTHORING.MD
+checkpoints:
+  HW1: "Coding Homework 1 and Practice Quiz 1"
+  HW2: "Coding Homework 2, Written Homework 1, and Practice Quiz 2"
+  HW3: "Homework 3"
+  Exam1: "Exam 1"
+  # control-flow: "Homework 4 and Quiz 4"
+  #$functions: "Homework 5 and Quiz 5"

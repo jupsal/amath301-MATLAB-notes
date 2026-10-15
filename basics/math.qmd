@@ -1,0 +1,233 @@
+# Math in MATLAB {#sec-math}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lesson 1 PREP: Getting started with Ed and MATLAB]({{< var prep.lesson1 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this chapter, you will learn to:
+
+- Run MATLAB code and correctly interpret the result, including distinguishing program output from system messages.
+- Use MATLAB as a calculator by translating mathematical expressions into code and vice versa.
+- Create and use variables to store values and structure reusable computations.
+:::
+
+## Arithmetic {#sec-arithmetic}
+
+::: {.motivation}
+We'll be doing a lot of math on the computer in this class. MATLAB can act just
+like a calculator, which will be the starting point for everything else we learn and build.
+:::
+
+| Operation | Math | MATLAB |
+|---|---|---|
+| Addition, subtraction | $a + b$, $a - b$ | `a + b`, `a - b` |
+| Multiplication | $a \times b$ | `a * b` |
+| Division | $a \div b$ | `a / b` |
+| Power | $a^b$ | `a ^ b` |
+
+: Arithmetic operators.
+
+MATLAB follows the usual order of operations (PEMDAS). Use parentheses to group terms, exactly as you would on a calculator; when in doubt, add parentheses. For example,
+$$25^2 - \frac{4 \times 6}{3 - 9}$$
+is
+
+```matlab
+25^2 - (4 * 6) / (3 - 9)
+```
+
+``` {.output}
+ans =
+
+   629
+```
+
+When a result isn't saved to a variable, MATLAB stores it in `ans` ("answer"). The output shows only the result, not the code that produced it.
+
+## Built-in functions and constants {#sec-functions-builtin}
+
+Most math functions are written (almost always) exactly as you'd expect:
+
+| Math | MATLAB |
+|---|---|
+| $\sqrt{x}$ | `sqrt(x)` |
+| $\lvert x \rvert$ | `abs(x)` |
+| $e^x$ | `exp(x)` |
+| $\ln(x)$ | `log(x)` |
+| $\sin(x)$, $\cos(x)$, $\tan(x)$ ($x$ in radians) | `sin(x)`, `cos(x)`, `tan(x)` |
+| $\pi$ | `pi` |
+
+: Common math functions and constants.
+
+```matlab
+cos(0)       % 1
+sin(pi/2)    % 1
+sqrt(4)      % 2
+log(1)       % 0
+```
+
+You don't need to memorize MATLAB's functions. Look them up in the [Elementary Math documentation](https://www.mathworks.com/help/matlab/elementary-math.html).
+
+::::: {.exercise}
+### Exercise: Practice using MATLAB as a calculator {#sec-ex-calculator}
+
+**Lesson files:** [Lesson_1_Intro_MATLAB.m (starter)](../files/Lesson_1_Intro_MATLAB.m) · [Lesson_1_Intro_MATLAB.m (completed)](../files/Lesson_1_Intro_MATLAB_Completed.m) (Exercise 1)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Use MATLAB as a calculator by translating mathematical expressions into code and vice versa.
+
+:::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+1. Save the value of $\sqrt{23}$ to the variable `A1`.
+2. Save the value of $\sqrt{\pi + \sqrt{23 + 2^2}}$ to the variable `A2`.
+3. Save the value of $|93 - e^5|$ to the variable `A3`.
+4. Save the value of $\tan(\pi/4)$ to the variable `A4`.
+
+You don't necessarily know all of these functions! Instead, you should use the [documentation](https://www.mathworks.com/help/matlab/elementary-math.html).
+
+::: {.callout-tip collapse="true" appearance="simple"}
+## Takeaways and common mistakes
+
+
+**Key takeaways**
+
+- Most math functions have the name you'd expect: `sqrt`, `abs`, `tan`.
+- The exponential $e^x$ is `exp(x)`, so $e^5$ is `exp(5)`.
+
+**Common mistakes**
+
+- Writing `e^5`. MATLAB has no built-in variable `e`, so this gives the error `Unrecognized function or variable 'e'`.
+- Unbalanced parentheses in nested expressions like `sqrt(pi + sqrt(23 + 2^2))`. Every `(` needs a matching `)`.
+:::
+::::
+:::::
+
+## Variables {#sec-variables}
+
+::: {.motivation}
+Say we're structural engineers working with a pipe of radius 3.04578 inches, and we need its cross-sectional area $A = \pi r^2$ and inner circumference $C = 2\pi r$. Typing `pi*3.04578^2` and `2*pi*3.04578` works, but it's unclear and inefficient: the number 3.04578 is written twice, and nothing says what each line or each output means. **Clarity** and **efficiency** are two design principles we focus on when coding.
+:::
+
+A **variable** is a name that stores a value so you can use it later. Assign a value with `=`:
+
+```matlab
+r = 3.04578;          % radius of the pipe (inches)
+area = pi*r^2;        % cross-sectional area
+circ = 2*pi*r;        % inner circumference
+```
+
+The value for $r$ is written only once. Calculations use the name `r` (holding
+the value) instead of the value itself. If we need to change the value for the
+radius, just change `r` on line `1` and all of the calculations change
+accordingly.
+
+Variable names start with a letter and can contain letters, digits, and underscores (`v0`, `t_flight`). They are case-sensitive: `R` and `r` are different variables. Some names are built in, like `pi`.
+
+**Hardcoding** is typing in a number you calculated yourself instead of letting MATLAB compute it from saved variables. Write `vol = 12*area`, not `vol = 12*29.14`. A hardcoded number doesn't update when the inputs change.
+
+::: {.callout-warning}
+## Avoid hardcoding!
+Avoiding hardcoding early will make finding and fixing bugs in your code easier!
+
+:::
+
+## Displaying output and comments {#sec-disp}
+
+::: {.motivation}
+Unlabeled output is hard to read, for other people and for your future self.
+Labeled output and comments fix that.
+:::
+
+`disp(x)` displays `x` in the Command Window.
+
+```matlab
+disp("We will calculate geometric quantities for a pipe.")
+```
+
+`+` joins text and numbers into one string. This is called **concatenation**. MATLAB converts the number to text.
+
+```matlab
+msg = "The cross-sectional area of the pipe is " + area;
+disp(msg)
+```
+
+``` {.output}
+The cross-sectional area of the pipe is 29.1439
+```
+
+::: {.callout-warning}
+## Common mistakes with text
+
+- Use double quotes for text you join with `+`. With single quotes, `'radius ' + r` adds `r` to the character codes and gives an array of numbers.
+- `disp` takes one input. `disp("The area is", area)` is an error; join the pieces into one string first.
+:::
+
+Anything after a `%` on a line is a **comment**. MATLAB ignores it; it's there
+for the person reading the code. A line starting with `%%` starts a new code
+section. You can comment a block of code as follows:
+
+```matlab
+%{
+Everything in here 
+is commented
+%}
+```
+
+::::: {.exercise}
+### Exercise: Engineering a pipe {#sec-ex-pipe}
+
+**Lesson files:** [Lesson_1_Intro_MATLAB.m (starter)](../files/Lesson_1_Intro_MATLAB.m) · [Lesson_1_Intro_MATLAB.m (completed)](../files/Lesson_1_Intro_MATLAB_Completed.m) (Exercise 2)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Create and use variables to store values and structure reusable computations.
+- Use `disp` and concatenation to produce readable output.
+- Recognize and avoid hardcoding: let MATLAB do the computation rather than pre-calculating values yourself.
+- Use comments to document code intent and isolate problems during debugging.
+
+:::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+Assume we are structural engineers working with a pipe of radius $r = 3.04578$ inches. We might need several mathematical quantities to work with this pipe:
+
+- Cross-sectional area: $A = \pi r^2$
+- Inner circumference: $C = 2\pi r$
+- Volume of water per foot of pipe: $V = 12A$, where $A$ is the cross-sectional area defined above.
+
+Create and save the following variables. Remember to use efficient code by using saved variables when possible. Remember to comment your code to make it readable for others.
+
+- `area`: the cross-sectional area of the pipe
+- `circ`: the circumference of the pipe
+- `vol`: the volume of water in 1 foot of the pipe
+
+We also want to practice displaying text in a helpful way to make it clear what our output is. Create and display the following variable:
+
+- `msg`: the string "The volume of water in 1 foot of pipe is \_\_\_", but
+replace "\_\_\_" with the volume calculated in the variable `vol`.
+
+::: {.callout-tip collapse="true" appearance="simple"}
+## Takeaways and common mistakes
+
+
+**Key takeaways**
+
+- Build each quantity from saved variables: `vol = 12*area;`
+- Join text and a number with `+`: `msg = "The volume of water in 1 foot of pipe is " + vol;`
+- Comment each step so the code explains itself.
+
+**Common mistakes**
+
+- Hardcoding, like `vol = 12*29.14;` instead of `vol = 12*area;`.
+- Using single quotes with `+`, which adds character codes instead of joining text.
+- Giving `disp` two inputs instead of one string.
+:::
+::::
+:::::
+
+::: {.checkpoint}
+{{< var checkpoints.HW1 >}} cover up through here.
+:::
