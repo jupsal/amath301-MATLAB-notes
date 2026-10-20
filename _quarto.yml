@@ -31,6 +31,7 @@ book:
         - basics/plotting.qmd
         - basics/control-flow.qmd
         - basics/functions.qmd
+        - basics/practice-loops-functions.qmd
 
     - part: "Numerical calculus (Exam 2)"
       chapters:

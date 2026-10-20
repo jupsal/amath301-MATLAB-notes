@@ -1,0 +1,1584 @@
+# Practice: loops, if statements, and functions {#sec-practice-loops-functions}
+
+Practice problems for @sec-control-flow and @sec-functions. Most ask you to
+predict what a piece of code does **without running it**.
+
+Problems are grouped by topic. Within each topic they go from Level 1 to Level
+3. Level 1 problems focus on one idea at a time; higher levels combine several
+ideas or include a common trap. 
+
+
+
+Each problem is collapsed. Open it, work it out on paper and check your answer.
+If you can't reach an answer, open the hint and keep trying. **Everyone gets
+stuck on some problems. That's okay.** Instead of getting too down on yourself
+or moving on hoping it won't be covered on an exam, read the hint and try again.
+If you can't get it, look at the solution and make sure it makes sense, then try
+the next one. If you are feeling confident in a particular topic, move up a
+level or move on to another section. 
+
+- **Predict:** give the values of the named variables after the code runs, or what it displays. If the code gives an error, say so and explain why.
+- **Find the error:** say what goes wrong and how to fix it.
+- **Write it:** write the code yourself, then compare with the answer.
+
+Assume each of the codes are a in a self-contained file without any other code present. 
+
+## For loops {#sec-practice-for-loops}
+
+### Level 1
+
+:::: {.callout-tip collapse="true"}
+## Practice A1 · Level 1 · Predict
+
+```matlab
+total = 0;
+for k = 1:4
+    total = total + k;
+end
+```
+
+What is `total`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Write down `total` after each pass through the loop.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`total = 10` (1 + 2 + 3 + 4).
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A2 · Level 1 · Predict
+
+```matlab
+for k = 1:3
+    disp(2*k)
+end
+```
+
+What is displayed?
+
+::: {.callout-note collapse="true"}
+## Hint
+What values does `k` take? What is displayed each time?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```{.output}
+2
+4
+6
+```
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A3 · Level 1 · Predict
+
+```matlab
+for k = 1:5
+    y = 2*k;
+end
+```
+
+What are `k` and `y` after the loop?
+
+::: {.callout-note collapse="true"}
+## Hint
+What is the last value assigned to `k`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`k = 5`, `y = 10`. The loop variable keeps its last value after the loop ends.
+
+**Common mistake:** thinking `k` is 6, or that `k` no longer exists.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A4 · Level 1 · Predict
+
+```matlab
+count = 0;
+for k = 0:3:10
+    count = count + 1;
+end
+```
+
+(a) What is `count`? (b) What is `k` after the loop?
+
+::: {.callout-note collapse="true"}
+## Hint
+List the values in `0:3:10`. Does the list include 10?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+(a) `count = 4` (k = 0, 3, 6, 9). (b) `k = 9`.
+
+**Common mistake:** thinking the range must hit 10 exactly, or that it overshoots to 12.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A5 · Level 1 · Predict
+
+```matlab
+x = [10 20 30 40 50];
+for j = x(2:4)
+    disp(j)
+end
+```
+
+What is displayed?
+
+::: {.callout-note collapse="true"}
+## Hint
+Write out the vector `x(2:4)` first. The loop runs once for each element of it.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```{.output}
+20
+30
+40
+```
+
+`x(2:4)` is `[20 30 40]`, and `j` takes each of those values in turn.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A6 · Level 1 · Predict
+
+```matlab
+y = zeros(1,5);
+for k = 1:5
+    y(k) = 10 - 2*k;
+end
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Compute `10 - 2*k` for each `k` and put it in position `k`.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y = [8 6 4 2 0]`
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A7 · Level 1 · Find the error
+
+```matlab
+v = [3 1 4 1 5];
+for k = 0:length(v)
+    disp(v(k))
+end
+```
+
+::: {.callout-note collapse="true"}
+## Hint
+What is the first value of `k`? Which element of `v` does line 3 ask for?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+Error on the first iteration: `v(0)` is invalid because MATLAB indexing starts at 1. Use `1:length(v)`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A8 · Level 1 · Write it
+
+Use a for loop to compute the sum of the odd numbers 1, 3, 5, …, 99.
+
+::: {.callout-note collapse="true"}
+## Hint
+What range gives 1, 3, 5, …, 99?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```matlab
+s = 0;
+for k = 1:2:99
+    s = s + k;
+end
+```
+`s = 2500`.
+:::
+::::
+
+### Level 2
+
+:::: {.callout-tip collapse="true"}
+## Practice A9 · Level 2 · Predict
+
+```matlab
+x = 7;
+for k = 5:1
+    x = x + k;
+end
+```
+
+What is `x`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Write out the values in `5:1`. How many are there?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`x = 7`. `5:1` is empty, so the loop body never runs.
+
+**Common mistake:** assuming MATLAB counts down automatically. Counting down needs a negative step: `5:-1:1`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A10 · Level 2 · Predict
+
+```matlab
+p = 1;
+for k = 2:5
+    p = p * k;
+end
+```
+
+What is `p`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Track `p` after each iteration.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`p = 120` (2·3·4·5 = 5!).
+
+**Common mistake:** starting `p` at 0, which makes the product 0 forever.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A11 · Level 2 · Predict
+
+```matlab
+vals = [4 -1 7 2];
+s = 0;
+for x = vals
+    s = s + x;
+end
+```
+
+What are `s` and `x` after the loop?
+
+::: {.callout-note collapse="true"}
+## Hint
+When you loop over a vector, what does `x` hold on each pass?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`s = 12`, `x = 2`. Looping over a vector sets `x` to each *element* in turn, not each index.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A12 · Level 2 · Predict
+
+```matlab
+x = [2 4 6 8 10 12];
+s = 0;
+for j = x(2:end-3)
+    s = s + j;
+end
+```
+
+What is `s`?
+
+::: {.callout-note collapse="true"}
+## Hint
+What number is `end` here? Use it to write out `x(2:end-3)`.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`s = 10`. `end` is 6, so `end-3` is 3 and `x(2:3)` is `[4 6]`. The slice drops the first element and the last three.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A13 · Level 2 · Predict
+
+```matlab
+v = [3 1 4 1 6];
+total = 0;
+for k = length(v)
+    total = total + v(k);
+end
+```
+
+What is `total`?
+
+::: {.callout-note collapse="true"}
+## Hint
+What does `length(v)` return? How many values does `k` take on line 3?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`total = 6`. `length(v)` is the single number 5, so the loop runs once with `k = 5`.
+
+**Common mistake:** this is a very common typo for `for k = 1:length(v)`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A14 · Level 2 · Predict
+
+```matlab
+y = zeros(1,4);
+for k = 1:4
+    y = y + k;
+end
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Line 3 has no index on `y`. What does adding a number to a whole vector do?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y = [10 10 10 10]`. Each pass adds `k` to *every* entry, so each entry ends up as 1 + 2 + 3 + 4.
+
+**Common mistake:** expecting `[1 2 3 4]`. That would need `y(k) = k`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A15 · Level 2 · Predict
+
+```matlab
+x = [1 2 3 4];
+y = zeros(1,4);
+for k = 1:4
+    y(k) = x(end-k+1);
+end
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+For `k = 1`, which index is `end-k+1`? What about `k = 2`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y = [4 3 2 1]`. `end-k+1` is 4, 3, 2, 1, so `y` is `x` reversed.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A16 · Level 2 · Predict
+
+```matlab
+x = [5 3 8 1];
+d = zeros(1, length(x)-1);
+for k = 1:length(x)-1
+    d(k) = x(k+1) - x(k);
+end
+```
+
+What is `d`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Each entry of `d` is the difference between two neighboring entries of `x`.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`d = [-2 5 -7]`. `d` has one fewer entry than `x`, and the loop stops at `length(x)-1` so `x(k+1)` stays in bounds.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A17 · Level 2 · Predict
+
+```matlab
+count = 0;
+for i = 1:3
+    for j = 1:4
+        count = count + 1;
+    end
+end
+```
+
+What is `count`?
+
+::: {.callout-note collapse="true"}
+## Hint
+How many times does the inner loop run for each value of `i`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`count = 12` (3 × 4).
+:::
+::::
+
+### Level 3
+
+:::: {.callout-tip collapse="true"}
+## Practice A18 · Level 3 · Predict
+
+```matlab
+total = 0;
+for i = 1:3
+    for j = i:3
+        total = total + 1;
+    end
+end
+```
+
+What is `total`?
+
+::: {.callout-note collapse="true"}
+## Hint
+For each value of `i`, list the values `j` takes.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`total = 6`. The inner loop runs 3, then 2, then 1 times.
+
+**Common mistake:** answering 9 by ignoring that the inner range depends on `i`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A19 · Level 3 · Predict
+
+```matlab
+% Version 1
+a = 1;  b = 1;
+for k = 1:3
+    c = a + b;
+    a = b;
+    b = c;
+end
+
+% Version 2
+a = 1;  b = 1;
+for k = 1:3
+    b = a + b;
+    a = b;
+end
+```
+
+What are `a` and `b` at the end of each version?
+
+::: {.callout-note collapse="true"}
+## Hint
+Make a table with a column for `k`, `a`, and `b` (and `c` in Version 1). Fill it in one line at a time.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+Version 1: `a = 3`, `b = 5` (`b` goes 2, 3, 5). Version 2: `a = 8`, `b = 8` (`b` goes 2, 4, 8).
+
+In Version 2, `a` gets the *new* `b`, so the two are always equal after each iteration. Version 1 uses the temporary variable `c` to avoid this. Order of updates matters.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A20 · Level 3 · Predict
+
+```matlab
+count = 0;
+for k = 1:5
+    k = k + 10;
+    count = count + 1;
+end
+```
+
+What are `count` and `k` after the loop?
+
+::: {.callout-note collapse="true"}
+## Hint
+Does changing `k` on line 3 change what `k` is at the start of the next iteration?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`count = 5`, `k = 15`. Changing `k` inside the loop does not change which iterations happen; at the start of each iteration MATLAB resets `k` to the next value in `1:5`. After the last iteration, `k` is 5 + 10.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice A21 · Level 3 · Predict
+
+```matlab
+y = zeros(1,6);
+for k = 1:3
+    y(k:end) = y(k:end) + 1;
+end
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+For each `k`, which positions does `y(k:end)` cover? Write out `y` after each iteration.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y = [1 2 3 3 3 3]`. Iteration 1 adds 1 to positions 1–6, iteration 2 to positions 2–6, and iteration 3 to positions 3–6.
+:::
+::::
+
+## For loops with if statements {#sec-practice-for-if}
+
+### Level 1
+
+:::: {.callout-tip collapse="true"}
+## Practice B1 · Level 1 · Predict
+
+```matlab
+for k = 1:5
+    if k > 3
+        disp('big')
+    else
+        disp('small')
+    end
+end
+```
+
+What is displayed?
+
+::: {.callout-note collapse="true"}
+## Hint
+Check `k = 3` carefully.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```{.output}
+small
+small
+small
+big
+big
+```
+
+**Common mistake:** displaying `big` for `k = 3`. `3 > 3` is false.
+:::
+::::
+
+### Level 2
+
+:::: {.callout-tip collapse="true"}
+## Practice B2 · Level 2 · Predict
+
+```matlab
+count = 0;
+for k = 1:10
+    if mod(k,3) == 0
+        count = count + 1;
+    end
+end
+```
+
+What is `count`?
+
+::: {.callout-note appearance="simple"}
+**Reminder:** `mod(a, b)` is the remainder when `a` is divided by `b`. For example, `mod(7, 3)` is 1 and `mod(6, 3)` is 0. So `mod(k, 3) == 0` is true when `k` is a multiple of 3.
+:::
+
+::: {.callout-note collapse="true"}
+## Hint
+Which values of `k` from 1 to 10 are multiples of 3?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`count = 3` (k = 3, 6, 9).
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B3 · Level 2 · Predict
+
+```matlab
+s = 0;
+for k = 1:6
+    if mod(k,2) == 0
+        s = s + k;
+    end
+end
+```
+
+What is `s`?
+
+::: {.callout-note appearance="simple"}
+**Reminder:** `mod(a, b)` is the remainder when `a` is divided by `b`. For example, `mod(5, 2)` is 1 and `mod(4, 2)` is 0. So `mod(k, 2) == 0` is true when `k` is even.
+:::
+
+::: {.callout-note collapse="true"}
+## Hint
+Which values of `k` get added to `s`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`s = 12` (2 + 4 + 6).
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B4 · Level 2 · Predict
+
+```matlab
+for x = [5 15 25]
+    if x > 10
+        disp('A')
+    elseif x > 20
+        disp('B')
+    else
+        disp('C')
+    end
+end
+```
+
+What is displayed?
+
+::: {.callout-note collapse="true"}
+## Hint
+For each `x`, check the conditions in order and stop at the first one that is true.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```{.output}
+C
+A
+A
+```
+
+For 25, the first true condition (`x > 10`) wins and the rest are skipped, so `B` is never displayed.
+
+**Common mistake:** expecting `B` for 25. In an `if`/`elseif` chain, order matters; check the most restrictive condition first.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B5 · Level 2 · Predict
+
+```matlab
+count = 0;
+for x = [5 15 25]
+    if x > 10
+        count = count + 1;
+    end
+    if x > 20
+        count = count + 10;
+    end
+end
+```
+
+What is `count`? Compare with B4.
+
+::: {.callout-note collapse="true"}
+## Hint
+How is this different from B4? Can both `if` statements run for the same `x`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`count = 12`. These are two *separate* `if` statements, so both can run for the same `x`. (5: +0, 15: +1, 25: +1 and +10.)
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B6 · Level 2 · Predict
+
+```matlab
+x = [3 -1 4 -1 5 -9 2];
+count = 0;
+for j = x(3:end)
+    if j < 0
+        count = count + 1;
+    end
+end
+```
+
+What is `count`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Write out `x(3:end)` first. Which of its entries are negative?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`count = 2`. `x(3:end)` is `[4 -1 5 -9 2]`, which has two negatives.
+
+**Common mistake:** answering 3 by counting the `-1` in position 2, which the slice skips.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B7 · Level 2 · Predict
+
+```matlab
+x = [7 2 9 4 6 1];
+y = zeros(size(x));
+for k = 1:length(x)
+    if x(k) > 5
+        y(k) = x(k);
+    end
+end
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+`y` starts as all zeros. Which positions get changed?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y = [7 0 9 0 6 0]`. Entries of `x` greater than 5 are copied; the rest of `y` stays 0.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B8 · Level 2 · Predict
+
+```matlab
+v = [3 -2 8 8 1];
+m = v(1);
+idx = 1;
+for k = 2:length(v)
+    if v(k) > m
+        m = v(k);
+        idx = k;
+    end
+end
+```
+
+(a) What are `m` and `idx`? (b) What changes if `>` on line 5 is replaced by `>=`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Track `m` and `idx` after each iteration. For (b), what happens when `k` reaches the second 8?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+(a) `m = 8`, `idx = 3`. (b) `m = 8`, `idx = 4`. With `>=`, the second 8 also counts as a "new max."
+
+**Common mistake:** starting `m = 0`. That breaks if every entry is negative; starting from `v(1)` always works.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B9 · Level 2 · Find the error
+
+```matlab
+for k = 1:5
+    if k = 3
+        disp('three')
+    end
+end
+```
+
+::: {.callout-note collapse="true"}
+## Hint
+What is the difference between `=` and `==`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`=` is assignment; comparison is `==`. MATLAB gives an error. Fix: `if k == 3`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B10 · Level 2 · Write it
+
+Given a vector `v`, use a for loop and an if statement to count how many entries are between 0 and 1 (inclusive).
+
+::: {.callout-note collapse="true"}
+## Hint
+An entry counts only if two conditions are both true. Use `&&` ("and") to combine them.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```matlab
+c = 0;
+for k = 1:length(v)
+    if v(k) >= 0 && v(k) <= 1
+        c = c + 1;
+    end
+end
+```
+
+**Common mistake:** writing `0 <= v(k) <= 1`. MATLAB evaluates `(0 <= v(k))` first, getting 0 or 1, and then checks whether that is `<= 1`, which is always true.
+:::
+::::
+
+### Level 3
+
+:::: {.callout-tip collapse="true"}
+## Practice B11 · Level 3 · Predict
+
+```matlab
+count = 0;
+for k = 1:20
+    if mod(k,2) == 0 && mod(k,3) == 0
+        count = count + 1;
+    end
+end
+```
+
+(a) What is `count`? (b) What is `count` if `&&` is replaced by `||`?
+
+::: {.callout-note appearance="simple"}
+**Reminder:** `mod(a, b)` is the remainder when `a` is divided by `b`. For example, `mod(7, 3)` is 1 and `mod(6, 3)` is 0. So `mod(k, 2) == 0` is true when `k` is even, and `mod(k, 3) == 0` is true when `k` is a multiple of 3.
+
+`A && B` ("and") is true only when both `A` and `B` are true. `A || B` ("or") is true when at least one of them is true.
+:::
+
+::: {.callout-note collapse="true"}
+## Hint
+List the even numbers from 1 to 20, and the multiples of 3. For (a), which numbers are in both lists? For (b), which are in at least one?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+(a) `count = 3` (6, 12, 18). (b) `count = 13` (the 10 even numbers, plus 3, 9, 15).
+
+**Common mistake:** in (b), counting 6, 12, and 18 twice.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B12 · Level 3 · Predict
+
+```matlab
+x = 6;
+for k = 1:6
+    if mod(x,2) == 0
+        x = x/2;
+    else
+        x = 3*x + 1;
+    end
+end
+```
+
+What is `x`?
+
+::: {.callout-note appearance="simple"}
+**Reminder:** `mod(a, b)` is the remainder when `a` is divided by `b`. For example, `mod(5, 2)` is 1 and `mod(4, 2)` is 0. So `mod(x, 2) == 0` is true when `x` is even.
+:::
+
+::: {.callout-note collapse="true"}
+## Hint
+Make a table of `k` and `x`. The condition on line 3 checks `x`, not `k`.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`x = 4` (6 → 3 → 10 → 5 → 16 → 8 → 4).
+
+**Common mistake:** checking whether `k` is even instead of `x`. The condition is on `x`, which changes each iteration.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B13 · Level 3 · Predict
+
+```matlab
+v = [1 3 2 5 4];
+count = 0;
+for k = 2:length(v)-1
+    if v(k) > v(k-1) && v(k) > v(k+1)
+        count = count + 1;
+    end
+end
+```
+
+What is `count`? What does this code count?
+
+::: {.callout-note appearance="simple"}
+**Reminder:** `A && B` ("and") is true only when both `A` and `B` are true.
+:::
+
+::: {.callout-note collapse="true"}
+## Hint
+`k` goes from 2 to 4. For each one, compare `v(k)` with the entries on either side of it.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`count = 2` (the 3 and the 5). It counts interior "peaks": entries larger than both neighbors. The range `2:length(v)-1` keeps `k-1` and `k+1` in bounds.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B14 · Level 3 · Predict
+
+```matlab
+x = 1:10;
+s = 0;
+for j = x(end-3:end)
+    if mod(j,2) == 1
+        s = s + j;
+    end
+end
+```
+
+What is `s`?
+
+::: {.callout-note appearance="simple"}
+**Reminder:** `mod(a, b)` is the remainder when `a` is divided by `b`. For example, `mod(7, 2)` is 1 and `mod(8, 2)` is 0. So `mod(j, 2) == 1` is true when `j` is odd.
+:::
+
+::: {.callout-note collapse="true"}
+## Hint
+What is `x(end-3:end)`? How many entries does it have? Which ones are odd?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`s = 16`. `x(end-3:end)` is `[7 8 9 10]` (the last four entries), and the odd ones are 7 and 9.
+
+**Common mistake:** thinking `x(end-3:end)` is the last *three* entries.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B15 · Level 3 · Predict
+
+```matlab
+x = 0;
+for k = 1:3
+    x = x + 0.1;
+end
+if x == 0.3
+    disp('equal')
+else
+    disp('not equal')
+end
+```
+
+What is displayed?
+
+::: {.callout-note collapse="true"}
+## Hint
+Can MATLAB store 0.1 exactly? Think back to round-off error.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```{.output}
+not equal
+```
+
+Because of round-off error, `x` is 0.30000000000000004. Compare decimals with a tolerance instead: `abs(x - 0.3) < 1e-10`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice B16 · Level 3 · Find the error
+
+```matlab
+x = 5;
+if x < 0
+    disp('negative')
+else if x == 0
+    disp('zero')
+else
+    disp('positive')
+end
+```
+
+::: {.callout-note collapse="true"}
+## Hint
+How many `if` statements does line 4 start? How many `end`s does that need?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`else if` (two words) starts a brand-new `if` inside the `else`, which needs its own `end`. The code errors because an `end` is missing. Fix: use `elseif` (one word).
+:::
+::::
+
+## Functions and anonymous functions {#sec-practice-functions}
+
+### Level 1
+
+:::: {.callout-tip collapse="true"}
+## Practice C1 · Level 1 · Predict
+
+```matlab
+f = @(x) 3*x + 1;
+y = f(2);
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Replace `x` with 2.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y = 7`
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice C2 · Level 1 · Predict
+
+```matlab
+function y = triple(x)
+    y = 3*x;
+end
+```
+
+What is `z` after `z = triple(4) + 1;`?
+
+::: {.callout-note collapse="true"}
+## Hint
+What does `triple(4)` return?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`z = 13`
+:::
+::::
+
+### Level 2
+
+:::: {.callout-tip collapse="true"}
+## Practice C3 · Level 2 · Predict
+
+```matlab
+g = @(a, b) a - 2*b;
+y1 = g(10, 3);
+y2 = g(3, 10);
+```
+
+What are `y1` and `y2`?
+
+::: {.callout-note collapse="true"}
+## Hint
+The first input becomes `a` and the second becomes `b`.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y1 = 4`, `y2 = -17`. Inputs are matched by position.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice C4 · Level 2 · Predict
+
+```matlab
+f = @(x) x.^2;
+g = @(x) x^2;
+y1 = f([1 2 3]);
+y2 = g([1 2 3]);
+```
+
+What are `y1` and `y2`?
+
+::: {.callout-note collapse="true"}
+## Hint
+What is the difference between `^` and `.^`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y1 = [1 4 9]`. `y2` is an error: `^` is matrix power, and a 1×3 vector isn't square. Use `.^` for element-wise powers.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice C5 · Level 2 · Predict
+
+```matlab
+f = @(x) x + 1;
+g = @(x) 2*x;
+h = @(x) f(x) - g(x);
+y1 = f(g(3));
+y2 = g(f(3));
+y3 = h(3);
+```
+
+What are `y1`, `y2`, `y3`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Work from the inside out.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y1 = 7`, `y2 = 8`, `y3 = -2`.
+
+**Common mistake:** evaluating from left to right. In `f(g(3))`, `g` is applied first.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice C6 · Level 2 · Predict
+
+```matlab
+function [s, p] = sumprod(a, b)
+    s = a + b;
+    p = a * b;
+end
+```
+
+(a) After `[u, v] = sumprod(3, 4);`, what are `u` and `v`? (b) After `w = sumprod(3, 4);`, what is `w`?
+
+::: {.callout-note collapse="true"}
+## Hint
+In (b), how many outputs does the call ask for?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+(a) `u = 7`, `v = 12`. (b) `w = 7`. With only one output requested, you get the first one.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice C7 · Level 2 · Predict
+
+```matlab
+x = 5;
+y = addx(2);
+
+function out = addx(z)
+    out = z + x;
+end
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Which variables can a function see?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+Error: `x` is undefined inside the function. Functions only see their inputs, not variables in the script's workspace. Fix: pass `x` in as a second input.
+:::
+::::
+
+### Level 3
+
+:::: {.callout-tip collapse="true"}
+## Practice C8 · Level 3 · Predict
+
+```matlab
+a = 2;
+f = @(x) a*x;
+a = 10;
+y = f(3);
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+When does `f` get the value of `a`: when it is defined on line 2, or when it is called on line 4?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`y = 6`. An anonymous function captures the value of `a` at the moment it is *defined*. Changing `a` later doesn't affect `f`; you would need to redefine `f`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice C9 · Level 3 · Predict
+
+```matlab
+y = sq(4);
+
+function out = sq(x)
+    result = x^2;
+end
+```
+
+What is `y`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Look at line 3. Which variable is the function's output? Is it ever assigned?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+Error: output argument `out` is never assigned. The function computes `result` but must assign `out`.
+:::
+::::
+
+## Functions with for loops and if statements {#sec-practice-functions-loops}
+
+### Level 2
+
+:::: {.callout-tip collapse="true"}
+## Practice D1 · Level 2 · Predict
+
+```matlab
+function s = sum_to(n)
+    s = 0;
+    for k = 1:n
+        s = s + k;
+    end
+end
+```
+
+What are `sum_to(5)` and `sum_to(0)`?
+
+::: {.callout-note collapse="true"}
+## Hint
+For `sum_to(0)`, what does `1:0` contain?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`15` and `0`. For n = 0, `1:0` is empty, so the loop never runs and `s` stays 0.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D2 · Level 2 · Predict
+
+```matlab
+function c = count_pos(v)
+    c = 0;
+    for k = 1:length(v)
+        if v(k) > 0
+            c = c + 1;
+        end
+    end
+end
+```
+
+What is `count_pos([2 -1 0 5 -3])`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Is 0 positive?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`2`. 0 is not `> 0`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D3 · Level 2 · Predict
+
+```matlab
+function y = piece(x)
+    if x < 0
+        y = 0;
+    elseif x <= 2
+        y = x^2;
+    else
+        y = 4;
+    end
+end
+```
+
+What are `piece(-1)`, `piece(1.5)`, `piece(2)`, `piece(5)`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Check the conditions in order. Which branch does `x = 2` fall into?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`0`, `2.25`, `4`, `4`.
+:::
+::::
+
+### Level 3
+
+:::: {.callout-tip collapse="true"}
+## Practice D4 · Level 3 · Predict
+
+Using `piece` from D3, what is `piece([-1 1 3])`?
+
+::: {.callout-note collapse="true"}
+## Hint
+What is `[-1 1 3] < 0`? When is an `if` condition that is a vector considered true?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`4` (a single number, not a vector). An `if` with a vector condition is true only if *every* element is true. `[-1 1 3] < 0` is `[1 0 0]` (false) and `[-1 1 3] <= 2` is `[1 1 0]` (false), so the `else` branch runs.
+
+To evaluate on a vector, loop over the entries and call `piece` on each one.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D5 · Level 3 · Predict
+
+```matlab
+function v = squares(n)
+    for k = 1:n
+        v = k^2;
+    end
+end
+```
+
+The goal was a vector of the first `n` squares. What does `squares(4)` actually return? How would you fix it?
+
+::: {.callout-note collapse="true"}
+## Hint
+What does `v` hold after each iteration? Is it ever more than one number?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`16`. `v` is overwritten each iteration. Fix: preallocate `v = zeros(1, n);` before the loop and assign `v(k) = k^2;`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D6 · Level 3 · Predict
+
+```matlab
+function s = bad_sum(v)
+    for k = 1:length(v)
+        s = 0;
+        s = s + v(k);
+    end
+end
+```
+
+What is `bad_sum([1 2 3])`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Where is `s` set to 0? How often does that line run?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`3`. `s` is reset to 0 at the start of every iteration, so only the last element survives. Initialize `s` before the loop.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D7 · Level 3 · Predict
+
+```matlab
+function s = sum_middle(x)
+    s = 0;
+    for j = x(2:end-1)
+        s = s + j;
+    end
+end
+```
+
+What are `sum_middle([5 1 2 3 9])` and `sum_middle([4 7])`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Write out `x(2:end-1)` for each input. For `[4 7]`, what is `2:end-1`?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`6` and `0`. For `[5 1 2 3 9]`, the slice is `[1 2 3]`. For `[4 7]`, `end-1` is 1, so the slice is `x(2:1)`, which is empty. The loop never runs and `s` stays 0.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D8 · Level 3 · Predict
+
+```matlab
+function y = running_sum(x)
+    y = zeros(size(x));
+    y(1) = x(1);
+    for k = 2:length(x)
+        y(k) = y(k-1) + x(k);
+    end
+end
+```
+
+What are `running_sum([1 2 3 4])` and `running_sum([5 -5 5])`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Each `y(k)` uses the previous entry `y(k-1)`. Fill in `y` from left to right.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`[1 3 6 10]` and `[5 0 5]`. Each entry is the sum of `x` up to that position.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D9 · Level 3 · Predict
+
+```matlab
+function y = f1(x)
+    y = 0;
+    for k = 1:x
+        y = y + f2(k);
+    end
+end
+
+function z = f2(k)
+    if mod(k,2) == 0
+        z = k;
+    else
+        z = -k;
+    end
+end
+```
+
+What are `f1(4)` and `f1(5)`?
+
+::: {.callout-note appearance="simple"}
+**Reminder:** `mod(a, b)` is the remainder when `a` is divided by `b`. For example, `mod(5, 2)` is 1 and `mod(4, 2)` is 0. So `mod(k, 2) == 0` is true when `k` is even.
+:::
+
+::: {.callout-note collapse="true"}
+## Hint
+First work out what `f2` returns for an odd `k` and for an even `k`.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+`f1(4) = 2` (−1 + 2 − 3 + 4) and `f1(5) = -3`.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D10 · Level 3 · Predict
+
+```matlab
+function [m, idx] = find_min(v)
+    m = v(1);
+    idx = 1;
+    for k = 2:length(v)
+        if v(k) < m
+            m = v(k);
+            idx = k;
+        end
+    end
+end
+```
+
+(a) After `[a, b] = find_min([4 2 7 2 9]);`, what are `a` and `b`? (b) What does `[a, b] = find_min(5)` give?
+
+::: {.callout-note collapse="true"}
+## Hint
+For (a), does the second 2 replace the first? For (b), what does `2:1` contain?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+(a) `a = 2`, `b = 2` (the first 2, because `<` is strict). (b) `a = 5`, `b = 1`; the loop `2:1` is empty.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D11 · Level 3 · Predict
+
+```matlab
+function show(n)
+    for k = 1:n
+        disp(k)
+    end
+end
+```
+
+(a) What does `show(3)` display? (b) What happens with `y = show(3);`?
+
+::: {.callout-note collapse="true"}
+## Hint
+Look at line 1. Does `show` have an output variable?
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+(a)
+```{.output}
+1
+2
+3
+```
+
+(b) Error: too many output arguments. `show` displays values but has no output variable, so there is nothing to assign to `y`.
+
+**Common mistake:** confusing *displaying* a value with *returning* it.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice D12 · Level 3 · Write it
+
+Write a function `c = clip(v, lo, hi)` that uses a for loop and if statements to replace every entry of `v` below `lo` with `lo` and every entry above `hi` with `hi`. Test: `clip([-5 0.5 3], 0, 1)` should return `[0 0.5 1]`.
+
+::: {.callout-note collapse="true"}
+## Hint
+Start with `c = v;` so entries that are already in range stay the same. Then loop over the entries and use `if`/`elseif` to fix the ones that are too small or too large.
+:::
+
+::: {.callout-caution collapse="true"}
+## Answer
+```matlab
+function c = clip(v, lo, hi)
+    c = v;
+    for k = 1:length(v)
+        if v(k) < lo
+            c(k) = lo;
+        elseif v(k) > hi
+            c(k) = hi;
+        end
+    end
+end
+```
+:::
+::::
