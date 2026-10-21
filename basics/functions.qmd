@@ -524,7 +524,9 @@ Both find the root $x \approx 0.8241$. Changing the problem means changing the i
 A black box still needs good inputs (@sec-bisection-vs-newton).
 :::
 
-<!-- TODO: add the Lesson 9 in-class exercise here (bisection and newton as functions). -->
+### The bisection method as a function
+We will create a function for the bisection method in class. You will create a
+function for Newton's method on Homework 4. 
 
 ::: {.checkpoint}
 {{< var checkpoints.Exam1 >}} covers up through here.
