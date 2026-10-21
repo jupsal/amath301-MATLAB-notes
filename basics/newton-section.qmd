@@ -1,0 +1,204 @@
+<!--
+Paste into control-flow.qmd. Replace these two pieces near the end of the file:
+
+    Later, in @sec-root-finding-function, we'll rewrite this algorithm as a function.
+
+    ### Newton's Method {#sec-newton}
+
+with everything below this comment. Leave the checkpoint after it.
+
+Also replace the last learning objective at the top of the chapter,
+"Implement the bisection method with appropriate tolerance checks.", with:
+
+- Implement the bisection method and Newton's method with appropriate tolerance checks.
+- Compare the bisection method and Newton's method, including their convergence properties and limitations.
+- Implement an iterative algorithm using a loop with a convergence criterion.
+
+Delete this comment after pasting.
+-->
+
+### Newton's method {#sec-newton}
+
+::: {.motivation}
+The bisection method always converges, but it's slow: it took 42 iterations to find the root of $2x + \cos(x)$ to within $10^{-12}$. Bisection is slow because every guess, $x^* = (a + b)/2$, is an uninformed guess: it does not take into account the value of $f$. Newton's method uses the slope $f'(x)$ to make a better guess, and finds the same root in 5 iterations.
+:::
+
+**The idea.** Near a point, a function looks like its tangent line. That's the linear approximation from Calculus I. So instead of finding where $f(x) = 0$, which is hard, find where the tangent line is 0, which is easy. That's the next guess. Repeat.
+
+1. Start with a guess for the root, $x_0$.
+2. Draw the tangent line to $f$ at the current guess $x_n$.
+3. The tangent line's $x$-intercept is the next guess, $x_{n+1}$.
+4. Repeat until $x_{n+1}$ is close enough to the root.
+
+#### Deriving the Newton formula
+
+The tangent line to $f$ at $x = x_n$ passes through the point $(x_n, f(x_n))$ with slope $f'(x_n)$. In point-slope form, it is
+$$T(x) = f(x_n) + f'(x_n)(x - x_n).$$
+Near $x_n$, $f(x) \approx T(x)$. Set $T(x) = 0$ and solve for $x$:
+$$
+\begin{aligned}
+f(x_n) + f'(x_n)(x - x_n) &= 0 \\
+f'(x_n)(x - x_n) &= -f(x_n) \\
+x - x_n &= -\frac{f(x_n)}{f'(x_n)} \\
+x &= x_n - \frac{f(x_n)}{f'(x_n)}.
+\end{aligned}
+$$
+This $x$ is the next guess. The **Newton formula** is
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.$$
+
+Dividing by $f'(x_n)$ requires $f'(x_n) \neq 0$. If $f'(x_n) = 0$, the tangent line is horizontal and never crosses the $x$-axis, so there is no next guess.
+
+Compared with bisection, Newton's method needs different information:
+
+| | Bisection | Newton's method |
+|:---|:---|:---|
+| The function | $f(x)$ | $f(x)$ |
+| Also needs | An interval $[a, b]$ where $f$ changes sign | The derivative $f'(x)$ (calculated by hand) and a starting guess $x_0$ |
+
+: What each root-finding method needs.
+
+#### One iteration, step by step
+
+::: {.callout-note collapse="true"}
+## Animation: Newton's method
+
+![Newton's method on $f(x) = 2x + \cos(x)$, starting from $x_0 = 0.5$.](../figures/newton_animation.gif){fig-alt="Animation of Newton's method on f(x) = 2x + cos(x), starting from the guess x0 = 0.5. In each iteration, the current guess is marked on the curve, the tangent line at that point is drawn as a dashed orange line, and the tangent line's x-intercept becomes the next guess. The guesses are 0.5, -0.7348, -0.4623, and -0.4502, landing on the root, marked with a star near x = -0.45, after 3 iterations."}
+
+The animation stops after 3 iterations, when the guess is already correct to 4 decimal places. Close this box to stop the animation.
+:::
+
+Each iteration has three steps. The tabs below show them for the first iteration, starting from $x_0 = 0.5$.
+
+::: {.panel-tabset}
+#### Step 1: Current guess
+
+![Evaluate $f$ at the current guess.](../figures/newton_step1.png){fig-alt="Step 1 of the first iteration of Newton's method for f(x) = 2x + cos(x). A blue dot marks the current guess x0 = 0.5 on the curve, where f(x0) is about 1.88. A star marks the root, near x = -0.45."}
+
+The current guess is $x_0 = 0.5$, and $f(0.5) \approx 1.88$. That's not close to 0, so we need a better guess.
+
+#### Step 2: Tangent line
+
+![Draw the tangent line at the current guess.](../figures/newton_step2.png){fig-alt="Step 2 of the first iteration. A dashed orange tangent line touches the curve at the current guess x0 = 0.5. Near that point, the tangent line and the curve are almost the same."}
+
+The slope is $f'(0.5) = 2 - \sin(0.5) \approx 1.52$. The tangent line is $T(x) = 1.88 + 1.52(x - 0.5)$.
+
+#### Step 3: Next guess
+
+![The tangent line's $x$-intercept is the next guess.](../figures/newton_step3.png){fig-alt="Step 3 of the first iteration. A red dot marks where the dashed tangent line crosses the x-axis, at x1 = -0.7348. This is the next guess, and it is much closer to the root, marked with a star near x = -0.45, than x0 = 0.5 was."}
+
+The tangent line crosses zero at
+$$x_1 = 0.5 - \frac{1.88}{1.52} \approx -0.7348.$$
+That's the next guess.
+:::
+
+The next iteration repeats the three steps from $x_1 = -0.7348$:
+
+| Guess $x_n$ | $f(x_n)$ | $f'(x_n)$ | Next guess $x_{n+1}$ |
+|:---|:---|:---|:---|
+| $0.5$ | $1.88$ | $1.52$ | $-0.7348$ |
+| $-0.7348$ | $-0.728$ | $2.67$ | $-0.4623$ |
+| $-0.4623$ | $-0.0296$ | $2.45$ | $-0.45021$ |
+| $-0.45021$ | $-0.0000658$ | $2.44$ | $-0.4501836114$ |
+
+: The first four iterations of Newton's method for $f(x) = 2x + \cos(x)$, starting from $x_0 = 0.5$. {#tbl-newton}
+
+The root is $-0.45018361129\ldots$. Once the guess is close, each iteration roughly doubles the number of correct digits: the guesses above are correct to 0, 1, 4, and 9 decimal places.
+
+#### Pseudocode
+
+```text
+Algorithm: Newton's method
+
+Inputs:
+    - f: a function, f(x)
+    - fp: the derivative of the function, f'(x)
+    - xstar: an initial guess for the root
+    - tol: a tolerance, used to determine if we are "close enough" to a root
+    - max_iter: a maximum number of iterations
+Outputs:
+    - A root of f(x)
+    - A message displaying the result
+
+Steps:
+ITERATE, doing the following for each iteration:
+    a. Check: is the current guess, xstar, close enough to a root? IF it is:
+        - Save the root
+        - Display the root and the number of iterations it took
+        - Stop the iterations
+    b. If not, calculate the next guess using the Newton formula,
+       x_{n+1} = x_n - f(x_n) / f'(x_n).
+    c. Check: have we reached the maximum number of iterations?
+       IF so, display a warning: the algorithm did not converge.
+```
+
+The structure is the same as bisection (@sec-bisection): a for loop for ITERATE, an if statement for each check, and `break` to stop. Only the way the next guess is calculated changes.
+
+### Bisection or Newton? {#sec-bisection-vs-newton}
+
+| | Bisection | Newton's method |
+|:---|:---|:---|
+| Speed | Slow: the interval is cut in half each iteration. 42 iterations for $2x + \cos(x)$. | Fast once the guess is close to the root. 5 iterations for $2x + \cos(x)$. |
+| Guaranteed to converge? | **Yes**, if $f$ is continuous and $f(a)$, $f(b)$ have opposite signs (IVT). | **No.** |
+| Fails when | $f(a)$ and $f(b)$ have the same sign. | $f'(x_n) = 0$ for some guess (division by 0), or the starting guess is too far from the root. |
+| Needs | $f$ and $[a, b]$ | $f$, $f'$, and $x_0$ |
+
+: Comparing the bisection method and Newton's method.
+
+Newton's method is faster, but bisection always converges. Neither one is "better": the right choice depends on the problem. MATLAB's built-in root finder, `fzero`, combines bisection with faster methods to get some of both.
+
+::::: {.exercise}
+### Exercise: Implementing Newton's method {#sec-ex-newton}
+
+**Lesson files:** [Lesson_8_Newtons.m (starter)](../files/Lesson_8_Newtons.m) · [Lesson_8_Newtons.m (completed)](../files/Lesson_8_Newtons_Completed.m)
+
+**Learning outcomes.** This exercise should help you to:
+
+- Write a for loop.
+- Implement if/elseif/else statements to control the flow of a program.
+- Translate a pseudocode algorithm into working code.
+- Solve equations by converting them to root-finding problems and using a root-finding algorithm.
+- Implement the bisection method and Newton's method with appropriate tolerance checks.
+
+:::: {.callout-note collapse="true" appearance="simple"}
+## Full exercise
+
+Implement the Newton's method pseudocode above for $f(x) = 2x + \cos(x)$, with an initial guess $x_0 = 0$, a tolerance of $10^{-12}$, and at most 100 iterations.
+
+- **Task 1:** Create a function for $f(x)$. Call it `f`. The starter sets up a MATLAB function (@sec-writing-functions); an anonymous function (@sec-anonymous-functions) also works.
+- **Task 2:** Create a function for $f'(x)$. You'll need to calculate the derivative by hand. Call this function `fp`.
+- **Task 3:** Set up the iteration using `max_iter`.
+- **Task 4:** Check to see if `xstar` is a root, or close enough.
+- **Task 5:** If `xstar` is not a root, use the Newton formula to update `xstar`:
+  $$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.$$
+
+With these parameters, the code should display:
+
+``` {.output}
+Root found at x =-0.45018 in 5 iterations
+```
+
+**If you finish early:**
+
+- How can you make this algorithm more robust? Are we doing enough iterations? Maybe not. Look into `while`.
+- What happens if $f'(x^*) = 0$ for some guess `xstar`?
+- Put this into a function (@sec-root-finding-function). There will be a section in MATLAB Grader testing a function `newton` that you create.
+
+::: {.callout-tip collapse="true" appearance="simple"}
+## Takeaways and common mistakes
+
+**Key takeaways**
+
+- The completed file creates the function and its derivative with anonymous functions, `f = @(x) 2*x + cos(x);` and `fp = @(x) 2 - sin(x);`. A MATLAB function, `function y = f(x)`, works too: the rest of the code calls `f(xstar)` the same way.
+- The loop is the same as bisection: `for j = 1:max_iter`, the check `abs(f(xstar)) < tol`, then `break`.
+- The whole update is one line: `xstar = xstar - f(xstar)/fp(xstar);`.
+
+**Common mistakes**
+
+- A wrong derivative. The derivative of $\cos(x)$ is $-\sin(x)$. With `fp = @(x) 2 + sin(x)`, the code still finds the root, but takes 46 iterations instead of 5. A wrong derivative doesn't cause an error, so check the number of iterations.
+- Writing the update as `xnew = xstar - f(xstar)/fp(xstar);` but never changing `xstar`. Every iteration then computes the same `xnew`.
+- Forgetting `break`. As with bisection, the message prints again in every remaining iteration.
+:::
+::::
+:::::
+
+In @sec-root-finding-function, we'll rewrite both algorithms as functions.

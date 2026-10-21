@@ -25,8 +25,10 @@ Find what we covered in each class meeting ({{< var quarter >}}). Each row links
 | 5 | Oct 9 | Discretization and plotting | [Discretization and plotting](basics/plotting.qmd) | [Plotting_Exercise.m](files/Plotting_Exercise.m) ([completed](files/Plotting_Exercise_Completed.m)) |
 | Topics covered for Coding Homework 3 (no practice quiz)| | | | |
 | 6 | Oct 13 | For loops | [For loops](basics/control-flow.qmd#sec-for-loops) | [Lesson_6_for_loops.m](files/Lesson_6_for_loops.m) |
-| 7 & 8 | Oct 14, Oct 15 | If statements & Root-finding algorithms|  | |
-| 8, 9, & 10 | Oct 15, Oct 16, Oct 20 | MATLAB functions|  | |
+| 7 | Oct 14 | If statements & The Quadratic Formula| [If statements](basics/control-flow.qmd#sec-if-statements) and [Putting it together: root finding](basics/control-flow.qmd#sec-root-finding)  | [Lesson_7_Quadratic.m](files/Lesson_7_Quadratic.m) ([completed](files/Lesson_7_Quadratic_Completed.m)) |
+| 8 | Oct 16 | Root-finding algorithms: the Bisection Method| [Putting it together: root finding](basics/control-flow.qmd#sec-root-finding) and [Functions](basics/functions.qmd#sec-functions) | [Lesson_7_Bisection.m](files/Lesson_7_Bisection.m) ([completed](files/Lesson_7_Bisection_Completed.m)) |
+| 9 | Oct 20 | Root-finding algorithms: Newton's Method| [Putting it together: root finding](basics/control-flow.qmd#sec-root-finding)  | [Lesson_8_Newtons.m](files/Lesson_7_Newtons.m) ([completed](files/Lesson_7_Newtons_Completed.m)) |
+| 10 | Oct 21 | More with functions| [Root finding, revisited](basics/functions.html#sec-root-finding-function)  | |
 | [Exam 1 (Mon Oct 26): Lessons 1–10]{.exam} | | | | |
 
 : Class meetings, the topics covered, and links to the notes and files. {tbl-colwidths="[7,10,20,40,23]"}

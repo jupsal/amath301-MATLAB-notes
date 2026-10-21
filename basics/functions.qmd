@@ -1,16 +1,530 @@
 # Functions {#sec-functions}
 
 ::: {.prep-reminder}
-{{< var notes-reminder >}} The PREP for this topic: [PREP: Functions]({{< var prep.functions >}}).
+{{< var notes-reminder >}} The PREPs for this topic: [Lesson 8 PREP: Newton's method and MATLAB functions]({{< var prep.lesson8 >}}) and [Lesson 9 PREP: More with functions; anonymous functions]({{< var prep.lesson9 >}}).
 :::
 
-<!-- TODO: write this chapter. Pull from the PREP reading. -->
+::: {.callout-note appearance="simple"}
+## Learning objectives
 
-## Writing your own functions {#sec-writing-functions}
+Throughout this chapter, you will learn to:
+
+- Recognize how MATLAB functions create black-box algorithms.
+- Create and call MATLAB functions.
+- Recognize script variables and local variables in code, and predict how they behave inside and outside a function.
+- Create and use anonymous functions using `@`. In particular, use anonymous functions to create function handles.
+:::
+
+## Why functions? {#sec-why-functions}
+
+::: {.motivation}
+We have now learned two root-finding algorithms: bisection and Newton's method. So far, every time we want to find a root, we copy our code and edit it by hand to change the function, the starting values, and the tolerance. This is tedious and makes mistakes easy. It also makes our code hard to share with others.
+:::
+
+We would like to package our algorithms so they can be used over and over without editing them or knowing how they work. In other words, we would like to find a root of $f(x) = x^2 - \cos(x)$ by writing only something like
+
+```text
+root = bisection(x^2 - cos(x), 0, 3)               % a = 0, b = 3
+root = newton(x^2 - cos(x), 2x + sin(x), 1)        % f'(x) = 2x + sin(x), x0 = 1
+```
+
+This isn't valid MATLAB yet; @sec-root-finding-function shows the real version.
+
+Packaging an algorithm this way turns it into a **black box**.  A black box is a
+tool whose inputs and outputs we know, but whose inner workings we don’t need to
+know. Packaging an algorithm as a function turns it into a black box. We’ve been
+using black boxes in MATLAB all along:
+
+- `linspace` creates linearly spaced points, but we don't know how does it divides up the interval efficiently.
+- `sqrt` calculates the square root of a number, but how do you even do that? What is the algorithm?
+- `sin`, `cos`, etc. are all tools we use, but we don't really know how they are calculated (Hint: Taylor Series!).
+
+None of these require us to understand the internals. We only need to know what to put in and what we expect back. This lets us focus on solving our problem instead of re-solving one someone else has already solved.
+
+::: {.callout-note}
+## Getting comfortable with black boxes
+
+Some students struggle with black-box algorithms; they want to understand how everything works. Unfortunately, this will never be the case. Algorithms are being created at a faster rate than you (or anyone) can learn. Instead, recognize that you've been using black-box algorithms your whole life, including those above. Gaining comfort with this is a learning goal for some of you!
+:::
+
+We create black-box algorithms using **functions**. Functions are often the hardest thing for students to learn and get comfortable with in this class, so we start with a simple example.
+
+## Writing a function {#sec-writing-functions}
+
+We'll write a function that implements this pseudocode:
+
+```text
+Algorithm: Take an input, do some mathematical calculations, then output the result
+
+Inputs:  x = a single number
+Outputs: y = a single number
+
+Steps:
+1. Square x
+2. Add 3
+3. Create a new number y, containing the result of the operations above.
+4. Output the variable y
+```
+
+This is a complicated way to say $y = f(x) = x^2 + 3$. To test it, we know $f(2)$ should be 7.
+
+```matlab
+function y = f(x)   % a function named f, with input x and output y
+    y = x^2 + 3;    % steps 1-3 all together
+end
+
+disp(f(2))          % check the function
+```
+
+``` {.output}
+     7
+```
+
+Piece by piece:
+
+- **`function` ... `end`.** Like `if` ... `end`, the keyword `function` tells MATLAB we are starting a specific structure: our own function. `end` tells MATLAB where it ends.
+- **`y =`** says the output of the function is `y`. Whatever value `y` has when the function reaches `end` is the output.
+- **`f`** is the name of the function. We use it like other functions we've seen: compare `disp(2)` to `f(2)`. Both take 2, do something with it, and output something.
+- **`(x)`** lists the inputs. Here there is one input, `x`, and we can use it freely inside the function. For more inputs, separate them with commas: `function out = example(x, y, z)`.
+
+In general:
+
+```matlab
+function output = function_name(inputs)
+    % do stuff
+end
+
+result = function_name(inputs_here)    % call (use) the function
+```
+
+::: {.callout-important}
+## `x` is a placeholder
+
+This is one of the most common points of confusion with functions. `x` is not defined anywhere before the function, and that's fine. This is different from regular code, where using `x` before it is defined is an error.
+
+We also don't need a variable called `x` when we call the function. `f(2)`, `f(a)`, and `f(t(3))` all work. The `x` in the definition is a placeholder meaning "anything you put here, I will use like you told me to use `x`."
+:::
+
+::: {.callout-warning}
+## Displaying is not outputting
+
+`disp` inside a function shows a result on the screen, but doesn't output it to a variable you can use. Only the output variable (`y` above) comes back from the function.
+:::
+
+::: {.callout-note collapse="true"}
+## Where do functions go in a script?
+
+Since MATLAB R2024a, a function can go anywhere in a script, even after the code that uses it:
+
+```matlab
+disp(f(2))          % call f(2) before defining it: this works
+
+function y = f(x)
+    y = x^2;
+end
+```
+
+In older versions of MATLAB, functions had to be at the end of the script. 
+:::
+
+:::: {.callout-tip collapse="true"}
+## Practice: the area of a circle
+
+An applied mathematician needs to calculate the area of a circle at five different places in their program. Write a function `calculate_circle_area` that takes the radius as an input and outputs the area. Check that `calculate_circle_area(2)` gives about 12.566.
+
+::: {.callout-caution collapse="true"}
+## Answer
+
+```matlab
+function area = calculate_circle_area(radius)
+    area = pi*radius^2;
+end
+
+disp(calculate_circle_area(2))      % 12.5664
+```
+
+Calling one function at all five places is better than writing `pi*radius^2` five times: if the formula needs to change, you change it once.
+:::
+::::
+
+## Variable scope {#sec-scope}
+
+Variable scope is one of the most common points of confusion with functions, and it takes practice to get comfortable with.
+
+- **Script variables** are variables defined in your script. They are the variables that appear in your Workspace.
+- **Local variables** exist only inside a function: its inputs, its outputs, and anything created inside it. Each function has its own separate workspace.
+
+In general, **a function can only see what you give it**. Script variables can't be used inside a function unless you pass them in as inputs. A function's local variables can't be used in your script; only the outputs come back. Which variables are visible where is called **variable scope**.
+
+::: {.callout-note appearance="simple"}
+This is significantly different from Python, for those who have some experience there!
+:::
+
+**Can a function see my script's variables?** No.
+
+```matlab
+a = -1;
+
+function y = f(x)
+    y = a*x^2;
+end
+
+disp(f(2))
+```
+
+``` {.output}
+Unrecognized function or variable 'a'.
+```
+
+The `a` defined on line 1 can't be used inside the function.
+
+**How do we get a script value into a function?** Pass it in as an input.
+
+```matlab
+a = -1;
+
+function y = f(x, c)
+    y = c*x^2;
+end
+
+disp(f(2, a))
+```
+
+``` {.output}
+    -4
+```
+
+`a` in the script and `c` in the function don't need to have the same name. All that matters is the **position** of the inputs: 2 goes where `x` is because it's the first input, and `a` replaces `c` because it's the second.
+
+**Can my script see the function's variables?** No.
+
+```matlab
+function y = f(x)
+    y = x^2;
+end
+
+result = f(2)
+y               % try to display y
+```
+
+``` {.output}
+result =
+
+     4
+
+Unrecognized function or variable 'y'.
+```
+
+Even though the function says `y = ...`, that `y` is *local* to `f`. To use the value, use `result`: `result` *is* the `y` value.
+
+**What if the script and function use the same name?** It's a good idea to avoid re-using variable names, but sometimes it happens, especially with `x`.
+
+```matlab
+disp("Before doing anything, we define x.")
+x = 4
+
+function y = f(x)
+    disp("Inside f:")
+    x
+    x = 100;
+    disp("Inside f, after changing x:")
+    x
+    y = 0;
+end
+
+y = f(2);
+disp("After calling the function:")
+x
+```
+
+``` {.output}
+Before doing anything, we define x.
+x =
+
+     4
+
+Inside f:
+x =
+
+     2
+
+Inside f, after changing x:
+x =
+
+   100
+
+After calling the function:
+x =
+
+     4
+```
+
+There are two separate variables called `x`. Inside `f`, `x` is the input, 2, and changing it to 100 only changes the local `x`. The script's `x` is still 4.
+
+:::: {.callout-tip collapse="true"}
+## Practice: predict the output
+
+1. What is the output of this code?
+
+   ```matlab
+   g = 9.81;
+   v0 = 20;
+
+   function h = height(t, v0)
+       h = v0*t - 0.5*g*t^2;
+   end
+
+   disp(height(1, v0))
+   ```
+
+2. Which $x$ values does this plot use?
+
+   ```matlab
+   x = linspace(0, 1, 5);
+
+   function y = f(x)
+       x = linspace(-1, 0, 5);
+       y = x + 1;
+   end
+
+   y = f(x);
+   plot(x, y)
+   ```
+
+::: {.callout-caution collapse="true"}
+## Answers
+
+1. An error: `g` is not defined inside `height`. `v0` is fine because it is passed in as an input.
+2. `[0, 0.25, 0.5, 0.75, 1]`. The `x` inside `f` is local, so changing it doesn't change the script's `x`.
+:::
+::::
+
+## Functions with multiple outputs {#sec-multiple-outputs}
+
+Functions can have more than one output. List the outputs in square brackets in the definition, and use square brackets when you call the function.
+
+For example, converting polar coordinates $(r, \theta)$ to Cartesian coordinates $(x, y)$ uses
+$$x = r\cos(\theta) \qquad \text{and} \qquad y = r\sin(\theta).$$
+
+```matlab
+function [x, y] = polarToCart(r, theta)
+    x = r*cos(theta);
+    y = r*sin(theta);
+end
+
+[x, y] = polarToCart(2, pi)
+```
+
+``` {.output}
+x =
+
+    -2
+
+y =
+
+   2.4493e-16
+```
+
+$y$ should be exactly 0; the tiny value is round-off error (@sec-round-off).
+
+::: {.callout-warning}
+## Outputs are matched by position, not name
+
+`[y, x] = polarToCart(2, pi)` saves the *first* output in `y` and the second in `x`, so they are swapped. MATLAB doesn't care what the names were inside the function, because those are local variables. All that matters is the order.
+
+If you ask for fewer outputs, you get the first ones. `x = polarToCart(2, pi)` saves only the first output.
+:::
+
+:::: {.callout-tip collapse="true"}
+## Practice: asking for fewer outputs
+
+What is the result of running this code?
+
+```matlab
+function [s, d, p] = combine(a, b)
+    s = a + b;
+    d = a - b;
+    p = a*b;
+end
+
+[X, Y] = combine(5, 3);
+```
+
+::: {.callout-caution collapse="true"}
+## Answer
+
+Two variables: `X = 8` and `Y = 2`. Asking for two outputs gives the first two, `s` and `d`. The third output, `p`, is not saved.
+:::
+::::
+
+## Anonymous functions {#sec-anonymous-functions}
+
+::: {.motivation}
+We can define the mathematical function $f(x) = 2x + \cos(x)$ with a MATLAB function:
+
+```matlab
+function y = f(x)
+    y = 2*x + cos(x);
+end
+```
+
+This has two downsides. It takes 3 lines for a simple function. More importantly, **we can't use `f` as a variable**, so we can't give `f` to another function, like a bisection function, as an input.
+:::
+
+Here's a simple function whose input is another function. It evaluates that function at $x = 2$ and displays the result:
+
+```matlab
+function disp_f_2(fun)
+    disp(fun(2))        % evaluate fun(2) and display it
+end
+```
+::: {.callout-note}
+## Creating a function with no output. 
+
+The function above has no output because there is no `function output = ...`. If
+there is no `variable = ...` there is no output. That's okay here because we
+just want to display the value of `fun(2)`. 
+:::
+
+With the MATLAB function `f` above, `disp_f_2(f)` gives an error:
+
+``` {.output}
+Not enough input arguments.
+```
+
+MATLAB sees `f` with no parentheses and tries to *call* `f` with no inputs. The takeaway: we can't use `f` as a variable.
+
+The fix is an **anonymous function**:
+
+```matlab
+f = @(x) 2*x + cos(x);      % implements f(x) = 2x + cos(x)
+
+disp(f(2))                  % calculate and display f(2)
+disp_f_2(f)                 % now this works too
+```
+
+``` {.output}
+    3.5839
+    3.5839
+```
+
+`f = @(x) 2*x + cos(x)` means the same thing as $f(x) = 2x + \cos(x)$. It is one line, and it creates a variable `f`, called a **function handle**, that we can use like any other variable. As with MATLAB functions, `x` is a placeholder: `f = @(t) 2*t + cos(t)` is the same function.
+
+::: {.callout-tip}
+## Question from class: why not `f @(x) = 2*x + cos(x)`?
+
+That looks more like $f(x) = 2x + \cos(x)$! But when we write `f = ...`, we are **creating a variable `f`**, just like `a = 5`. The variable's name goes on the left of `=`, and its value goes on the right. If we wrote `f @(x) = ...`, we'd be trying to create a variable called `f @(x)`, which isn't allowed.
+:::
+
+### Plotting an anonymous function {#sec-plot-handle}
+
+Suppose we want to plot `f`. Some attempts:
+
+- `plot(f)` doesn't work. `plot` needs two inputs: $x$ values and $y$ values.
+- `plot(x, f)` has the right idea: $x$ values, and $y$ values from `f`. But it doesn't work, because `x` isn't defined.
+- After `x = linspace(-4, 4, 1000);`, `plot(x, f)` *still* doesn't work. The second input needs to be an **array**, and `f` is a function.
+
+`f(x)` is the array we need:
+
+```matlab
+f = @(x) 2*x + cos(x);
+x = linspace(-4, 4, 1000);
+plot(x, f(x))       % this works!
+```
+
+`f(x)` **passes the whole array** `x` into `f`. `f` calculates $2x + \cos(x)$ for every element of `x` at once and returns an array of $y$ values, one for each $x$ value.
+
+:::: {.callout-tip collapse="true"}
+## Practice: plotting $g(x) = 2x^2 + \cos(x)$
+
+Try this code. What does the error say? How do we fix it?
+
+```matlab
+g = @(x) 2*x^2 + cos(x);
+x = linspace(-4, 4, 1000);
+plot(x, g(x))
+```
+
+::: {.callout-caution collapse="true"}
+## Answer
+
+``` {.output}
+Error using ^
+Incorrect dimensions for raising a matrix to a power. Check that the matrix is
+square and the power is a scalar. To operate on each element of the matrix
+individually, use POWER (.^) for elementwise power.
+```
+
+We pass the array `x` into `g`, so `x^2` tries to square the whole array as a matrix. We need the element-wise power, `.^` (@sec-array-math):
+
+```matlab
+g = @(x) 2*x.^2 + cos(x);
+```
+
+`g(2)` works with or without the dot, because 2 is a single number. Using `.*`, `./`, and `.^` in anonymous functions makes them work for both single numbers and arrays.
+:::
+::::
+
+:::: {.callout-tip collapse="true"}
+## Practice: first and last
+
+1. Which of these correctly create a function `first_last` that takes an array and returns a new array with only its first and last entries? Select all that apply.
+
+   a. `first_last(arr) = [arr(1), arr(end)];`
+   b. `first_last @(arr) [arr(1), arr(end)];`
+   c. A MATLAB function:
+      ```matlab
+      function output = first_last(arr)
+          output = [arr(1), arr(end)];
+      end
+      ```
+   d. `first_last = @(arr) [arr(1), arr(end)];`
+   e. `first_last @(arr) = [arr(1), arr(end)];`
+
+2. With `x = linspace(0, 100, 100)`, how do you use `first_last` to create a new array `z`?
+
+::: {.callout-caution collapse="true"}
+## Answers
+
+1. **c** and **d**. a, b, and e aren't valid MATLAB: an anonymous function needs `name = @(inputs) ...`.
+2. `z = first_last(x)`. MATLAB functions and anonymous functions are called the same way.
+:::
+::::
 
 ## Root finding, revisited {#sec-root-finding-function}
 
-This is the same algorithm from @sec-root-finding, rewritten as a function.
+Function handles can be inputs to other functions, like `disp_f_2` above. That's exactly what we need to turn bisection (@sec-bisection) and Newton's method (@sec-newton) into black boxes.
+
+The inputs and outputs in the pseudocode become the function's first line:
+
+```matlab
+function root = newton(f, fp, xstar, tol, max_iter)
+    % the loop from the Newton's method exercise goes here
+end
+```
+
+Now the "something like" from @sec-why-functions becomes real MATLAB. To find a root of $f(x) = x^2 - \cos(x)$:
+
+```matlab
+f = @(x) x.^2 - cos(x);
+fp = @(x) 2*x + sin(x);
+
+root = bisection(f, 0, 3, 1e-12);
+root = newton(f, fp, 1, 1e-12, 100);
+```
+
+Both find the root $x \approx 0.8241$. Changing the problem means changing the inputs, not the algorithm.
+
+::: {.callout-warning}
+## Choosing inputs still matters
+
+- `bisection(f, -2, 3, 1e-12)` would fail: $f(-2) \approx 4.42$ and $f(3) \approx 9.99$ are both positive, so the IVT doesn't guarantee a root in between.
+- `newton(f, fp, 0, 1e-12, 100)` would fail: $f'(0) = 0$, so the first step divides by 0.
+
+A black box still needs good inputs (@sec-bisection-vs-newton).
+:::
+
+<!-- TODO: add the Lesson 9 in-class exercise here (bisection and newton as functions). -->
 
 ::: {.checkpoint}
 {{< var checkpoints.Exam1 >}} covers up through here.

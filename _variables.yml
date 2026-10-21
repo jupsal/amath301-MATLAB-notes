@@ -19,6 +19,7 @@ prep:
   lesson6: "https://edstem.org/us/courses/100233/lessons/184662"     # For loops
   lesson7: "https://edstem.org/us/courses/100233/lessons/174502"    # If statements and bisection
   lesson8: "https://edstem.org/us/courses/100233/lessons/174508"    # Newton's method and functions
+  lesson9: "https://edstem.org/us/courses/100233/lessons/185633"    # More with functions
   functions: "#"
 
 # Homework and quiz checkpoints: what is covered "up through here".
