@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="quarto-1.10.19" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+<title>1  Getting started – AMATH 301 Course Notes</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<!-- htmldependencies:E3FAD763 -->
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn"
+      data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <h1 class="quarto-secondary-nav-title no-breadcrumbs"></h1>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" role="link"
+        aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+        onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="/">
+      AMATH 301 Course Notes
+      </a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome: how to use these notes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/lesson-index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lesson index</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1"  role="navigation" aria-expanded="true">
+ <span class="menu-text">MATLAB coding basics (Exam 1)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/getting-started.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class='chapter-number'>1</span>  <span class='chapter-title'>Getting started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>2</span>  <span class='chapter-title'>Math in MATLAB</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/errors.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>3</span>  <span class='chapter-title'>Errors and round-off error</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/arrays.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>4</span>  <span class='chapter-title'>Arrays</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/plotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>5</span>  <span class='chapter-title'>Discretization and plotting</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/control-flow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>6</span>  <span class='chapter-title'>Control flow</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/root-finding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>7</span>  <span class='chapter-title'>Root finding</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>8</span>  <span class='chapter-title'>Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/basics/practice-loops-functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>9</span>  <span class='chapter-title'>Practice: loops, if statements, and functions</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2"  role="navigation" aria-expanded="true">
+ <span class="menu-text">Numerical calculus (Exam 2)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/calculus/derivatives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>10</span>  <span class='chapter-title'>Numerical derivatives</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/calculus/truncation-error.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>11</span>  <span class='chapter-title'>Truncation error</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3"  role="navigation" aria-expanded="true">
+ <span class="menu-text">Data science (Exam 3)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/data-science/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>12</span>  <span class='chapter-title'>Data science</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4"  role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/reference/style-guide.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>A</span>  <span class='chapter-title'>MATLAB plotting reference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/reference/loading-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class='chapter-number'>B</span>  <span class='chapter-title'>Loading data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" ></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <div id="quarto-toc-target"></div>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-getting-started" class="quarto-section-identifier"><span class="chapter-number">1</span>  <span class="chapter-title">Getting started</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+<nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#sec-what-is-sci-comp" id="toc-sec-what-is-sci-comp"><span class="header-section-number">1.1</span> What is scientific computing?</a>
+  <ul>
+  <li><a href="#problems-you-can-understand-but-cant-solve-exactly" id="toc-problems-you-can-understand-but-cant-solve-exactly">Problems you can understand but can’t solve exactly</a></li>
+  <li><a href="#sec-numerical-vs-symbolic" id="toc-sec-numerical-vs-symbolic">Numerical vs. symbolic computing</a></li>
+  <li><a href="#model-error" id="toc-model-error">Model error</a></li>
+  <li><a href="#where-scientific-computing-fits-in" id="toc-where-scientific-computing-fits-in">Where scientific computing fits in</a></li>
+  </ul></li>
+  <li><a href="#sec-algorithms" id="toc-sec-algorithms"><span class="header-section-number">1.2</span> Algorithms and pseudocode</a></li>
+  <li><a href="#sec-file-systems" id="toc-sec-file-systems"><span class="header-section-number">1.3</span> File systems and course organization</a>
+  <ul>
+  <li><a href="#recommended-course-folder-structure" id="toc-recommended-course-folder-structure">Recommended course folder structure</a></li>
+  </ul></li>
+  </ul>
+</nav>
+<div class="prep-reminder">
+<p>These notes are a reference to use <strong>after</strong> you complete the PREP and come to class. They are not a replacement for PREP and in-class exercises. They cover the same ideas in a slightly different format, so they won’t match class exactly. The PREP for this topic: <a href="https://edstem.org/us/courses/100233/lessons/182412">Lesson 1 PREP: Getting started with Ed and MATLAB</a>.</p>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Learning objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Throughout this chapter, you will learn to:</p>
+<ul>
+<li>Describe scientific computing and recognize problems scientific computin solves.</li>
+<li>Create and maintain an organized file system for course materials.</li>
+</ul>
+<p>The learning objectives are listed to help you frame your learning. If you ever find yourself asking “what are the important parts in what I am reading?” this should help you answer that question.</p>
+</div>
+</div>
+<section id="sec-what-is-sci-comp" class="level2" data-number="1.1">
+<h2 data-number="1.1"><span class="header-section-number">1.1</span> What is scientific computing?</h2>
+<div class="motivation">
+<p>You know more math than most people on Earth, but it’s still easy to write down problems you understand and can’t solve exactly. Scientific computing is how we get useful answers to them anyway.</p>
+</div>
+<p><strong>Scientific computing</strong> is using computers to solve math, science, and engineering problems. It uses mathematics, engineering, physics, computer science, and more. We translate a math problem into a form the computer understands, and the computer does the computations.</p>
+<section id="problems-you-can-understand-but-cant-solve-exactly" class="level3">
+<h3>Problems you can understand but can’t solve exactly</h3>
+<ol type="1">
+<li><p><strong>Find the global minimum of <span class="math inline">\(f(x) = x^2 + \sin(x)\)</span>.</strong> The minimum is where <span class="math inline">\(f&#39;(x) = 2x + \cos(x) = 0\)</span>, but this equation can’t be solved exactly. Instead, we estimate the minimum, either with an algorithm that “rolls a marble” down the graph until it stops, or by finding the roots of <span class="math inline">\(f&#39;(x)\)</span> with a root-finding algorithm (<a href="#sec-root-finding" class="quarto-xref"><span class="quarto-unresolved-ref">sec-root-finding</span></a>).</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="../figures/min_x2_plus_sinx.png" class="img-fluid" style="width:55.0%" alt="Graph of f(x) = x squared plus sine of x for x from about -4 to 4. It is a U-shaped curve with its lowest point a little to the left of x = 0, slightly below the x-axis." /></p>
+<figcaption>The graph of <span class="math inline">\(f(x) = x^2 + \sin(x)\)</span>.</figcaption>
+</figure>
+</div></li>
+<li><p><strong>Calculate <span class="math inline">\(\displaystyle\int_0^1 \sin(x^2)\, dx\)</span>.</strong> There is no antiderivative of <span class="math inline">\(\sin(x^2)\)</span>, but we can approximate the area under the curve.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="../figures/area_sin_x2.png" class="img-fluid" style="width:55.0%" alt="Graph of sine of x squared for x from 0 to 1, with the area between the curve and the x-axis shaded. The curve starts flat at 0 and rises to about 0.84 at x = 1." /></p>
+<figcaption>The area under <span class="math inline">\(\sin(x^2)\)</span> from 0 to 1.</figcaption>
+</figure>
+</div></li>
+<li><p><strong>Calculate <span class="math inline">\(\displaystyle\int \tan(x)\sqrt{2 + \sqrt{4 + \cos(x)}}\, dx\)</span>.</strong> This one <em>can</em> be solved exactly, even though it looks the most complicated. The answer is a formula in terms of symbols, which is not what we do in this class.</p></li>
+</ol>
+<p>In scientific computing, we study the algorithms that produce approximations and determine what “close enough” means. Almost every answer we compute has some error, but the approximations are good enough to solve real problems.</p>
+</section>
+<section id="sec-numerical-vs-symbolic" class="level3">
+<h3>Numerical vs. symbolic computing</h3>
+<table class="caption-top">
+<caption>Symbolic vs. numerical computing.</caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Symbolic computing</th>
+<th>Numerical computing (this class)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Works with</td>
+<td>symbols (<span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, …), as you would on paper</td>
+<td>numbers</td>
+</tr>
+<tr class="even">
+<td>Answers look like</td>
+<td>formulas, e.g. <span class="math inline">\(x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}\)</span></td>
+<td>numbers, e.g. <span class="math inline">\(x = 2.718\)</span>, and plots</td>
+</tr>
+<tr class="odd">
+<td>Examples</td>
+<td>your past math classes, WolframAlpha</td>
+<td>MATLAB</td>
+</tr>
+</tbody>
+</table>
+<p>WolframAlpha and similar tools mostly do symbolic computation. Compare what they give for the three problems above: <a href="https://www.wolframalpha.com/input?i=minimize+x%5E2%2Bsin%28x%29">problem 1</a>, <a href="https://www.wolframalpha.com/input?i=integrate+sin%28x%5E2%29+from+0+to+1">problem 2</a>, <a href="https://www.wolframalpha.com/input?i=integrate+tan%28x%29*sqrt%282%2Bsqrt%284%2Bcos%28x%29%29%29">problem 3</a>.</p>
+</section>
+<section id="model-error" class="level3">
+<h3>Model error</h3>
+<p>Before computing anything, we turn a real-world problem into math, and that means making assumptions. Physicists joke about “assuming a spherical cow,” but every model does something similar: a model of a falling object might ignore air resistance, and a population model might assume the birth rate is constant from year to year. Even a perfect solution to the math still has error, because the model only approximates reality. This is called <strong>model error</strong>. It is not covered in this class.</p>
+</section>
+<section id="where-scientific-computing-fits-in" class="level3">
+<h3>Where scientific computing fits in</h3>
+<p>Scientific computing is one tool in the STEM toolbag, not a replacement for the rest. It fits into a cycle:</p>
+<ol type="1">
+<li><strong>Theory builds the model.</strong> This is where the calculus you already know and derivations from science and engineering come in.</li>
+<li><strong>Scientific computing solves the model</strong> and visualizes results.</li>
+<li><strong>Experts interpret those results</strong> in terms of the original science or engineering question, then change the question and repeat the cycle.</li>
+</ol>
+<p>Scientific computing is used across many fields: engineers test bridge designs and simulate airflow over aircraft, scientists model disease spread and predict weather, tech companies build recommendation systems and detect fraud, and space agencies calculate spacecraft trajectories. You’ll even learn the algorithm used in the moon landing.</p>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Optional: more examples of scientific computing in action
+</div>
+<div class='callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end'><i class='callout-toggle'></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>Data science and machine learning</strong></p>
+<ol type="1">
+<li>Recommendation Systems
+<ul>
+<li>Netflix recommending shows, Spotify suggesting songs, Amazon products</li>
+<li>Using algorithms to predict what you’ll like based on patterns in massive datasets</li>
+</ul></li>
+<li>Image Recognition &amp; Computer Vision
+<ul>
+<li>Facial recognition; Self-driving cars identifying pedestrians, traffic signs, and obstacles</li>
+<li>Medical imaging: detecting tumors in X-rays and MRIs automatically</li>
+</ul></li>
+<li>Natural Language Processing (NLP)
+<ul>
+<li>Chatbots and virtual assistants (Siri, Alexa, ChatGPT)</li>
+<li>Language translation (Google Translate)</li>
+</ul></li>
+<li>Fraud Detection
+<ul>
+<li>Credit card companies analyzing millions of transactions in real-time, identifying unusual patterns that indicate fraud</li>
+</ul></li>
+</ol>
+<p><strong>Health and biology</strong></p>
+<ol type="1">
+<li>Drug Discovery
+<ul>
+<li>Testing thousands of potential drug compounds virtually before lab testing, saving years of time and millions of dollars</li>
+</ul></li>
+<li>Genome Sequencing
+<ul>
+<li>Analyzing DNA sequences to identify genes and mutations to understand genetic diseases</li>
+</ul></li>
+<li>Medical Imaging
+<ul>
+<li>MRI and CT scans use computational algorithms to reconstruct 3D images</li>
+<li>Computer vision helps detect tumors and diagnoses</li>
+</ul></li>
+<li>Epidemiology
+<ul>
+<li>Modeling disease spread during pandemics (like COVID-19)</li>
+<li>Predicting infection rates and evaluating intervention strategies</li>
+</ul></li>
+</ol>
+<p><strong>Earth and space science</strong></p>
+<ol type="1">
+<li>Weather Forecasting
+<ul>
+<li>Computers solve complex atmospheric equations to predict weather patterns</li>
+<li>Involves millions of data points and calculations updated every few minutes</li>
+</ul></li>
+<li>Climate Modeling
+<ul>
+<li>Predicting long-term climate change by simulating Earth’s atmosphere, oceans, and ice through massive simulations</li>
+</ul></li>
+<li>Astrophysics &amp; Space Exploration
+<ul>
+<li>Simulating galaxy formation and black hole behavior</li>
+<li>Calculating spacecraft trajectories (like landing rovers on Mars)</li>
+<li>Processing data from telescopes to discover exoplanets</li>
+</ul></li>
+</ol>
+<p><strong>Engineering</strong></p>
+<ol type="1">
+<li>Structural Engineering
+<ul>
+<li>Testing designs of bridges, buildings, and aircraft virtually before building physical prototypes</li>
+<li>Example: Boeing uses simulations to test aircraft wings under different conditions</li>
+</ul></li>
+<li>Aerospace Engineering
+<ul>
+<li>Computational fluid dynamics (CFD) to design airplane wings and rocket shapes</li>
+<li>Simulating airflow to optimize fuel efficiency and reduce drag</li>
+</ul></li>
+<li>Automotive Engineering
+<ul>
+<li>Crash test simulations instead of destroying physical prototypes</li>
+<li>Optimizing engine performance and fuel efficiency</li>
+</ul></li>
+<li>Electrical &amp; Circuit Design
+<ul>
+<li>Simulating complex circuits before manufacturing chips</li>
+<li>Analyzing power grid stability and load distribution</li>
+</ul></li>
+<li>Robotics &amp; Control Systems
+<ul>
+<li>Simulating robot behavior in virtual environments</li>
+<li>Control algorithms for drones, autonomous vehicles, and manufacturing robots</li>
+</ul></li>
+</ol>
+<p><strong>Finance &amp; Business</strong></p>
+<ol type="1">
+<li>Financial Modeling
+<ul>
+<li>Predicting stock market trends and risk analysis to create investment strategies</li>
+<li>High-frequency trading algorithms</li>
+</ul></li>
+<li>Predictive Analytics
+<ul>
+<li>Predicting customer behaviors and sales forecasting</li>
+<li>Predicting equipment failures in manufacturing before they happen</li>
+</ul></li>
+<li>Social Media &amp; Content Analysis
+<ul>
+<li>Analyzing trends across millions of social media posts</li>
+<li>Content moderation: detecting harmful content automatically</li>
+<li>Understanding public opinion during elections or crises</li>
+</ul></li>
+</ol>
+<p>We won’t be able to study all of these, but we will learn the basic tools needed to be able to begin to understand these applications, and we will even dive deep into some of them.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-algorithms" class="level2" data-number="1.2">
+<h2 data-number="1.2"><span class="header-section-number">1.2</span> Algorithms and pseudocode</h2>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-body-container">
+<p>Algorithms and pseudocode are introduced in Lesson 7, alongside if statements (<a href="#sec-if-statements" class="quarto-xref"><span class="quarto-unresolved-ref">sec-if-statements</span></a>).</p>
+</div>
+</div>
+</div>
+<div class="motivation">
+<p>Before writing code for a problem, it helps to write out the steps in plain language, especially when the code has to do different things in different situations.</p>
+</div>
+<p>An <strong>algorithm</strong> is a sequence of well-defined instructions for performing a specific task, like a recipe. A classic grade-school exercise is writing out exactly how to make a peanut-butter and jelly sandwich, clearly enough that someone could follow it with no other help. In scientific computing, algorithms are usually designed to solve equations, process data, simulate physical systems, or optimize designs.</p>
+<p><strong>Pseudocode</strong> writes out an algorithm in plain language (not actual code), in enough detail that it can be translated into any programming language. Key words in pseudocode point to specific coding tools:</p>
+<table class="caption-top">
+<caption>Pseudocode key words and the coding tools they point to.</caption>
+<thead>
+<tr class="header">
+<th>Pseudocode word</th>
+<th>Coding tool</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>IF …, otherwise …</td>
+<td>an if statement (<a href="#sec-if-statements" class="quarto-xref"><span class="quarto-unresolved-ref">sec-if-statements</span></a>)</td>
+</tr>
+<tr class="even">
+<td>ITERATE, REPEAT</td>
+<td>a for loop (<a href="#sec-for-loops" class="quarto-xref"><span class="quarto-unresolved-ref">sec-for-loops</span></a>)</td>
+</tr>
+</tbody>
+</table>
+<p>For example, here is pseudocode for checking a sensor reading against an accepted value (the tolerance check from <a href="#sec-tolerance" class="quarto-xref"><span class="quarto-unresolved-ref">sec-tolerance</span></a>):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>Algorithm: Check whether a sensor reading is acceptable.</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>Inputs:  reading, accepted value, tolerance</span>
+<span id="cb1-4"><a href="#cb1-4"></a>Outputs: a message</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>Steps:</span>
+<span id="cb1-7"><a href="#cb1-7"></a>1. Calculate the difference, |reading - accepted value|.</span>
+<span id="cb1-8"><a href="#cb1-8"></a>2. IF the difference is less than the tolerance, display &quot;Within tolerance.&quot;</span>
+<span id="cb1-9"><a href="#cb1-9"></a>   Otherwise, display &quot;Out of tolerance.&quot;</span></code></pre></div>
+<p>Longer examples are in <a href="#sec-if-statements" class="quarto-xref"><span class="quarto-unresolved-ref">sec-if-statements</span></a> (the quadratic formula) and <a href="#sec-bisection" class="quarto-xref"><span class="quarto-unresolved-ref">sec-bisection</span></a> (the bisection method).</p>
+</section>
+<section id="sec-file-systems" class="level2" data-number="1.3">
+<h2 data-number="1.3"><span class="header-section-number">1.3</span> File systems and course organization</h2>
+<div class="motivation">
+<p>You’ll work with a lot of files in this class: MATLAB code, datasets, study guides, and more. A misplaced file wastes time, and submitting the wrong file to the autograder costs points. This comes up all the time in AMATH 301.</p>
+</div>
+<p>A <strong>file system</strong> is a system for storing files. Your computer organizes files like a filing cabinet: main folders like Documents and Desktop are the drawers, and inside them are folders, which hold more folders or files.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="../figures/file_system_tree.png" class="img-fluid" style="width:65.0%" alt="Tree diagram of a file system. A home folder contains a docs folder, a file doc1.txt, an image file, and a programs folder. The docs folder holds doc2.txt and a data folder with doc3.txt and doc4.txt; the programs folder holds three .exe files." /></p>
+<figcaption>An example file system.</figcaption>
+</figure>
+</div>
+<p>Keep each assignment’s files in its own folder. Two files with the same name in one folder (like Downloads) become “temperature_data.csv” and “temperature_data (1).csv”, and you can’t tell which is which. With a folder per assignment, “hw3/temperature_data.csv” and “hw4/temperature_data.csv” never get mixed up. To load a data file like this into MATLAB, see <a href="#sec-loading-data" class="quarto-xref"><span class="quarto-unresolved-ref">sec-loading-data</span></a>.</p>
+<section id="recommended-course-folder-structure" class="level3">
+<h3>Recommended course folder structure</h3>
+<ol type="1">
+<li><strong>Open your file browser.</strong>
+<ul>
+<li>Windows: press Windows Key + E, or right-click Start and click “File Explorer”.</li>
+<li>Mac: click the Finder icon (the smiling blue face) in the dock.</li>
+</ul></li>
+<li><strong>Go to your “Documents” folder</strong> (or another place you’ll remember). It’s usually on the left side of the file browser.</li>
+<li><strong>Create a course folder</strong>, for example “AMATH301”. Right-click an empty space (two-finger press on most touchpads) and create a new folder. Don’t use spaces in folder or file names: MATLAB won’t run files with spaces in the filename.</li>
+<li><strong>Create subfolders</strong> inside it, such as “homework”, “lectures”, and “exams”. Every file for this class goes in one of these. If a file doesn’t fit, make a new folder for it. Don’t leave class files in Downloads.</li>
+<li><strong>Keep it up.</strong> For example, inside “homework”, create “hw0”, “hw1”, “hw2”, and so on.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class='callout-icon'></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Screenshots: opening your file browser
+</div>
+<div class='callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end'><i class='callout-toggle'></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><img src="../figures/open_files_windows_keys.png" class="img-fluid" style="width:45.0%" alt="A keyboard with the Windows key and the E key outlined in red." /> <img src="../figures/open_files_windows_start.png" class="img-fluid" style="width:45.0%" alt="The Windows right-click Start menu with File Explorer pointed out by a red arrow." /></p>
+<p><img src="../figures/open_files_mac_finder.png" class="img-fluid" style="width:45.0%" alt="The macOS dock with a red arrow pointing to the blue smiling-face Finder icon." /></p>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="../figures/folder_structure_example.png" class="img-fluid" alt="Screenshot of Windows File Explorer open to OneDrive, Teaching, AMATH 301, win2026, Homework. The Homework folder contains three folders: hw1, hw2, and hw3." /></p>
+<figcaption>Example of my file structure.</figcaption>
+</figure>
+</div>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyLXRpdGxl">AMATH 301 Course Notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uYXZiYXItdGl0bGU=">AMATH 301 Course Notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1uZXh0"><span class="chapter-number">2</span>  <span class="chapter-title">Math in MATLAB</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1wcmV2">Lesson index</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9pbmRleC5odG1sV2VsY29tZTotaG93LXRvLXVzZS10aGVzZS1ub3Rlcw==">Welcome: how to use these notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9sZXNzb24taW5kZXguaHRtbExlc3Nvbi1pbmRleA==">Lesson index</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMQ==">MATLAB coding basics (Exam 1)</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvZ2V0dGluZy1zdGFydGVkLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjE8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+R2V0dGluZy1zdGFydGVkPC9zcGFuPg=="><span class="chapter-number">1</span>  <span class="chapter-title">Getting started</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvbWF0aC5odG1sPHNwYW4tY2xhc3M9J2NoYXB0ZXItbnVtYmVyJz4yPC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPk1hdGgtaW4tTUFUTEFCPC9zcGFuPg=="><span class="chapter-number">2</span>  <span class="chapter-title">Math in MATLAB</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvZXJyb3JzLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjM8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+RXJyb3JzLWFuZC1yb3VuZC1vZmYtZXJyb3I8L3NwYW4+"><span class="chapter-number">3</span>  <span class="chapter-title">Errors and round-off error</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvYXJyYXlzLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjQ8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+QXJyYXlzPC9zcGFuPg=="><span class="chapter-number">4</span>  <span class="chapter-title">Arrays</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvcGxvdHRpbmcuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+NTwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz5EaXNjcmV0aXphdGlvbi1hbmQtcGxvdHRpbmc8L3NwYW4+"><span class="chapter-number">5</span>  <span class="chapter-title">Discretization and plotting</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvY29udHJvbC1mbG93Lmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjY8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+Q29udHJvbC1mbG93PC9zcGFuPg=="><span class="chapter-number">6</span>  <span class="chapter-title">Control flow</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3Mvcm9vdC1maW5kaW5nLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjc8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+Um9vdC1maW5kaW5nPC9zcGFuPg=="><span class="chapter-number">7</span>  <span class="chapter-title">Root finding</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvZnVuY3Rpb25zLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjg8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+RnVuY3Rpb25zPC9zcGFuPg=="><span class="chapter-number">8</span>  <span class="chapter-title">Functions</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9iYXNpY3MvcHJhY3RpY2UtbG9vcHMtZnVuY3Rpb25zLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjk8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+UHJhY3RpY2U6LWxvb3BzLC1pZi1zdGF0ZW1lbnRzLC1hbmQtZnVuY3Rpb25zPC9zcGFuPg=="><span class="chapter-number">9</span>  <span class="chapter-title">Practice: loops, if statements, and functions</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMg==">Numerical calculus (Exam 2)</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9jYWxjdWx1cy9kZXJpdmF0aXZlcy5odG1sPHNwYW4tY2xhc3M9J2NoYXB0ZXItbnVtYmVyJz4xMDwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz5OdW1lcmljYWwtZGVyaXZhdGl2ZXM8L3NwYW4+"><span class="chapter-number">10</span>  <span class="chapter-title">Numerical derivatives</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9jYWxjdWx1cy90cnVuY2F0aW9uLWVycm9yLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPjExPC9zcGFuPi0tPHNwYW4tY2xhc3M9J2NoYXB0ZXItdGl0bGUnPlRydW5jYXRpb24tZXJyb3I8L3NwYW4+"><span class="chapter-number">11</span>  <span class="chapter-title">Truncation error</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tMw==">Data science (Exam 3)</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9kYXRhLXNjaWVuY2UvaW5kZXguaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+RGF0YS1zY2llbmNlPC9zcGFuPg=="><span class="chapter-number">12</span>  <span class="chapter-title">Data science</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOnF1YXJ0by1zaWRlYmFyLXNlY3Rpb24tNA==">Appendices</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9yZWZlcmVuY2Uvc3R5bGUtZ3VpZGUuaHRtbDxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+QTwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz5NQVRMQUItcGxvdHRpbmctcmVmZXJlbmNlPC9zcGFuPg=="><span class="chapter-number">A</span>  <span class="chapter-title">MATLAB plotting reference</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWludC1zaWRlYmFyOi9yZWZlcmVuY2UvbG9hZGluZy1kYXRhLmh0bWw8c3Bhbi1jbGFzcz0nY2hhcHRlci1udW1iZXInPkI8L3NwYW4+LS08c3Bhbi1jbGFzcz0nY2hhcHRlci10aXRsZSc+TG9hZGluZy1kYXRhPC9zcGFuPg=="><span class="chapter-number">B</span>  <span class="chapter-title">Loading data</span></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLU1BVExBQi1jb2RpbmctYmFzaWNzLShFeGFtLTEp">MATLAB coding basics (Exam 1)</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLWJyZWFkY3J1bWJzLTxzcGFuLWNsYXNzPSdjaGFwdGVyLW51bWJlcic+MTwvc3Bhbj4tLTxzcGFuLWNsYXNzPSdjaGFwdGVyLXRpdGxlJz5HZXR0aW5nLXN0YXJ0ZWQ8L3NwYW4+"><span class="chapter-number">1</span>  <span class="chapter-title">Getting started</span></span></p>
+<div class="hidden quarto-markdown-envelope-contents" data-render-id="Zm9vdGVyLWNlbnRlcg==">
+<p>AMATH 301 · University of Washington</p>
+</div>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGF0aXRsZQ=="><span id="sec-getting-started" class="quarto-section-identifier"><span class="chapter-number">1</span>  <span class="chapter-title">Getting started</span></span> – AMATH 301 Course Notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkdGl0bGU="><span id="sec-getting-started" class="quarto-section-identifier"><span class="chapter-number">1</span>  <span class="chapter-title">Getting started</span></span> – AMATH 301 Course Notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZHRpdGxl"><span id="sec-getting-started" class="quarto-section-identifier"><span class="chapter-number">1</span>  <span class="chapter-title">Getting started</span></span> – AMATH 301 Course Notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW1ldGFzaXRlbmFtZQ==">AMATH 301 Course Notes</span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLXR3aXR0ZXJjYXJkZGVzYw=="></span></p>
+<p><span class="hidden quarto-markdown-envelope-contents" data-render-id="cXVhcnRvLW9nY2FyZGRkZXNj"></span></p>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+// Make Quarto's collapsible callouts keyboard accessible.
+// Out of the box their clickable title bar can't be reached with Tab and is
+// announced only as "Toggle callout". This makes each title a real button:
+// reachable with Tab, opened with Enter or Space, and announced by its title.
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.callout-header[data-bs-toggle="collapse"]').forEach(function (header) {
+    header.setAttribute("role", "button");
+    header.setAttribute("tabindex", "0");
+    header.removeAttribute("aria-label");   // let the callout's own title name the button
+    header.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        header.click();
+      }
+    });
+  });
+});
+</script>
+<style>
+  .callout-header[role="button"]:focus-visible {
+    outline: 3px solid #4b2e83;
+    outline-offset: 2px;
+  }
+</style>
+<!--
+  Auto-hiding sidebars (wide screens only).
+
+  On screens at least 992px wide, the navigation (left) and "On this page"
+  (right) sidebars are hidden so the page text can use the full width.
+  A tab on each edge brings a sidebar back: click the tab to open it, and
+  click it again (or anywhere outside the sidebar, or press Esc) to close it.
+  Pressing "/" opens the left sidebar so the search box is visible.
+
+  "Always show sidebars" (bottom of the left sidebar) turns this off and is
+  remembered in the browser. Narrower screens keep Quarto's normal layout.
+
+  To turn the whole feature off, remove _sidebars.html from
+  include-after-body in _quarto.yml.
+-->
+<style>
+@media (min-width: 992px) {
+  :root { --autohide-content-width: 900px; }  /* comfortable reading width */
+
+  /* Let the page text use the space the sidebars leave behind. */
+  body.sidebars-autohide #quarto-content main.content {
+    grid-column: screen-start-inset / screen-end-inset;
+    width: 100%;
+    max-width: var(--autohide-content-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Both sidebars become slide-out panels. */
+  body.sidebars-autohide #quarto-sidebar,
+  body.sidebars-autohide #quarto-margin-sidebar {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    width: 300px !important;
+    overflow-y: auto;
+    z-index: 1040;
+    background: var(--bs-body-bg, #fff);
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.18);
+    padding: 1rem 1rem 3rem 1rem;
+    transition: transform 0.2s ease, visibility 0.2s;
+    visibility: hidden;
+  }
+  body.sidebars-autohide #quarto-sidebar {
+    left: 0;
+    transform: translateX(-105%);
+  }
+  body.sidebars-autohide #quarto-margin-sidebar {
+    right: 0;
+    left: auto;
+    transform: translateX(105%);
+  }
+  body.sidebars-autohide #quarto-sidebar.autohide-open,
+  body.sidebars-autohide #quarto-margin-sidebar.autohide-open {
+    transform: none;
+    visibility: visible;
+  }
+
+  /* Edge tabs: solid UW purple with white text for high contrast. */
+  .autohide-tab {
+    display: none;
+    position: fixed;
+    top: 50%;
+    z-index: 1030;
+    border: 2px solid #4b2e83;
+    background: #4b2e83;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 0.85rem 0.5rem;
+    writing-mode: vertical-rl;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  }
+  .autohide-tab:hover { background: #32006e; border-color: #32006e; }
+  .autohide-tab { display: none; align-items: center; gap: 0.45rem; }
+  .autohide-arrow { display: inline-flex; }
+  .autohide-arrow svg { transition: transform 0.2s ease; }
+  /* Arrows point toward the page when closed ("click to open") and flip
+     when the sidebar is open ("click to close"). */
+  /* (The left tab itself is rotated 180deg, so its arrow angles are flipped.) */
+  #autohide-tab-left  .autohide-arrow svg { transform: rotate(180deg); }   /* points right */
+  #autohide-tab-right .autohide-arrow svg { transform: rotate(180deg); }   /* points left  */
+  #autohide-tab-left[aria-expanded="true"]  .autohide-arrow svg { transform: rotate(0deg); }  /* points left  */
+  #autohide-tab-right[aria-expanded="true"] .autohide-arrow svg { transform: rotate(0deg); }  /* points right */
+  .autohide-tab:focus-visible { outline: 3px solid #b7a57a; outline-offset: 2px; }
+  #autohide-tab-left  { left: 0;  border-left: none;  border-radius: 0 6px 6px 0; transform: translateY(-50%) rotate(180deg); }
+  #autohide-tab-right { right: 0; border-right: none; border-radius: 6px 0 0 6px; transform: translateY(-50%); }
+  body.sidebars-autohide .autohide-tab { display: inline-flex; }
+  /* When a panel is open, its tab rides along on the panel's edge. */
+  body.sidebars-autohide .autohide-tab { transition: left 0.2s ease, right 0.2s ease; z-index: 1045; }
+  body.sidebars-autohide #autohide-tab-left[aria-expanded="true"]  { left: 300px; }
+  body.sidebars-autohide #autohide-tab-right[aria-expanded="true"] { right: 300px; }
+
+  /* The on/off switch */
+  .autohide-switch {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    background: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    color: inherit;
+    cursor: pointer;
+  }
+}
+@media (max-width: 991.98px) {
+  .autohide-tab, .autohide-switch { display: none !important; }
+}
+</style>
+
+<button type="button" id="autohide-tab-left" class="autohide-tab"
+        aria-controls="quarto-sidebar" aria-expanded="false"><span>Contents</span><span class="autohide-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M5.5 2.5 11 8l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+<button type="button" id="autohide-tab-right" class="autohide-tab"
+        aria-controls="quarto-margin-sidebar" aria-expanded="false"><span class="autohide-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M5.5 2.5 11 8l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>On this page</span></button>
+
+<script>
+(function () {
+  var KEY = "amath301-sidebars-autohide";
+  var wide = window.matchMedia("(min-width: 992px)");
+  var body = document.body;
+  var left = document.getElementById("quarto-sidebar");
+  var right = document.getElementById("quarto-margin-sidebar");
+  var tabL = document.getElementById("autohide-tab-left");
+  var tabR = document.getElementById("autohide-tab-right");
+  if (!left) return;
+  if (!right || !right.querySelector("nav, #TOC")) { tabR.remove(); tabR = null; right = null; }
+
+  function readPref() {
+    try { return localStorage.getItem(KEY) !== "off"; } catch (e) { return true; }
+  }
+  function writePref(on) {
+    try { localStorage.setItem(KEY, on ? "on" : "off"); } catch (e) {}
+  }
+
+  // On/off switch at the bottom of the left sidebar.
+  var sw = document.createElement("button");
+  sw.type = "button";
+  sw.className = "autohide-switch";
+  left.appendChild(sw);
+
+  function apply() {
+    var on = readPref() && wide.matches;
+    body.classList.toggle("sidebars-autohide", on);
+    sw.textContent = readPref() ? "Always show sidebars" : "Auto-hide sidebars";
+    if (!on) { close(left); if (right) close(right); }
+  }
+
+  var pinned = new WeakMap();
+  function tabFor(panel) { return panel === left ? tabL : tabR; }
+  function open(panel, pin) {
+    if (!panel) return;
+    panel.classList.add("autohide-open");
+    var t = tabFor(panel); if (t) t.setAttribute("aria-expanded", "true");
+    if (pin) pinned.set(panel, true);
+  }
+  function close(panel) {
+    if (!panel) return;
+    panel.classList.remove("autohide-open");
+    pinned.set(panel, false);
+    var t = tabFor(panel); if (t) t.setAttribute("aria-expanded", "false");
+  }
+
+  function wire(tab, panel) {
+    if (!tab || !panel) return;
+    tab.addEventListener("click", function () {
+      if (panel.classList.contains("autohide-open")) { close(panel); }
+      else {
+        open(panel, true);
+        var first = panel.querySelector("a, input, button");
+        if (first) first.focus({ preventScroll: true });
+      }
+    });
+  }
+  wire(tabL, left);
+  wire(tabR, right);
+
+  sw.addEventListener("click", function () {
+    writePref(!readPref());
+    apply();
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (!body.classList.contains("sidebars-autohide")) return;
+    if (e.key === "Escape") {
+      [left, right].forEach(function (p) {
+        if (p && p.classList.contains("autohide-open")) {
+          close(p);
+          var t = tabFor(p); if (t) t.focus();
+        }
+      });
+    }
+    // "/" opens Quarto's search; show the left sidebar so the box is visible.
+    var tag = (e.target && e.target.tagName) || "";
+    if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(tag)) open(left, true);
+  }, true);
+
+  // Click outside a pinned panel closes it.
+  document.addEventListener("click", function (e) {
+    [left, right].forEach(function (p) {
+      if (p && p.classList.contains("autohide-open") &&
+          !p.contains(e.target) && !(tabFor(p) && tabFor(p).contains(e.target)) &&
+          !(e.target.closest && e.target.closest(".aa-Panel, .aa-DetachedOverlay"))) {
+        close(p);
+      }
+    });
+  });
+
+  if (wide.addEventListener) wide.addEventListener("change", apply);
+  apply();
+})();
+</script>
+<script id = "quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a  href="/lesson-index.html" class="pagination-link" aria-label="Lesson index">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Lesson index</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a  href="/basics/math.html" class="pagination-link" aria-label="Math in MATLAB">
+        <span class="nav-page-text"><span class='chapter-number'>2</span>  <span class='chapter-title'>Math in MATLAB</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      <div class='footer-contents'>AMATH 301 · University of Washington</div>  
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+# Loading data {#sec-loading-data}
+
+::: {.prep-reminder}
+{{< var notes-reminder >}} The PREP for this topic: [Lesson 13 PREP: Loading data; numerical derivatives of data]({{< var prep.lesson13 >}}).
+:::
+
+::: {.callout-note appearance="simple"}
+## Learning objectives
+
+Throughout this appendix, you will learn to:
+
+- Read data from a `.csv` file using `readtable`.
+- Store data files in appropriate locations for use with MATLAB.
+- Create MATLAB arrays by extracting data from a MATLAB table.
+:::
+
+::: {.motivation}
+The most likely use for numerical derivatives (and most of scientific computing) is working with data. Before we can do anything with data, we need to get it into MATLAB.
+:::
+
+This appendix is a reference for loading data. It is used in @sec-fd-data and
+later chapters.
+
+## CSV files {#sec-csv}
+
+We'll use the [near-Earth asteroid (NEA) discovery dataset](https://cneos.jpl.nasa.gov/stats/totals.html) from NASA's Jet Propulsion Laboratory (JPL). To download it, click **CSV** at the bottom of that page. I saved it as `Asteroid_Data.csv`; you can also [download the copy used in these notes](../files/Asteroid_Data.csv).
+
+**CSV** stands for **comma-separated values**. It is a common format for storing data, and it works with all the usual spreadsheet software (Excel, Google Sheets, etc.). Once you have downloaded the file, try opening it in a spreadsheet:
+
+![`Asteroid_Data.csv` opened in Excel. Your dates will be different, but the structure is the same.](../figures/asteroid_data_excel.png){fig-alt="A spreadsheet with column headers in row 1: Date, NEC, Atira, Aten, Apollo, Amor, PHA-km, PHA, NEA-km, NEA-140m, NEA, and NEO. Each row below is one date, starting with the most recent (12/30/2025, then 12/1/2025, 11/1/2025, and so on, one row per month), with a count in each column." width="60%"}
+
+Each **row** is one date at which data was recorded. Each **column** is one kind of measurement, with a name in the first row. This layout is very common: each date or time of recording creates a new row, with a column for each recorded value.
+
+## Where to save data files {#sec-data-files}
+
+::: {.callout-important}
+## Save the data file in the same folder as your `.m` file
+
+MATLAB looks for files in the **current folder**: usually the folder containing the script you are running. Keep each assignment's data file in that assignment's folder (@sec-file-systems), next to the `.m` file that uses it. When working with data, good file system practices are critical: you need to be able to find the file again!
+:::
+
+## Loading a CSV file: `readtable` {#sec-readtable}
+
+`readtable` loads a data file into your Workspace:
+
+```matlab
+data = readtable("Asteroid_Data.csv");
+```
+
+::: {.callout-warning}
+## Common problems
+
+**The file can't be found.**
+
+``` {.output}
+Unable to find or open 'Asteroid_Data.csv'. Check the path and filename or file permissions.
+```
+
+Make sure the data file is in the same folder as your `.m` file, and check the spelling of the file name (including the `.csv`).
+
+**A warning about column headers.** You will see this warning when loading the asteroid data:
+
+``` {.output}
+Warning: Column headers from the file were modified to make them valid MATLAB
+identifiers before creating variable names for the table. The original column
+headers are saved in the VariableDescriptions property.
+Set 'VariableNamingRule' to 'preserve' to use the original column headers as
+table variable names.
+```
+
+Don't worry about that. Some of the column names, like `PHA-km`, aren't valid MATLAB variable names (@sec-variables), so MATLAB renames them, here to `PHA_km`. We'll go with it!
+:::
+
+::: {.callout-note appearance="simple"}
+`readtable` is a MATLAB command; Octave doesn't have it. The code in the Ed PREPs runs in Octave, so try this part in MATLAB on your own computer.
+:::
+
+## Tables {#sec-tables}
+
+The Workspace shows a new type of variable: `data` is a 223×12 **table**. A table is MATLAB's way of storing a dataset. It organizes the data into rows and columns, and each column has a descriptive name. 
+
+``` {.output}
+data =
+
+  223×12 table
+
+       Date       NEC    Atira    Aten    Apollo     Amor    PHA_km     PHA    NEA_km    NEA_140m      NEA      NEO
+    __________    ___    _____    ____    ______    _____    ______    ____    ______    ________    _____    _____
+
+    2026-10-22    125       41    3513     24408    14888       156    2532       885       11691    42850    42975
+    2026-10-01    125       41    3491     24249    14821       156    2532       885       11675    42602    42727
+    2026-09-01    124       41    3469     24085    14699       156    2531       885       11644    42294    42418
+    2026-08-01    124       41    3455     24005    14639       156    2529       885       11623    42140    42264
+    2026-07-01    124       41    3447     23946    14587       156    2527       885       11606    42021    42145
+
+        :           :        :       :         :        :         :       :         :           :        :        :
+
+    1940-01-01     36        0       0         3        6         2       3         8           9        9       45
+    1930-01-01     34        0       0         0        5         0       0         5           5        5       39
+    1920-01-01     32        0       0         0        3         0       0         3           3        3       35
+    1910-01-01     29        0       0         0        1         0       0         1           1        1       30
+    1900-01-01     26        0       0         0        1         0       0         1           1        1       27
+
+    Display all 223 rows.
+```
+
+- **223×12** means 223 rows and 12 columns.
+- **Rows** are horizontal. The first row is `2026-10-22  125  41 ...`: everything recorded on that date.
+- **Columns** are vertical. The first column, `Date`, holds the dates. The second column, `NEC`, is the number of near-Earth comets at each date. We may not know what a column name means; we might need to look back at where the data came from. Here, the website says NEC means "near-Earth comets."
+- Putting these together: as of 2026-10-22, there were 125 known near-Earth comets.
+- The `:` rows mean MATLAB is hiding data to save space. Click **Display all 223 rows** to see everything.
+
+## Extracting columns as arrays {#sec-extract-columns}
+
+Tables are great for storing different types of data side by side (dates next to numbers), but not for doing math. To calculate with a column, extract it as an array: a dot, followed by the column name.
+
+```matlab
+nea = data.NEA;         % the number of near-Earth asteroids, as an array
+date = data.Date;       % the dates
+```
+
+`nea` is an array of numbers, which we can work with like any other array. Each column becomes a column vector (223×1).
+
+`date` is a new type of variable: a **datetime** array. Dates aren't numbers, so we can't use them directly in calculations; see @sec-datetime.
+
+
+:::: {.callout-tip collapse="true"}
+## Practice: extract a column
+
+With the asteroid data loaded into `data`, write one line of code that saves the `Atira` column to an array `atira`, without displaying anything.
+
+::: {.callout-caution collapse="true"}
+## Answer
+
+```matlab
+atira=data.Atira;
+```
+
+The column name after the dot must match exactly, including capitalization: `data.atira` gives an error.
+:::
+::::
+
+## Dates and times {#sec-datetime}
+
+A datetime array stores dates, like `2026-10-22`. To use dates in a calculation, such as dividing by a change in time for a derivative, convert them to numbers first.
+
+`year`, `month`, and `day` pull out each part of a date as a number:
+
+```matlab
+y = year(date);         % the year of each date
+m = month(date);        % the month of each date
+d = day(date);          % the day of each date
+```
+
+From these, we can build any time measurement we want. In @sec-ex-nea, the time is **months since January 1, 1900**:
+$$t = 12(\text{year} - 1900) + (\text{month} - 1) + \frac{\text{day} - 1}{\text{days in that month}}.$$
+`eomday(year, month)` gives the number of days in a month ("end of month day"). The lesson file has this conversion in a function, `convert_datetime_to_number`.

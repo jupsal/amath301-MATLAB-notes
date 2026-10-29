@@ -20,15 +20,18 @@ prep:
   lesson7: "https://edstem.org/us/courses/100233/lessons/174502"    # If statements and bisection
   lesson8: "https://edstem.org/us/courses/100233/lessons/174508"    # Newton's method and functions
   lesson9: "https://edstem.org/us/courses/100233/lessons/185633"    # More with functions
+  lesson11: "https://edstem.org/us/courses/100233/lessons/174510"    # Numerical derivatives (finite difference)
+  lesson12: "https://edstem.org/us/courses/100233/lessons/174512"    # Finite difference (truncation error)
+  lesson13: "https://edstem.org/us/courses/100233/lessons/174522"    # Loading data and numerical derivatives of data
   functions: "#"
 
 # Homework and quiz checkpoints: what is covered "up through here".
-# TODO: confirm numbers each quarter.
-# NOT CURRENTLY USED, could be used later. See AUTHORING.MD
 checkpoints:
   HW1: "Coding Homework 1 and Practice Quiz 1"
   HW2: "Coding Homework 2, Written Homework 1, and Practice Quiz 2"
-  HW3: "Homework 3"
+  HW3: "Coding Homework 3, Practice Quiz 3"
   Exam1: "Exam 1"
+  HW4: "Coding Homework 4, Practice Quiz 4"
+  HW5: "Coding Homework 5, Practice Quiz 5"
   # control-flow: "Homework 4 and Quiz 4"
   #$functions: "Homework 5 and Quiz 5"

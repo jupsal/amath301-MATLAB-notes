@@ -190,7 +190,11 @@ A **file system** is a system for storing files. Your computer organizes files l
 
 ![An example file system.](../figures/file_system_tree.png){fig-alt="Tree diagram of a file system. A home folder contains a docs folder, a file doc1.txt, an image file, and a programs folder. The docs folder holds doc2.txt and a data folder with doc3.txt and doc4.txt; the programs folder holds three .exe files." width="65%"}
 
-Keep each assignment's files in its own folder. Two files with the same name in one folder (like Downloads) become "temperature_data.csv" and "temperature_data (1).csv", and you can't tell which is which. With a folder per assignment, "hw3/temperature_data.csv" and "hw4/temperature_data.csv" never get mixed up.
+Keep each assignment's files in its own folder. Two files with the same name in
+one folder (like Downloads) become "temperature_data.csv" and "temperature_data
+(1).csv", and you can't tell which is which. With a folder per assignment,
+"hw3/temperature_data.csv" and "hw4/temperature_data.csv" never get mixed up. To
+load a data file like this into MATLAB, see @sec-loading-data.
 
 ### Recommended course folder structure
 

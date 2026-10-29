@@ -5,6 +5,7 @@ project:
   resources:
     - "files/*.m"
     - "figures/*"
+    - "files/*.csv"
 
 book:
   title: "AMATH 301 Course Notes"
@@ -30,12 +31,14 @@ book:
         - basics/arrays.qmd
         - basics/plotting.qmd
         - basics/control-flow.qmd
+        - basics/root-finding.qmd
         - basics/functions.qmd
         - basics/practice-loops-functions.qmd
 
     - part: "Numerical calculus (Exam 2)"
       chapters:
-        - calculus/index.qmd
+        - calculus/derivatives.qmd
+        - calculus/truncation-error.qmd
 
     - part: "Data science (Exam 3)"
       chapters:
@@ -44,6 +47,7 @@ book:
   # Reference pages, listed as appendices (Appendix A, B, ...).
   appendices:
     - reference/style-guide.qmd
+    - reference/loading-data.qmd
 
 format:
   html:

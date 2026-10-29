@@ -18,7 +18,7 @@ Throughout this chapter, you will learn to:
 ## Why functions? {#sec-why-functions}
 
 ::: {.motivation}
-We have now learned two root-finding algorithms: bisection and Newton's method. So far, every time we want to find a root, we copy our code and edit it by hand to change the function, the starting values, and the tolerance. This is tedious and makes mistakes easy. It also makes our code hard to share with others.
+We have now learned two root-finding algorithms (@sec-root-finding): bisection and Newton's method. So far, every time we want to find a root, we copy our code and edit it by hand to change the function, the starting values, and the tolerance. This is tedious and makes mistakes easy. It also makes our code hard to share with others.
 :::
 
 We would like to package our algorithms so they can be used over and over without editing them or knowing how they work. In other words, we would like to find a root of $f(x) = x^2 - \cos(x)$ by writing only something like

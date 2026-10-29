@@ -1,3 +1,0 @@
-# Numerical calculus {#sec-calculus}
-
-*Coming soon.*
