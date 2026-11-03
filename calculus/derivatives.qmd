@@ -210,6 +210,7 @@ disp(d)
 
 `d(j)` approximates $f'$ at `x(j)`.
 
+
 ## The derivative of a function on a grid {#sec-fd-grid}
 
 To plot $f'(x)$, we need its value at many points: a discretization
@@ -355,6 +356,35 @@ The three approximations of the derivative should look similar, but not exactly 
 ::::
 :::::
 
+#### Summary animation
+The animation below applies the forward and backward differences at five equally
+spaced points. Because $f$ can be evaluated anywhere, both formulas work at
+every point, including the first and the last: they use $f(x_1 - h)$ and $f(x_N
++ h)$, just outside the points. Compare this to @sec-fd-grid below. 
+
+::: {.callout-note collapse="true"}
+## Animation: forward and backward differences of a function
+
+![The forward difference (left) and the backward difference (right) at each
+point, for a function.](../figures/fd_function_animation.gif){fig-alt="Animation
+titled Finite differences of a function, with two plots of the same curve and
+five grid points, x1 to x5. Left: Forward difference, with an arrow pointing
+right. Right: Backward difference, with an arrow pointing left. In both plots, a
+secant line steps through the grid points together, with the MATLAB line for
+that step above each plot (f_forward on the left, f_backward on the right). The
+forward secant connects each point to the point one step to its right (solid
+line); the backward secant connects each point to the point one step to its left
+(dashed line). A strip below each plot fills in a dot at each point where the
+formula was computed. At x1, the backward difference uses f(x1 - h), shown as a
+diamond on the curve just left of the grid. At x5, the forward difference uses
+f(x5 + h), shown as a diamond just right of the grid. Both strips end with a dot
+at all five points."}
+
+Close this box to stop the animation.
+:::
+
+
+
 ## Derivatives of data {#sec-fd-data}
 
 ::: {.motivation}
@@ -415,7 +445,73 @@ end
 Index exceeds the number of array elements. Index must not exceed 5.
 ```
 
-At $n = 5$, the formula needs `s(6)`, which doesn't exist: we don't know the car's position at any time after $t = 6$. **This is the most important difference between numerical derivatives of functions and data**: some finite difference formulas can't be applied at some data points, because they would use data points that don't exist.
+At $n = 5$, the formula needs `s(6)`, which doesn't exist: we don't know the
+car's position at any time after $t = 6$. **This is the most important
+difference between numerical derivatives of functions and data**: some finite
+difference formulas can't be applied at some data points, because they would use
+data points that don't exist.
+
+The animations below compare a function on a grid with the car data from
+@tbl-car-uneven. @fig-fd-endpoints summarizes where each formula can be
+computed.
+
+::: {.callout-note collapse="true"}
+## Animation: the forward difference, one point at a time
+
+![The forward difference at each point, for a function (left) and the car data
+(right).](../figures/fd_forward_animation.gif){fig-alt="Animation titled Forward
+difference: uses the point to the right. Left: five grid points on the curve of
+a function f(x). Right: the five car measurements, at uneven times t1 to t5,
+with shaded no-data regions before t1 and after t5. A solid secant line steps
+through the points, connecting each point to the next point to its right, with
+the MATLAB line for that step above each plot (f_forward on the left, velocity
+on the right). A strip below each plot fills in a dot at each point where the
+forward difference was computed. At the last point, the function plot evaluates
+f one step past the grid and shows the result, while the data plot shows t6 = ?
+and s6 = ? in the shaded region, the MATLAB error Index exceeds the number of
+array elements, and a red x in the strip."}
+
+Close this box to stop the animation.
+:::
+
+::: {.callout-note collapse="true"}
+## Animation: the backward difference, one point at a time
+
+![The backward difference at each point, for a function (left) and the car data
+(right).](../figures/fd_backward_animation.gif){fig-alt="Animation titled
+Backward difference: uses the point to the left. Left: five grid points on the
+curve of a function f(x). Right: the five car measurements, at uneven times t1
+to t5, with shaded no-data regions before t1 and after t5. A dashed secant line
+steps through the points, connecting each point to the previous point to its
+left, with the MATLAB line for that step above each plot (f_backward on the
+left, velocity on the right). A strip below each plot fills in a dot at each
+point where the backward difference was computed. At the first point, the
+function plot evaluates f one step before the grid and shows the result, while
+the data plot shows t0 = ? and s0 = ? in the shaded region, the MATLAB error
+Array indices must be positive integers or logical values, and a red x in the
+strip."}
+
+Close this box to stop the animation.
+:::
+
+![Summary. For a function (left), the forward difference at the last point and
+the backward difference at the first point use values of $f$ just outside the
+grid, which we can evaluate. For the car data (right), there is no measurement
+before $t_1$ or after $t_5$: we don't know its time or its position. So the
+forward difference can't be computed at the last point, and the backward
+difference can't be computed at the
+first.](../figures/fd_endpoints.png){#fig-fd-endpoints fig-alt="Summary figure
+titled Summary: where each formula can be computed. Left, titled Function: five
+grid points on a curve that continues past both ends. A solid secant line
+through the last point reaches a diamond on the curve one step to the right,
+labeled f of x5 plus h, for the forward difference at x5. A dashed secant line
+through the first point reaches a diamond one step to the left, labeled f of x1
+minus h, for the backward difference at x1. Right, titled Data: car position s:
+the five car measurements at uneven times, with shaded no-data regions before
+t1, labeled t0 = ? and s0 = ?, and after t5, labeled t6 = ? and s6 = ?. Below
+each plot are two rows of markers, forward and backward. For the function, both
+rows have a dot at all five points. For the data, the forward row has a red x at
+t5 and the backward row has a red x at t1; every other point has a dot."}
 
 The fix: apply the forward difference only up to the second-to-last point.
 
