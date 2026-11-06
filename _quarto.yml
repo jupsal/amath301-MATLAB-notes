@@ -39,6 +39,7 @@ book:
       chapters:
         - calculus/derivatives.qmd
         - calculus/truncation-error.qmd
+        - calculus/integrals.qmd
 
     - part: "Data science (Exam 3)"
       chapters:

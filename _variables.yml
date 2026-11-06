@@ -23,6 +23,7 @@ prep:
   lesson11: "https://edstem.org/us/courses/100233/lessons/174510"    # Numerical derivatives (finite difference)
   lesson12: "https://edstem.org/us/courses/100233/lessons/174512"    # Finite difference (truncation error)
   lesson13: "https://edstem.org/us/courses/100233/lessons/174522"    # Loading data and numerical derivatives of data
+  lesson14: "https://edstem.org/us/courses/100233/lessons/174514"    # Numerical integrals
   functions: "#"
 
 # Homework and quiz checkpoints: what is covered "up through here".
@@ -33,5 +34,6 @@ checkpoints:
   Exam1: "Exam 1"
   HW4: "Coding Homework 4, Practice Quiz 4"
   HW5: "Coding Homework 5, Practice Quiz 5"
+  HW6: "Coding Homework 6, Practice Quiz 6"
   # control-flow: "Homework 4 and Quiz 4"
   #$functions: "Homework 5 and Quiz 5"

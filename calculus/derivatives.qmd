@@ -384,6 +384,9 @@ Close this box to stop the animation.
 :::
 
 
+::: {.checkpoint}
+{{< var checkpoints.HW4 >}} covers up through here.
+:::
 
 ## Derivatives of data {#sec-fd-data}
 

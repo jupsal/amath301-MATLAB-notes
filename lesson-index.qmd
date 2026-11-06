@@ -35,5 +35,6 @@ Find what we covered in each class meeting ({{< var quarter >}}). Each row links
 | Topics covered for Coding Homework 5, Practice Quiz 5 | | | | |
 | 12 | Oct 27 & 28 | Finite difference (truncation) error| [Truncation Error](calculus/truncation-error.qmd)   | [Lesson_12_truncation_plot.m](files/Lesson_12_truncation_plot.m) ([completed](files/Lesson_12_truncation_plot_Completed.m)), [Lesson_12_truncation_loglog.m](files/Lesson_12_truncation_loglog.m) ([completed](files/Lesson_12_truncation_loglog_Completed.m))|
 | 13 | Oct 29 | Numerical derivatives of data, numerical integrals|   [Derivatives of data](calculus/derivatives.qmd#sec-fd-data), [Loading data](reference/loading-data.qmd) | [Lesson_13_NEA_Derivative.m](files/Lesson_13_NEA_Derivative.m) ([completed](files/Lesson_13_NEA_Derivative_Completed.m)), [Asteroid_Data.csv](files/Asteroid_Data.csv) |
+| 14 | Oct 30 & Nov 2 | Numerical integrals|   [Numerical integrals](calculus/integrals.qmd#sec-integrals) | [Lesson_14_Numerical_Integrals_Functions.m](files/Lesson_14_Numerical_Integrals_Functions.m) ([completed](files/Lesson_14_Numerical_Integrals_Functions_Completed.m)), [Lesson_14_NEA_Integral.m](files/Lesson_14_NEA_Integral.m) ([completed](files/Lesson_14_NEA_Integral_Completed.m))|
 
 : Class meetings, the topics covered, and links to the notes and files. {tbl-colwidths="[7,10,20,40,23]"}
