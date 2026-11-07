@@ -124,7 +124,15 @@ end
 
 1. For the left-hand rule applied to $\int_a^b 3f(x)\,dx$ with $N$ intervals, which expressions correctly compute the approximation? Select all that apply.
 
-   (a) $\Delta x \sum_{k=0}^{N} 3f(x_k)$ &emsp; (b) $3\Delta x \sum_{k=1}^{N} f(x_k)$ &emsp; (c) $3\Delta x \sum_{k=0}^{N-1} f(x_k)$ &emsp; (d) $\Delta x \sum_{k=0}^{N-1} f(x_k)$ &emsp; (e) $\Delta x \sum_{k=0}^{N-1} 3f(x_k)$
+   (a) $\Delta x \sum_{k=0}^{N} 3f(x_k)$ 
+   
+   (b) $3\Delta x \sum_{k=1}^{N} f(x_k)$ 
+   
+   (c) $3\Delta x \sum_{k=0}^{N-1} f(x_k)$ 
+   
+   (d) $\Delta x \sum_{k=0}^{N-1} f(x_k)$ 
+   
+   (e) $\Delta x \sum_{k=0}^{N-1} 3f(x_k)$
 
 2. What is the order of accuracy of the LHR and the RHR?
 3. Approximating $\int_0^{10} f(x)\,dx$ with $\Delta x = 2$, how many rectangles are used?
@@ -340,7 +348,13 @@ The car's velocity is negative at $t = 4$: it is moving backward. So the integra
 
 1. Which of these correctly calculate the right-hand rule with unequally spaced data? Select all that apply.
 
-   (a) $\sum_{k=0}^{N-1} f(x_k)\,(x_{k+1} - x_k)$ &emsp; (b) $\sum_{k=1}^{N} f(x_k)\,(x_k - x_{k-1})$ &emsp; (c) $\sum_{k=0}^{N-1} f(x_{k+1})\,(x_{k+1} - x_k)$ &emsp; (d) $\sum_{k=1}^{N} f(x_{k-1})\,(x_k - x_{k-1})$
+   (a) $\sum_{k=0}^{N-1} f(x_k)\,(x_{k+1} - x_k)$ 
+   
+   (b) $\sum_{k=1}^{N} f(x_k)\,(x_k - x_{k-1})$ 
+   
+   (c) $\sum_{k=0}^{N-1} f(x_{k+1})\,(x_{k+1} - x_k)$ 
+   
+   (d) $\sum_{k=1}^{N} f(x_{k-1})\,(x_k - x_{k-1})$
 
 2. By hand, approximate the integral of the velocity data in @tbl-car-velocity with the right-hand rule.
 

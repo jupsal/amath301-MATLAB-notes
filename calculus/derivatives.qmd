@@ -152,7 +152,13 @@ for forward and backward, $2\Delta x$ for centered.
 
 1. Which is the second-order centered difference approximation of $f'(x^*)$?
 
-   (a) $\dfrac{f(x+h) - f(x)}{h}$ &emsp; (b) $\dfrac{f(x+h) - f(x-h)}{2h}$ &emsp; (c) $\dfrac{f(x+h) - f(x-h)}{h}$ &emsp; (d) $\dfrac{f(x) - f(x-h)}{h}$
+   (a) $\dfrac{f(x+h) - f(x)}{h}$ 
+   
+   (b) $\dfrac{f(x+h) - f(x-h)}{2h}$ 
+   
+   (c) $\dfrac{f(x+h) - f(x-h)}{h}$ 
+   
+   (d) $\dfrac{f(x) - f(x-h)}{h}$
 
 2. What does "forward" in forward difference refer to?
 3. True or false: the finite difference approximations give the exact value of the derivative when $\Delta x$ is small enough.

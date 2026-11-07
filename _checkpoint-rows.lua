@@ -29,7 +29,15 @@ local function is_exam(cell)
   return found
 end
 
+-- Only the Lesson index uses grouped rows. Other tables (for example, a
+-- two-column table with an empty cell) are left alone.
+local function is_lesson_index()
+  local f = quarto.doc.input_file or ""
+  return f:match("lesson%-index%.qmd$") ~= nil
+end
+
 function Table(tbl)
+  if not is_lesson_index() then return nil end
   local ncols = #tbl.colspecs
   local group = 0
   for _, body in ipairs(tbl.bodies) do

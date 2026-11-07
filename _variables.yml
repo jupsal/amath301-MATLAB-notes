@@ -24,6 +24,9 @@ prep:
   lesson12: "https://edstem.org/us/courses/100233/lessons/174512"    # Finite difference (truncation error)
   lesson13: "https://edstem.org/us/courses/100233/lessons/174522"    # Loading data and numerical derivatives of data
   lesson14: "https://edstem.org/us/courses/100233/lessons/174514"    # Numerical integrals
+  lesson15: "https://edstem.org/us/courses/100233/lessons/174516"    # Intro to IVPs; forward Euler
+  lesson16: "https://edstem.org/us/courses/100233/lessons/174518"    # Backward Euler; stiffness
+  lesson17: "https://edstem.org/us/courses/100233/lessons/174520"    # RK4, ode45, systems of IVPs
   functions: "#"
 
 # Homework and quiz checkpoints: what is covered "up through here".

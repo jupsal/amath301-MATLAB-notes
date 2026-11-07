@@ -36,5 +36,12 @@ Find what we covered in each class meeting ({{< var quarter >}}). Each row links
 | 12 | Oct 27 & 28 | Finite difference (truncation) error| [Truncation Error](calculus/truncation-error.qmd)   | [Lesson_12_truncation_plot.m](files/Lesson_12_truncation_plot.m) ([completed](files/Lesson_12_truncation_plot_Completed.m)), [Lesson_12_truncation_loglog.m](files/Lesson_12_truncation_loglog.m) ([completed](files/Lesson_12_truncation_loglog_Completed.m))|
 | 13 | Oct 29 | Numerical derivatives of data, numerical integrals|   [Derivatives of data](calculus/derivatives.qmd#sec-fd-data), [Loading data](reference/loading-data.qmd) | [Lesson_13_NEA_Derivative.m](files/Lesson_13_NEA_Derivative.m) ([completed](files/Lesson_13_NEA_Derivative_Completed.m)), [Asteroid_Data.csv](files/Asteroid_Data.csv) |
 | 14 | Oct 30 & Nov 2 | Numerical integrals|   [Numerical integrals](calculus/integrals.qmd#sec-integrals) | [Lesson_14_Numerical_Integrals_Functions.m](files/Lesson_14_Numerical_Integrals_Functions.m) ([completed](files/Lesson_14_Numerical_Integrals_Functions_Completed.m)), [Lesson_14_NEA_Integral.m](files/Lesson_14_NEA_Integral.m) ([completed](files/Lesson_14_NEA_Integral_Completed.m))|
+| Topics covered for Coding Homework 6, Practice Quiz 6 | | | | |
+| 15 | Nov 3 | Introduction to IVPs and forward Euler|   [IVPs](calculus/ivps.qmd#sec-ivps) | [Lesson_15_Forward_Euler_Viral.m](files/Lesson_15_Forward_Euler_Viral.m) ([completed](files/Lesson_15_Forward_Euler_Viral_Completed.m)), [Lesson_15_Forward_Euler_Stiff.m](files/Lesson_15_Forward_Euler_Stiff.m) ([completed](files/Lesson_15_Forward_Euler_Stiff_Completed.m))|
+| 16 | Nov 4 & 6 | Stiff ODEs and backward Euler|   [Backward Euler](calculus/ivps.qmd#sec-backward-euler) | [Lesson_16_Backward_Euler_Stiff.m](files/Lesson_16_Backward_Euler_Stiff.m) ([completed](files/Lesson_16_Backward_Euler_Stiff_Completed.m)), [Lesson_16_Backward_Euler_Stiff_Nonlinear.m](files/Lesson_16_Backward_Euler_Stiff_Nonlinear), ([completed](files/Lesson_16_Backward_Euler_Stiff_Nonlinear_Completed))|
+| 17 | Nov 6 | ode45|   [ode45: MATLAB's built-in IVP solver](calculus/ivps.qmd#sec-rk4) | |
+| Topics covered for Coding Homework 7, Practice Quiz 7 | | | | |
+| 17 & 18 | Nov 6 & 9 | ode45 and systems of ODEs| [ode45: MATLAB's built-in IVP solver](calculus/ivps.qmd#sec-rk4) | |
+| [Exam 2 (Mon Nov 23): Lessons 11–18]{.exam} | | | | |
 
 : Class meetings, the topics covered, and links to the notes and files. {tbl-colwidths="[7,10,20,40,23]"}

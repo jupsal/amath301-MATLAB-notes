@@ -40,6 +40,7 @@ book:
         - calculus/derivatives.qmd
         - calculus/truncation-error.qmd
         - calculus/integrals.qmd
+        - calculus/ivps.qmd
 
     - part: "Data science (Exam 3)"
       chapters:
@@ -52,7 +53,10 @@ book:
 
 format:
   html:
-    theme: cosmo # Formerly also had a dark: darkly optional theme
+    theme: 
+      light: cosmo # Formerly also had a dark: darkly optional theme
+      dark: [darkly, _dark-theme.scss]
+    respect-user-color-scheme: true
     link-external-newwindow: true
     css: styles.css 
     # Keyboard support for collapsible callouts (see _a11y.html).
@@ -74,7 +78,7 @@ format:
     code-line-numbers: true
     toc: true
     toc-depth: 3
-    toc-title: "On this page"
+    toc-title: "Sections in this chapter"
     number-sections: true
     number-depth: 2
     # Accessibility checks (Quarto 1.8+). With `true`, problems are logged to

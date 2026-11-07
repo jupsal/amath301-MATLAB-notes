@@ -1,215 +1,255 @@
 <!--
-  Auto-hiding sidebars (wide screens only).
+  Sidebar layout (wide screens, at least 992px).
 
-  On screens at least 992px wide, the navigation (left) and "On this page"
-  (right) sidebars are hidden so the page text can use the full width.
-  A tab on each edge brings a sidebar back: click the tab to open it, and
-  click it again (or anywhere outside the sidebar, or press Esc) to close it.
-  Pressing "/" opens the left sidebar so the search box is visible.
+  Both sidebars work the same way:
+  - Each has a thin light-gray bar on its edge of the screen. Click the bar
+    to open or close that sidebar. "All chapters" (left) starts closed;
+    "Sections in this chapter" (right) starts open.
+  - When a sidebar is open, drag its inner edge to make it narrower or wider
+    (or focus the edge with Tab and use the arrow keys). Double-click the
+    edge to reset the width.
+  - Each student's choices (open/closed and widths) are remembered in their
+    browser. Pressing "/" (search) opens All chapters so the search box shows.
 
-  "Always show sidebars" (bottom of the left sidebar) turns this off and is
-  remembered in the browser. Narrower screens keep Quarto's normal layout.
+  Narrower screens (phones, small windows) keep Quarto's normal layout.
 
-  To turn the whole feature off, remove _sidebars.html from
+  Settings you might change are the variables at the top of the <style>
+  and DEFAULTS at the top of the <script>.
+  To go back to Quarto's default sidebars, remove _sidebars.html from
   include-after-body in _quarto.yml.
 -->
 <style>
 @media (min-width: 992px) {
-  :root { --autohide-content-width: 900px; }  /* comfortable reading width */
-
-  /* Let the page text use the space the sidebars leave behind. */
-  body.sidebars-autohide #quarto-content main.content {
-    grid-column: screen-start-inset / screen-end-inset;
-    width: 100%;
-    max-width: var(--autohide-content-width);
-    margin-left: auto;
-    margin-right: auto;
+  body.sb-layout {
+    --sb-rail: 30px;          /* width of each gray bar */
+    --sb-left: 270px;         /* All chapters width (set by dragging) */
+    --sb-right: 240px;        /* Sections in this chapter width (set by dragging) */
+    --sb-read: 860px;         /* maximum width of the page text */
+    --sb-bg: #f1f3f5;         /* light gray */
+    --sb-border: #dee2e6;
+    --sb-text: #343a40;
+    --sb-offL: calc(var(--sb-rail) + var(--sb-left));
+    --sb-offR: calc(var(--sb-rail) + var(--sb-right));
+  }
+  body.sb-layout.sb-left-closed  { --sb-offL: var(--sb-rail); }
+  body.sb-layout.sb-right-closed { --sb-offR: var(--sb-rail); }
+  body.sb-layout.quarto-dark {
+    --sb-bg: #2b3035;
+    --sb-border: #495057;
+    --sb-text: #e9ecef;
   }
 
-  /* Both sidebars become slide-out panels. */
-  body.sidebars-autohide #quarto-sidebar,
-  body.sidebars-autohide #quarto-margin-sidebar {
+  /* ---- Page text: fills the space between the sidebars ---- */
+  body.sb-layout #quarto-content main.content {
+    grid-column: screen-start / screen-end;
+    width: auto;
+    max-width: none;
+    margin-left:  calc(var(--sb-offL) + max(2rem, (100vw - var(--sb-offL) - var(--sb-offR) - var(--sb-read)) / 2));
+    margin-right: calc(var(--sb-offR) + max(2rem, (100vw - var(--sb-offL) - var(--sb-offR) - var(--sb-read)) / 2));
+  }
+  body.sb-layout .nav-footer { padding-left: var(--sb-offL); padding-right: var(--sb-offR); }
+
+  /* ---- The gray bars ---- */
+  .sb-rail {
+    display: flex;
+    position: fixed;
+    top: 0; bottom: 0;
+    width: var(--sb-rail);
+    z-index: 1031;
+    margin: 0; padding: 1rem 0;
+    align-items: flex-start;
+    justify-content: center;
+    background: var(--sb-bg);
+    color: var(--sb-text);
+    border: none;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.85rem;
+  }
+  #sb-rail-left  { left: 0;  border-right: 1px solid var(--sb-border); }
+  #sb-rail-right { right: 0; border-left: 1px solid var(--sb-border); }
+  .sb-rail:hover { filter: brightness(0.96); }
+  body.quarto-dark .sb-rail:hover { filter: brightness(1.15); }
+  .sb-rail:focus-visible { outline: 3px solid #4b2e83; outline-offset: -3px; }
+  .sb-rail span { writing-mode: vertical-rl; letter-spacing: 0.03em; white-space: nowrap; }
+  #sb-rail-left span { transform: rotate(180deg); }   /* reads bottom to top */
+
+  /* ---- The panels ---- */
+  body.sb-layout #quarto-sidebar,
+  body.sb-layout #quarto-margin-sidebar {
     position: fixed !important;
-    top: 0;
-    bottom: 0;
+    top: 0; bottom: 0;
     height: 100vh !important;
     max-height: 100vh !important;
-    width: 300px !important;
     overflow-y: auto;
-    z-index: 1040;
-    background: var(--bs-body-bg, #fff);
-    box-shadow: 0 0 18px rgba(0, 0, 0, 0.18);
-    padding: 1rem 1rem 3rem 1rem;
-    transition: transform 0.2s ease, visibility 0.2s;
-    visibility: hidden;
-  }
-  body.sidebars-autohide #quarto-sidebar {
-    left: 0;
-    transform: translateX(-105%);
-  }
-  body.sidebars-autohide #quarto-margin-sidebar {
-    right: 0;
-    left: auto;
-    transform: translateX(105%);
-  }
-  body.sidebars-autohide #quarto-sidebar.autohide-open,
-  body.sidebars-autohide #quarto-margin-sidebar.autohide-open {
-    transform: none;
-    visibility: visible;
-  }
-
-  /* Edge tabs: solid UW purple with white text for high contrast. */
-  .autohide-tab {
-    display: none;
-    position: fixed;
-    top: 50%;
     z-index: 1030;
-    border: 2px solid #4b2e83;
-    background: #4b2e83;
-    color: #ffffff;
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    padding: 0.85rem 0.5rem;
-    writing-mode: vertical-rl;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    background: var(--sb-bg);
   }
-  .autohide-tab:hover { background: #32006e; border-color: #32006e; }
-  .autohide-tab { display: none; align-items: center; gap: 0.45rem; }
-  .autohide-arrow { display: inline-flex; }
-  .autohide-arrow svg { transition: transform 0.2s ease; }
-  /* Arrows point toward the page when closed ("click to open") and flip
-     when the sidebar is open ("click to close"). */
-  /* (The left tab itself is rotated 180deg, so its arrow angles are flipped.) */
-  #autohide-tab-left  .autohide-arrow svg { transform: rotate(180deg); }   /* points right */
-  #autohide-tab-right .autohide-arrow svg { transform: rotate(180deg); }   /* points left  */
-  #autohide-tab-left[aria-expanded="true"]  .autohide-arrow svg { transform: rotate(0deg); }  /* points left  */
-  #autohide-tab-right[aria-expanded="true"] .autohide-arrow svg { transform: rotate(0deg); }  /* points right */
-  .autohide-tab:focus-visible { outline: 3px solid #b7a57a; outline-offset: 2px; }
-  #autohide-tab-left  { left: 0;  border-left: none;  border-radius: 0 6px 6px 0; transform: translateY(-50%) rotate(180deg); }
-  #autohide-tab-right { right: 0; border-right: none; border-radius: 6px 0 0 6px; transform: translateY(-50%); }
-  body.sidebars-autohide .autohide-tab { display: inline-flex; }
-  /* When a panel is open, its tab rides along on the panel's edge. */
-  body.sidebars-autohide .autohide-tab { transition: left 0.2s ease, right 0.2s ease; z-index: 1045; }
-  body.sidebars-autohide #autohide-tab-left[aria-expanded="true"]  { left: 300px; }
-  body.sidebars-autohide #autohide-tab-right[aria-expanded="true"] { right: 300px; }
+  body.sb-layout #quarto-sidebar {
+    left: var(--sb-rail);
+    width: var(--sb-left) !important;
+    border-right: 1px solid var(--sb-border);
+    padding: 1rem 1rem 3rem 1rem;
+  }
+  body.sb-layout #quarto-margin-sidebar {
+    right: var(--sb-rail);
+    left: auto !important;
+    width: var(--sb-right) !important;
+    border-left: 1px solid var(--sb-border);
+    padding: 1.5rem 1rem 3rem 1.25rem;
+  }
+  body.sb-layout #quarto-margin-sidebar nav#TOC { position: static !important; max-height: none !important; }
+  body.sb-layout.sb-left-closed  #quarto-sidebar,
+  body.sb-layout.sb-right-closed #quarto-margin-sidebar { display: none !important; }
 
-  /* The on/off switch */
-  .autohide-switch {
+  /* ---- Drag handles on the inner edge of each open panel ---- */
+  .sb-handle {
     display: block;
-    margin-top: 1.5rem;
-    font-size: 0.8rem;
-    background: none;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    padding: 0.25rem 0.5rem;
-    color: inherit;
-    cursor: pointer;
+    position: fixed;
+    top: 0; bottom: 0;
+    width: 8px;
+    z-index: 1032;
+    cursor: col-resize;
+    background: transparent;
   }
+  #sb-handle-left  { left:  calc(var(--sb-rail) + var(--sb-left) - 4px); }
+  #sb-handle-right { right: calc(var(--sb-rail) + var(--sb-right) - 4px); }
+  body.sb-left-closed  #sb-handle-left,
+  body.sb-right-closed #sb-handle-right { display: none; }
+  .sb-handle:hover, .sb-handle.sb-dragging, .sb-handle:focus-visible {
+    background: linear-gradient(to right, transparent 3px, #adb5bd 3px, #adb5bd 5px, transparent 5px);
+    outline: none;
+  }
+  body.sb-noselect, body.sb-noselect * { user-select: none !important; cursor: col-resize !important; }
 }
 @media (max-width: 991.98px) {
-  .autohide-tab, .autohide-switch { display: none !important; }
+  .sb-rail, .sb-handle { display: none !important; }
 }
 </style>
 
-<button type="button" id="autohide-tab-left" class="autohide-tab"
-        aria-controls="quarto-sidebar" aria-expanded="false"><span>Contents</span><span class="autohide-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M5.5 2.5 11 8l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-<button type="button" id="autohide-tab-right" class="autohide-tab"
-        aria-controls="quarto-margin-sidebar" aria-expanded="false"><span class="autohide-arrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16"><path d="M5.5 2.5 11 8l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>On this page</span></button>
+<button type="button" id="sb-rail-left" class="sb-rail" aria-controls="quarto-sidebar"><span></span></button>
+<button type="button" id="sb-rail-right" class="sb-rail" aria-controls="quarto-margin-sidebar"><span></span></button>
+<div id="sb-handle-left" class="sb-handle" role="separator" aria-orientation="vertical" tabindex="0"
+     aria-label="Resize All chapters (use the left and right arrow keys)"></div>
+<div id="sb-handle-right" class="sb-handle" role="separator" aria-orientation="vertical" tabindex="0"
+     aria-label="Resize Sections in this chapter (use the left and right arrow keys)"></div>
 
 <script>
 (function () {
-  var KEY = "amath301-sidebars-autohide";
+  var DEFAULTS = {
+    left:  { open: false, width: 270, min: 180, max: 480, label: "Course notes index and search" },
+    right: { open: true,  width: 240, min: 140, max: 460, label: "Sections in this chapter" }
+  };
   var wide = window.matchMedia("(min-width: 992px)");
   var body = document.body;
-  var left = document.getElementById("quarto-sidebar");
-  var right = document.getElementById("quarto-margin-sidebar");
-  var tabL = document.getElementById("autohide-tab-left");
-  var tabR = document.getElementById("autohide-tab-right");
-  if (!left) return;
-  if (!right || !right.querySelector("nav, #TOC")) { tabR.remove(); tabR = null; right = null; }
+  var panels = {
+    left:  document.getElementById("quarto-sidebar"),
+    right: document.getElementById("quarto-margin-sidebar")
+  };
+  if (panels.right && !panels.right.querySelector("nav#TOC, #TOC")) panels.right = null;
 
-  function readPref() {
-    try { return localStorage.getItem(KEY) !== "off"; } catch (e) { return true; }
-  }
-  function writePref(on) {
-    try { localStorage.setItem(KEY, on ? "on" : "off"); } catch (e) {}
-  }
+  function get(k) { try { return localStorage.getItem("amath301-sb-" + k); } catch (e) { return null; } }
+  function set(k, v) { try { localStorage.setItem("amath301-sb-" + k, v); } catch (e) {} }
 
-  // On/off switch at the bottom of the left sidebar.
-  var sw = document.createElement("button");
-  sw.type = "button";
-  sw.className = "autohide-switch";
-  left.appendChild(sw);
+  function setup(side) {
+    var d = DEFAULTS[side];
+    var rail = document.getElementById("sb-rail-" + side);
+    var handle = document.getElementById("sb-handle-" + side);
+    var panel = panels[side];
+    if (!panel) {
+      rail.remove(); handle.remove();
+      body.classList.add("sb-" + side + "-closed");
+      body.style.setProperty("--sb-" + side, "0px");
+      return null;
+    }
 
-  function apply() {
-    var on = readPref() && wide.matches;
-    body.classList.toggle("sidebars-autohide", on);
-    sw.textContent = readPref() ? "Always show sidebars" : "Auto-hide sidebars";
-    if (!on) { close(left); if (right) close(right); }
-  }
-
-  var pinned = new WeakMap();
-  function tabFor(panel) { return panel === left ? tabL : tabR; }
-  function open(panel, pin) {
-    if (!panel) return;
-    panel.classList.add("autohide-open");
-    var t = tabFor(panel); if (t) t.setAttribute("aria-expanded", "true");
-    if (pin) pinned.set(panel, true);
-  }
-  function close(panel) {
-    if (!panel) return;
-    panel.classList.remove("autohide-open");
-    pinned.set(panel, false);
-    var t = tabFor(panel); if (t) t.setAttribute("aria-expanded", "false");
-  }
-
-  function wire(tab, panel) {
-    if (!tab || !panel) return;
-    tab.addEventListener("click", function () {
-      if (panel.classList.contains("autohide-open")) { close(panel); }
-      else {
-        open(panel, true);
-        var first = panel.querySelector("a, input, button");
+    function isOpen() {
+      var v = get(side + "-open");
+      return v === null ? d.open : v === "yes";
+    }
+    function applyOpen() {
+      var open = isOpen();
+      body.classList.toggle("sb-" + side + "-closed", !open);
+      rail.setAttribute("aria-expanded", open ? "true" : "false");
+      rail.firstChild.textContent = open ? "Hide " + d.label.toLowerCase() : d.label;
+    }
+    function toggle(open) {
+      set(side + "-open", open ? "yes" : "no");
+      applyOpen();
+    }
+    rail.addEventListener("click", function () {
+      var open = !isOpen();
+      toggle(open);
+      if (open) {
+        var first = panel.querySelector("input, a");
         if (first) first.focus({ preventScroll: true });
       }
     });
-  }
-  wire(tabL, left);
-  wire(tabR, right);
 
-  sw.addEventListener("click", function () {
-    writePref(!readPref());
-    apply();
-  });
-
-  document.addEventListener("keydown", function (e) {
-    if (!body.classList.contains("sidebars-autohide")) return;
-    if (e.key === "Escape") {
-      [left, right].forEach(function (p) {
-        if (p && p.classList.contains("autohide-open")) {
-          close(p);
-          var t = tabFor(p); if (t) t.focus();
-        }
-      });
+    function clamp(w) { return Math.max(d.min, Math.min(d.max, w, window.innerWidth * 0.35)); }
+    function setWidth(w, save) {
+      w = Math.round(clamp(w));
+      body.style.setProperty("--sb-" + side, w + "px");
+      handle.setAttribute("aria-valuenow", String(w));
+      if (save) set(side + "-width", String(w));
     }
-    // "/" opens Quarto's search; show the left sidebar so the box is visible.
+    function current() {
+      return parseInt(getComputedStyle(body).getPropertyValue("--sb-" + side), 10) || d.width;
+    }
+    // Width from the pointer position: distance from the screen edge, minus the bar.
+    function fromPointer(x) {
+      var rail = parseInt(getComputedStyle(body).getPropertyValue("--sb-rail"), 10) || 30;
+      return side === "left" ? x - rail : window.innerWidth - x - rail;
+    }
+    handle.setAttribute("aria-valuemin", String(d.min));
+    handle.setAttribute("aria-valuemax", String(d.max));
+    handle.addEventListener("pointerdown", function (e) {
+      e.preventDefault();
+      handle.setPointerCapture(e.pointerId);
+      handle.classList.add("sb-dragging");
+      body.classList.add("sb-noselect");
+    });
+    handle.addEventListener("pointermove", function (e) {
+      if (handle.classList.contains("sb-dragging")) setWidth(fromPointer(e.clientX), false);
+    });
+    function endDrag(e) {
+      if (!handle.classList.contains("sb-dragging")) return;
+      handle.classList.remove("sb-dragging");
+      body.classList.remove("sb-noselect");
+      setWidth(fromPointer(e.clientX), true);
+    }
+    handle.addEventListener("pointerup", endDrag);
+    handle.addEventListener("pointercancel", endDrag);
+    handle.addEventListener("dblclick", function () { setWidth(d.width, true); });
+    handle.addEventListener("keydown", function (e) {
+      // Arrow keys move the edge in that direction.
+      var grow = side === "left" ? "ArrowRight" : "ArrowLeft";
+      var shrink = side === "left" ? "ArrowLeft" : "ArrowRight";
+      if (e.key === grow)   { setWidth(current() + 20, true); e.preventDefault(); }
+      if (e.key === shrink) { setWidth(current() - 20, true); e.preventDefault(); }
+    });
+
+    return {
+      apply: function () { applyOpen(); setWidth(parseInt(get(side + "-width"), 10) || d.width, false); },
+      isOpen: isOpen,
+      open: function () { toggle(true); }
+    };
+  }
+
+  var L = setup("left");
+  var R = setup("right");
+
+  // "/" opens Quarto's search: show All chapters so the search box is visible.
+  document.addEventListener("keydown", function (e) {
     var tag = (e.target && e.target.tagName) || "";
-    if (e.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(tag)) open(left, true);
+    if (L && e.key === "/" && wide.matches && !L.isOpen() && !/INPUT|TEXTAREA|SELECT/.test(tag)) L.open();
   }, true);
 
-  // Click outside a pinned panel closes it.
-  document.addEventListener("click", function (e) {
-    [left, right].forEach(function (p) {
-      if (p && p.classList.contains("autohide-open") &&
-          !p.contains(e.target) && !(tabFor(p) && tabFor(p).contains(e.target)) &&
-          !(e.target.closest && e.target.closest(".aa-Panel, .aa-DetachedOverlay"))) {
-        close(p);
-      }
-    });
-  });
-
+  function apply() {
+    body.classList.toggle("sb-layout", wide.matches);
+    if (L) L.apply();
+    if (R) R.apply();
+  }
   if (wide.addEventListener) wide.addEventListener("change", apply);
   apply();
 })();

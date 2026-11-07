@@ -1,0 +1,5 @@
+/*-- scss:defaults --*/
+// Use the same font as the light theme (cosmo), so switching to dark mode
+// doesn't change how the text looks. Darkly would otherwise use Lato.
+$web-font-path: "https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap";
+$font-family-sans-serif: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

@@ -115,3 +115,14 @@ body.quarto-dark tr.exam-row td {
   background: rgba(217, 200, 158, 0.18);
   border-color: #d9c89e;
 }
+
+/* ---------- Inline code (`like this`) in dark mode ----------
+   Darkly gives inline code in headings a near-white background with white
+   text, and uses different colors in paragraphs, lists and callouts. Use one
+   dark background and one readable color everywhere. */
+body.quarto-dark :not(pre) > code,
+body.quarto-dark h1 code, body.quarto-dark h2 code, body.quarto-dark h3 code,
+body.quarto-dark h4 code, body.quarto-dark h5 code, body.quarto-dark h6 code {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #63d4b3;
+}
