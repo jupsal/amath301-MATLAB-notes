@@ -63,6 +63,7 @@ format:
     include-after-body: 
       - _a11y.html
       - _sidebars.html
+      - _whats-new.html
     # Short "Motivation" blocks at the start of sections. Set to false to
     # hide all of them at once (see _motivation.lua).
     show-motivations: true
